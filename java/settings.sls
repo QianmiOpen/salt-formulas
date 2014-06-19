@@ -3,9 +3,9 @@
 
 {%- set java_home      = salt['grains.get']('java_home', salt['pillar.get']('java_home', '/usr/lib/java')) %}
 
-{%- set default_version_name = 'jdk1.7.0_55' %}
+{%- set default_version_name = 'jdk1.7.0_60' %}
 {%- set default_prefix       = '/usr/share/java' %}
-{%- set default_package      = 'jdk-7u55-linux-x64.gz' %}
+{%- set default_package      = 'jdk-7u60-linux-x64.tar.gz' %}
 {%- set default_init_env     = True %}
 
 {%- set version_name   = g.get('version_name', p.get('version_name', default_version_name)) %}

@@ -11,7 +11,7 @@
 unpack-jdk-tarball:
   file.managed:
     - name: {{ java.prefix }}/{{ java.package }}
-    - source: salt://java/files/{{ java.package }}
+    - source: salt://java/pkgs/{{ java.package }}
   cmd.run:
     - name: tar xf {{ java.prefix }}/{{ java.package }} -C {{ java.prefix }}
     - require:
