@@ -16,7 +16,7 @@ tomcat-user:
 unpack-tomcat-tarball:
   file.managed:
     - name: {{ tomcat.tomcat_home }}/{{ tomcat.tomcat_package }}
-    - source: salt://tomcat/files/{{ tomcat.tomcat_package }}
+    - source: salt://tomcat/pkgs/{{ tomcat.tomcat_package }}
     - user: tomcat
     - group: tomcat
     - require:

@@ -2,8 +2,8 @@
 
 {%- set default_tomcat_home = '/home/tomcat' %}
 {%- set default_tomcat_base = 'tomcat' %}
-{%- set default_package     = 'apache-tomcat-7.0.53.tar.gz' %}
-{%- set default_version_path = 'apache-tomcat-7.0.53' %}
+{%- set default_package     = 'apache-tomcat-7.0.54.tar.gz' %}
+{%- set default_version_path = 'apache-tomcat-7.0.54' %}
 {%- set default_java_Xmx = '3G' %}
 {%- set default_java_MaxPermSize = '256m' %}
 
