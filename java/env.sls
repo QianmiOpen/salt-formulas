@@ -9,4 +9,4 @@ jdk-config:
     - user: root
     - group: root
     - context:
-      java_home: {{ java.java_home }}
+      javaHome: {{ java.home }}

@@ -1,8 +1,6 @@
 {%- from 'java/settings.sls' import java with context %}
 
-{%- if java.package is defined %}
-
-{{ java.prefix }}:
+{{ java.installPath }}:
   file.directory:
     - user: root
     - group: root
@@ -10,22 +8,18 @@
 
 unpack-jdk-tarball:
   file.managed:
-    - name: {{ java.prefix }}/{{ java.package }}
+    - name: {{ java.installPath }}/{{ java.package }}
     - source: salt://java/pkgs/{{ java.package }}
   cmd.run:
-    - name: tar xf {{ java.prefix }}/{{ java.package }} -C {{ java.prefix }}
+    - name: tar xf {{ java.installPath }}/{{ java.package }} -C {{ java.installPath }}
     - require:
-      - file: {{ java.prefix }}
+      - file: {{ java.installPath }}
       - file: unpack-jdk-tarball
   alternatives.install:
     - name: java-home-link
-    - link: {{ java.java_home }}
-    - path: {{ java.java_real_home }}
+    - link: {{ java.home }}
+    - path: {{ java.realHome }}
     - priority: 30
 
-{%- if java.init_env %}
 include:
   - java.env
-
-{%- endif %}
-{%- endif %}

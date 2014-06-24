@@ -1,24 +1,24 @@
 {% set p  = salt['pillar.get']('java', {}) %}
-{% set g  = salt['grains.get']('java', {}) %}
 
-{%- set java_home      = salt['grains.get']('java_home', salt['pillar.get']('java_home', '/usr/lib/java')) %}
+{% set default_home = '/usr/lib/java' %}
+{% set default_prefix        = 'jdk' %}
+{% set default_version       = '1.7.0_60' %}
+{% set default_installPath   = '/usr/share/java' %}
+{% set default_package       = 'jdk-7u60-linux-x64.tar.gz' %}
 
-{%- set default_version_name = 'jdk1.7.0_60' %}
-{%- set default_prefix       = '/usr/share/java' %}
-{%- set default_package      = 'jdk-7u60-linux-x64.tar.gz' %}
-{%- set default_init_env     = True %}
+{% set home           = p.get('home', default_home) %}
+{% set version        = p.get('version', default_version) %}
+{% set prefix         = p.get('prefix', default_prefix) %}
+{% set versionPath    = p.get('versionPath', prefix + version) %}
+{% set installPath    = p.get('installPath', default_installPath) %}
+{% set realHome       = installPath + '/' + versionPath %}
+{% set package        = p.get('package', default_package) %}
 
-{%- set version_name   = g.get('version_name', p.get('version_name', default_version_name)) %}
-{%- set prefix         = g.get('prefix', p.get('prefix', default_prefix)) %}
-{%- set java_real_home = prefix + '/' + version_name %}
-{%- set package        = g.get('package', p.get('package', default_package)) %}
-{%- set init_env       = g.get('init_env', p.get('init_env', default_init_env)) %}
-
-{%- set java = {} %}
-{%- do java.update( { 'version_name'   : version_name,
-                      'java_home'      : java_home,
-                      'prefix'         : prefix,
-                      'java_real_home' : java_real_home,
-                      'package'        : package,
-                      'init_env'       : init_env
-                  }) %}
+{% set java = {} %}
+{%- do java.update({'home'           : home,
+                    'version'        : version,
+                    'versionPath'    : versionPath,
+                    'installPath'    : installPath,
+                    'realHome'       : realHome,
+                    'package'        : package
+                    }) %}

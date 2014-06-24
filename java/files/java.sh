@@ -1,2 +1,2 @@
-export JAVA_HOME={{ java_home }}
+export JAVA_HOME={{ javaHome }}
 export PATH=$JAVA_HOME/bin:$PATH
