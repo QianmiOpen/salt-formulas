@@ -7,8 +7,6 @@
 {% set default_repository = 'releases' %}
 {% set default_fileType   = 'war' %}
 
-r=snapshots&g=com.qianmi&a=usercenter-web&v=1.9.0-SNAPSHOT&e=war
-
 {% set groupId    = p.get('groupId', default_groupId) %}
 {% set artifactId = p.get('artifactId', default_artifactId) %}
 {% set version    = p.get('version', default_version) %}
