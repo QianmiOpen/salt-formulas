@@ -2,5 +2,5 @@
 
 tomcat_shutdown:
   cmd.run:
-    - name: sh {{ tomcat.tomcat_home }}/{{ tomcat.tomcat_base }}/bin/shutdown.sh
+    - name: sh {{ tomcat.home }}/{{ tomcat.name }}/bin/shutdown.sh
     - user: tomcat

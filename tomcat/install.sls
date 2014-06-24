@@ -5,7 +5,7 @@ tomcat-user:
     - name: tomcat
     - uid: 6666
     - gid: 6666
-    - home: {{ tomcat.tomcat_home }}
+    - home: {{ tomcat.home }}
     - shell: /bin/bash
     - require:
       - group: tomcat
@@ -15,14 +15,14 @@ tomcat-user:
 
 unpack-tomcat-tarball:
   file.managed:
-    - name: {{ tomcat.tomcat_home }}/{{ tomcat.tomcat_package }}
-    - source: salt://tomcat/pkgs/{{ tomcat.tomcat_package }}
+    - name: {{ tomcat.home }}/{{ tomcat.package }}
+    - source: salt://tomcat/pkgs/{{ tomcat.package }}
     - user: tomcat
     - group: tomcat
     - require:
       - user: tomcat-user
   cmd.run:
-    - name: tar xf {{ tomcat.tomcat_home }}/{{ tomcat.tomcat_package }} -C {{ tomcat.tomcat_home }}
+    - name: tar xf {{ tomcat.home }}/{{ tomcat.package }} -C {{ tomcat.home }}
     - user: tomcat
     - group: tomcat
     - require:
@@ -31,18 +31,16 @@ unpack-tomcat-tarball:
     - name: tomcat-home-link
     - user: tomcat
     - group: tomcat
-    - link: {{ tomcat.tomcat_home }}/{{ tomcat.tomcat_base }}
-    - path: {{ tomcat.tomcat_home }}/{{ tomcat.version_path }}
+    - link: {{ tomcat.home }}/{{ tomcat.name }}
+    - path: {{ tomcat.home }}/{{ tomcat.versionPath }}
     - priority: 30
 
 include:
   - tomcat.env
 
-{% if grains.os != 'FreeBSD' %}
 limits_conf:
   file.append:
     - name: /etc/security/limits.conf
     - text:
-      - {{ salt['pillar.get']('tomcat:name', 'tomcat') }} soft nofile {{ salt['pillar.get']('limit:soft', '64000') }}
-      - {{ salt['pillar.get']('tomcat.name', 'tomcat') }} hard nofile {{ salt['pillar.get']('limit:hard', '64000') }}
-{% endif %}
+      - {{ tomcat.name }} soft nofile {{ tomcat.limitSoft }}
+      - {{ tomcat.name }} hard nofile {{ tomcat.limitHard }}
