@@ -16,7 +16,7 @@
 {% set fileType   = p.get('fileType', default_fileType) %}
 
 
-{% set fileUrl  = repoBase + '/' + repository + '/' + groupId|replace('.', '/') + '/' + artifactId + '/' + version + '/' + artifactId + '-' + version + fileType %}
+{% set fileUrl  = p.get('fileUrl', repoBase + '/' + repository + '/' + groupId|replace('.', '/') + '/' + artifactId + '/' + version + '/' + artifactId + '-' + version + fileType) %}
 {% set fileSha1 = p.get('fileSha1', fileUrl + '.sha1') %}
 
 {% set webapp = {} %}

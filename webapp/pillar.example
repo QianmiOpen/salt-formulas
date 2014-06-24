@@ -1,0 +1,7 @@
+webapp:
+  groupId: com.ofpay
+  artifactId: cardserverimpl
+  version: 1.6.2-RELEASE
+  repoBase: nexus.dev.ofpay.com/nexus/content/repositories
+  repository: releases
+  fileType: .war
