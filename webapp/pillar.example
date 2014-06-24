@@ -5,3 +5,6 @@ webapp:
   repoBase: nexus.dev.ofpay.com/nexus/content/repositories
   repository: releases
   fileType: .war
+
+salt \t-dminion state.sls webapp.deploy pillar='{webapp: {groupId: com.qianmi, artifactId: admin-web, version: 1.9.1-beta-1}, tomcat: {appName: admin-web}}'
+salt \t-dminion state.sls webapp.deploy pillar='{webapp: {groupId: "com.qianmi", artifactId: "admin-web", version: "1.9.1-beta-1"}}'

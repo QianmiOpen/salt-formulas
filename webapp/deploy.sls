@@ -9,16 +9,16 @@ download_war_file:
     - user: tomcat
     - group: tomcat
   alternatives.install:
-    - name: app-link
+    - name: app-{{ tomcat.appName }}
     - user: tomcat
     - group: tomcat
-    - link: {{ tomcat.appBase }}/{{ webapp.artifactId }}.war
+    - link: {{ tomcat.appBase }}/{{ tomcat.appName }}.war
     - path: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
     - priority: 30
 
 set_app_link:
   alternatives.set:
-      - name: app-link
+      - name: app-{{ tomcat.appName }}
       - path: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
 
 include:

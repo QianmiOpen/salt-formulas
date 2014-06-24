@@ -125,8 +125,6 @@
                resourceName="UserDatabase"/>
       </Realm>
 
-      <!-- <Host name="localhost"  appBase="webapps" -->
-            <!-- unpackWARs="true" autoDeploy="true"> -->
       <Host name="{{ tomcat.hostName }}" appBase="{{ tomcat.appBase }}" debug="{{ tomcat.debug }}" unpackWARs="{{ tomcat.unpackWARs }}" deployXML="{{ tomcat.deployXML }}" autoDeploy="{{ tomcat.autoDeploy }}" deployOnStartup="{{ tomcat.deployOnStartup }}">
         <Context path="{{ tomcat.path }}" docBase="{{ tomcat.appName }}.war" debug="{{ tomcat.debug }}" privileged="{{ tomcat.privileged }}" reloadable="{{ tomcat.reloadable }}" workDir="{{ tomcat.appName }}.work"/>
         <Alias>{{ tomcat.appName }}</Alias>
