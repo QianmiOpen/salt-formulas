@@ -35,6 +35,12 @@ unpack-tomcat-tarball:
     - path: {{ tomcat.home }}/{{ tomcat.versionPath }}
     - priority: 30
 
+{% for dir in ['docs', 'examples', 'host-manager', 'manager', 'ROOT'] %}
+delete-tomcat-webapps-{{ dir }}:
+  file.absent:
+    - name: {{ tomcat.appBase }}/{{ dir }}
+{% endfor %}
+
 include:
   - tomcat.env
 
