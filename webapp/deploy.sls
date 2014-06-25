@@ -1,25 +1,24 @@
 {% from 'tomcat/settings.sls' import tomcat with context %}
 {% from 'webapp/settings.sls' import webapp with context %}
 
-download_war_file:
+download-war-file:
   file.managed:
     - name: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
     - source: http://{{ webapp.fileUrl }}
     - source_hash: http://{{ webapp.fileSha1 }}
     - user: tomcat
     - group: tomcat
-  alternatives.install:
-    - name: app-{{ tomcat.appName }}
+
+symlink-war-file:
+  file.symlink:
+    - name: {{ tomcat.appBase }}/{{ tomcat.appName }}.war
+    - target: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
     - user: tomcat
     - group: tomcat
-    - link: {{ tomcat.appBase }}/{{ tomcat.appName }}.war
-    - path: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
-    - priority: 30
 
-set_app_link:
-  alternatives.set:
-      - name: app-{{ tomcat.appName }}
-      - path: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
+delete-work-dir:
+  file.absent:
+    - name: {{ tomcat.home }}/{{ tomcat.name }}/work
 
 include:
   - tomcat.vhosts

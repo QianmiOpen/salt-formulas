@@ -41,10 +41,16 @@ delete-tomcat-webapps-{{ dir }}:
     - name: {{ tomcat.appBase }}/{{ dir }}
 {% endfor %}
 
+delete-tomcat-users.xml:
+  file.absent:
+    - name: {{ tomcat.home }}/{{ tomcat.name }}/conf/tomcat-users.xml
+
 copy-env.conf:
   file.managed:
     - name: {{ tomcat.home }}/{{ tomcat.name }}/conf/env.conf
     - source: salt://tomcat/files/env.conf
+    - user: tomcat
+    - group: tomcat
     - force: False
     - template: jinja
     - defaults:
