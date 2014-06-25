@@ -1,4 +1,6 @@
 webapp:
+  projectName: cardbase
+  nfsServer: 172.19.3.111
   groupId: com.ofpay
   artifactId: cardserverimpl
   version: 1.6.2-RELEASE

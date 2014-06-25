@@ -23,3 +23,5 @@ set_app_link:
 
 include:
   - tomcat.vhosts
+
+{#  todo: 是否需要删除webapps目录和work目录？另，server.xml需要和现在已经上线的文件进行比对。  #}

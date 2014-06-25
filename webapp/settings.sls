@@ -1,5 +1,8 @@
 {% set p = salt['pillar.get']('webapp', {}) %}
 
+
+{% set default_projectName = 'cardbase' %}
+{% set default_nfsServer   = '192.168.111.210' %}
 {% set default_groupId    = 'com.ofpay' %}
 {% set default_artifactId = 'cardserverimpl' %}
 {% set default_version    = '1.6.2-RELEASE' %}
@@ -7,6 +10,8 @@
 {% set default_repository = 'releases' %}
 {% set default_fileType   = 'war' %}
 
+{% set projectName = p.get('projectName', default_projectName) %}
+{% set nfsServer   = p.get('nfsServer', default_nfsServer) %}
 {% set groupId    = p.get('groupId', default_groupId) %}
 {% set artifactId = p.get('artifactId', default_artifactId) %}
 {% set version    = p.get('version', default_version) %}
@@ -19,7 +24,9 @@
 {% set fileSha1 = p.get('fileSha1', fileUrl + '.sha1') %}
 
 {% set webapp = {} %}
-{%- do webapp.update({'groupId'    : groupId,
+{%- do webapp.update({'projectName': projectName,
+                      'nfsServer'  : nfsServer,
+                      'groupId'    : groupId,
                       'artifactId' : artifactId,
                       'version'    : version,
                       'fileUrl'    : fileUrl,
