@@ -6,8 +6,6 @@
 {% set default_version = '7.0.54' %}
 {% set default_packageSuffix = '.tar.gz' %}
 
-{% set default_javaXmx = '3G' %}
-{% set default_javaMaxPermSize = '256m' %}
 {% set default_limitSoft = 64000 %}
 {% set default_limitHard = 64000 %}
 
@@ -32,8 +30,6 @@
 
 {% set package     = p.get('package', packagePrefix + version + packageSuffix) %}
 {% set versionPath = p.get('versionPath', packagePrefix + version) %}
-{% set javaXmx       = p.get('javaXmx', default_javaXmx) %}
-{% set javaMaxPermSize = p.get('javaMaxPermSize', default_javaMaxPermSize) %}
 
 {% set limitSoft = p.get('limitSoft', default_limitSoft) %}
 {% set limitHard = p.get('limitHard', default_limitHard) %}
@@ -68,8 +64,6 @@
                       'reloadable'     : reloadable,
                       'privileged'     : privileged,
                       'debug'          : debug,
-                      'versionPath'   : versionPath,
-                      'javaXmx'       : javaXmx,
-                      'javaMaxPermSize': javaMaxPermSize
+                      'versionPath'   : versionPath
                       }) %}
 

@@ -41,6 +41,21 @@ delete-tomcat-webapps-{{ dir }}:
     - name: {{ tomcat.appBase }}/{{ dir }}
 {% endfor %}
 
+copy-env.conf:
+  file.managed:
+    - name: {{ tomcat.home }}/{{ tomcat.name }}/conf/env.conf
+    - source: salt://tomcat/files/env.conf
+    - force: False
+    - template: jinja
+    - defaults:
+      tomcatHome: {{ tomcat.home }}
+
+{{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh:
+  file.blockreplace:
+    - marker_start: "# ----- Execute The Requested Command -----"
+    - marker_end: "# Bugzilla 37848"
+    - content: CATALINA_OPTS=`sed 's/"//g' $CATALINA_BASE/conf/env.conf |awk '/^[^#]/'| tr "\n" ' '`
+
 include:
   - tomcat.env
 

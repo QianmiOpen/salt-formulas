@@ -10,5 +10,3 @@ tomcat-config:
     - group: root
     - context:
       tomcatHome: {{ tomcat.home }}/{{ tomcat.name }}
-      javaXmx: {{ tomcat.javaXmx }}
-      javaMaxPermSize: {{ tomcat.javaMaxPermSize }}
