@@ -9,6 +9,10 @@
                    'group'          : 'tomcat'
                    }) %}
 
+# {% for key, value in p.iteritems() %}
+# {% do job.update({key: value}) %}
+# {% endfor %}
+
 {% for key, value in job.iteritems() %}
 {% do job.update({key: p.get(key, value)}) %}
 {% endfor %}
