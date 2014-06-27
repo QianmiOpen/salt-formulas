@@ -9,12 +9,34 @@ download-war-file:
     - user: tomcat
     - group: tomcat
 
+{% if webapp.unzip %}
+unzip-war-file:
+  file.directory:
+    - name: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}
+    - makedirs: true
+    - user: tomcat
+    - group: tomcat
+  cmd.run:
+    - name: jar xf {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
+    - cwd: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}
+    - user: tomcat
+    - group: tomcat
+
+symlink-war-file:
+  file.symlink:
+    - name: {{ tomcat.appBase }}/{{ tomcat.appName }}.war
+    - target: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}
+    - user: tomcat
+    - group: tomcat
+{% else %}
 symlink-war-file:
   file.symlink:
     - name: {{ tomcat.appBase }}/{{ tomcat.appName }}.war
     - target: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
     - user: tomcat
     - group: tomcat
+{% endif %}
+
 
 delete-work-dir:
   file.absent:

@@ -8,7 +8,8 @@
                       'version'    : '1.6.2-RELEASE',
                       'repoBase'   : 'nexus.dev.ofpay.com/nexus/service/local/artifact/maven/redirect?',
                       'repository' : 'releases',
-                      'fileType'   : 'war'
+                      'fileType'   : 'war',
+                      'unzip'      : false
                       }) %}
 
 {% for key, value in webapp.iteritems() %}
