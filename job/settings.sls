@@ -13,7 +13,7 @@
 {% do job.update({key: p.get(key, value)}) %}
 {% endfor %}
 
-{% set path = p.get('path', job.basePath + '/' + job.appName + '/' + job.id + '/' + job.filePath) %}
+{% set path = p.get('path', job.basePath ~ '/' ~ job.appName ~ '/' ~ job.id ~ '/' ~ job.filePath) %}
 
 {%- do job.update({'path'        : path
                    }) %}
