@@ -65,9 +65,10 @@ copy-env.conf:
 include:
   - tomcat.env
 
-limits_conf:
-  file.append:
-    - name: /etc/security/limits.conf
-    - text:
-      - {{ tomcat.name }} soft nofile {{ tomcat.limitSoft }}
-      - {{ tomcat.name }} hard nofile {{ tomcat.limitHard }}
+# move to os.security
+# limits_conf:
+#   file.append:
+#     - name: /etc/security/limits.conf
+#     - text:
+#       - {{ tomcat.name }} soft nofile {{ tomcat.limitSoft }}
+#       - {{ tomcat.name }} hard nofile {{ tomcat.limitHard }}
