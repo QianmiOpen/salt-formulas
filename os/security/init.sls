@@ -1,7 +1,7 @@
 {%- from 'os/security/settings.sls' import security with context %}
 
 # disable iptables
-{% set disabledList = ['ip6tables', 'iptables'] %}
+{% set disabledList = ['ip6tables', 'iptables', 'portreserve', 'postfix'] %}
 {% for server in disabledList %}
 disable-{{ server }}:
   service.dead:
