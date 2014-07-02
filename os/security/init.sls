@@ -39,7 +39,7 @@ restart-sshd:
     - watch:
       - file: /etc/ssh/sshd_config
 
-#optimize kernel
+# optimize kernel
 /etc/sysctl.conf:
   file.managed:
     - source: salt://os/security/files/etc/sysctl.conf
@@ -54,4 +54,7 @@ sysctl:
     - watch:
       - file: /etc/sysctl.conf
       - kmod: bridge
+
+#disable services
+# crond | irqbalance | microcode_ctl | network | random |  sshd | local | syslog 
 
