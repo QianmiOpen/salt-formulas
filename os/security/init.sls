@@ -56,5 +56,12 @@ sysctl:
       - kmod: bridge
 
 #disable services
+# `ls /etc/rc3.d/S*`
+# CURSRV=`echo $i|cut -c 15-`
+# S02lvm2-monitor  S11portreserve       S26udev-post
+# S07iscsid        S12rsyslog           S55sshd
+# S08ip6tables     S13iscsi             S80postfix
+# S08iptables      S15mdmonitor         S90crond
+# S10network       S25blk-availability  S99local
+# S11auditd        S25netfs
 # crond | irqbalance | microcode_ctl | network | random |  sshd | local | syslog 
-
