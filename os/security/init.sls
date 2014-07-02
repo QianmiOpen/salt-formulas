@@ -1,6 +1,6 @@
 {%- from 'os/security/settings.sls' import security with context %}
-# disable iptables
 
+# disable iptables
 {% set disabledList = ['ip6tables', 'iptables'] %}
 {% for server in disabledList %}
 disable-{{ server }}:
@@ -30,7 +30,7 @@ limits_conf:
     - source: salt://os/security/files/etc/ssh/sshd_config
     - user: root
     - group: root
-    - mode: 644
+    - mode: 600
 # service running with watch can restart service
 restart-sshd:
   service.running:
@@ -38,4 +38,20 @@ restart-sshd:
     - enable: True
     - watch:
       - file: /etc/ssh/sshd_config
+
+#optimize kernel
+/etc/sysctl.conf:
+  file.managed:
+    - source: salt://os/security/files/etc/sysctl.conf
+    - user: root
+    - group: root
+    - mode: 644
+bridge:
+  kmod.present
+sysctl:
+  cmd.wait:
+    - name: /sbin/sysctl -p
+    - watch:
+      - file: /etc/sysctl.conf
+      - kmod: bridge
 
