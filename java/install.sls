@@ -6,6 +6,9 @@
     - group: root
     - mode: 755
 
+tar:
+  pkg.installed
+
 unpack-jdk-tarball:
   file.managed:
     - name: {{ java.installPath }}/{{ java.package }}
@@ -13,6 +16,7 @@ unpack-jdk-tarball:
   cmd.run:
     - name: tar xf {{ java.installPath }}/{{ java.package }} -C {{ java.installPath }}
     - require:
+      - pkg: tar
       - file: {{ java.installPath }}
       - file: unpack-jdk-tarball
   alternatives.install:
