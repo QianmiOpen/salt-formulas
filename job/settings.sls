@@ -22,7 +22,7 @@
 
 {%- do job.update({'path'        : path,
                    'filePath'    : path ~ job.type,
-                   'md5FilePath' : path ~ '.md5',
+                   'md5FilePath' : path ~ job.type ~ '.md5',
                    'tempDir'     : '/home/pkgs/' ~ job.confFileName,
                    'tempFile'    : '/home/pkgs/' ~ job.confFileName ~ job.type
                    }) %}
