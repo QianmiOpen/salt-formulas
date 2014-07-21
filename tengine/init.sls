@@ -1,6 +1,6 @@
 {%- from 'tengine/settings.sls' import tengine with context %}
 
-{% for package in [tengine.ssl, tengine.nginxSticky, tengine.nginxCache] %}
+{% for package in [tengine.tengine, tengine.ssl, tengine.nginxSticky, tengine.nginxCache] %}
 get-{{ package }}:
   file.managed:
     - name: {{ tengine.home }}/{{ package }}{{ tengine.zipType }}
@@ -11,7 +11,7 @@ get-{{ package }}:
       - file: get-{{ package }}
 {% endfor %}
 
-get-tengine:
+configure-nginx:
   pkg.installed:
     - names:
       - pcre-devel
@@ -20,17 +20,6 @@ get-tengine:
       - automake
       - zlib-devel
       # - openssl-devel
-  file.managed:
-    - name: {{ tengine.home }}/{{ tengine.tengine }}{{ tengine.zipType }}
-    - source: salt://tengine/pkgs/{{ tengine.tengine }}{{ tengine.zipType }}
-  cmd.run:
-    - name: tar -zxf {{ tengine.home }}/{{ tengine.tengine }}{{ tengine.zipType }} -C {{ tengine.home }}
-    - require:
-      - pkg: get-tengine
-    - watch:
-      - file: get-tengine
-
-configure-nginx:
   cmd.wait:
     - cwd: {{ tengine.home }}/{{ tengine.tengine }}
     - names:
@@ -47,7 +36,8 @@ configure-nginx:
         --add-module={{ tengine.home }}/{{ tengine.nginxCache }}
         # --with-http_lua_module
     - watch:
-      - cmd: get-tengine
+      - cmd: get-{{ tengine.tengine }}
+      - pkg: configure-nginx
 
 compile-nginx:
   cmd.wait:
