@@ -3,7 +3,7 @@
 include:
   - tengine.testconf
 
-tengine-reload:
+tengine-start:
   cmd.run:
     - name: {{ tengine.installPath }}/sbin/nginx
     - user: root
