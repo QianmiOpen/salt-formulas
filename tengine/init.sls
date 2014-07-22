@@ -1,5 +1,20 @@
 {%- from 'tengine/settings.sls' import tengine with context %}
 
+{% for dir in ['/var/cache', '/var/run', '/var/tmp'] %}
+create-dir-{{ dir }}-tengine:
+  file.directory:
+    - name: {{ dir }}/tengine
+    - user: root
+    - group: root
+    - dir_mode: 755
+    - file_mode: 644
+    - recurse:
+      - user
+      - group
+      - mode
+    - makedirs: true
+{% endfor %}
+
 {% for package in [tengine.tengine, tengine.ssl, tengine.nginxSticky, tengine.nginxCache] %}
 get-{{ package }}:
   file.managed:
