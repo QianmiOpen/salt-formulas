@@ -7,7 +7,11 @@
                        'ssl'         : 'openssl-1.0.1h',
                        'nginxSticky' : 'nginx-sticky-module-1.1',
                        'nginxCache'  : 'ngx_cache_purge-2.1',
-                       'zipType'     : '.tar.gz'
+                       'zipType'     : '.tar.gz',
+                       'domain'      : 'www.1000.com',
+                       'serverNameList' : 'www.1000.como www.ofcard.com',
+                       'ip'          : '172.19.0.200',
+                       'port'        : '8080'
                       }) %}
 
 {% for key, value in tengine.iteritems() %}

@@ -46,3 +46,15 @@ compile-nginx:
       - make && make install
     - watch:
       - cmd: configure-nginx
+
+{% for file in ['nginx.conf', 'port.conf', 'checks.conf', 'location.conf', 'proxy.conf', 'pwd'] %}
+copy-configue-file-{{ file }}:
+  file.managed:
+    - name: {{ tengine.installPath }}/conf/{{ file }}
+    - source: salt://tengine/files/{{ file }}
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - cmd: compile-nginx
+{% endfor %}
