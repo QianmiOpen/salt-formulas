@@ -10,30 +10,36 @@ name: tengine
 remark: 用于tengine项目的自动部署
 items:
 actions:
-  - name: tengine应用
+  - name: 部署tengine
     css: glyphicon glyphicon-import
     steps:
       - name: 加固os
         sls: "salt {{machine}} state.sls os.security"
       - name: 安装ntp服务
         sls: "salt {{machine}} state.sls ntp"
+      - name: 编译安装tengine
+        sls: "salt {{machine}} state.sls tengine"
 
-      - name: 启动应用
-        sls: "salt {{machine}} state.sls tomcat.startup"
-  - name: 重启应用
+  - name: 重启tengine
     css: glyphicon glyphicon-repeat
     steps:
-      - name: 关闭应用
-        sls: "salt {{machine}} state.sls tomcat.shutdown"
-      - name: 启动应用
-        sls: "salt {{machine}} state.sls tomcat.startup"
+      - name: 重启tengine
+        sls: "salt {{machine}} state.sls tengine.reload"
+
   - name: 启动应用
     css: glyphicon glyphicon-play
     steps:
       - name: 启动应用
-        sls: "salt {{machine}} state.sls tomcat.startup"
+        sls: "salt {{machine}} state.sls tengine.start"
+
   - name: 停止应用
     css: glyphicon glyphicon-stop
     steps:
       - name: 关闭应用
-        sls: "salt {{machine}} state.sls tomcat.shutdown"
+        sls: "salt {{machine}} state.sls tengine.stop"
+
+  - name: 配置文件检查
+    css: glyphicon glyphicon-check
+    steps:
+      - name: 配置文件检查
+        sls: "salt {{machine}} state.sls tengine.testconf"
