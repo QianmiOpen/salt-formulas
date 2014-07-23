@@ -37,9 +37,10 @@ def returner(ret):
             'grains': grains
         }
         
+        ip = __salt__['grains.items']()['master']
+        httpClient = httplib.HTTPConnection(ip, 2551, timeout=30)
+
         headers = {"Content-type": "application/json", "Accept": "text/plain"}
-        
-        httpClient = httplib.HTTPConnection("192.168.59.3", 2551, timeout=30)
         httpClient.request("POST", "/job/%(jid)s/%(id)s" % ret, json.dumps(data), headers)
         
         response = httpClient.getresponse()
