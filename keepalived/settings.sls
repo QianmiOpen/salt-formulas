@@ -4,7 +4,8 @@
 {%- do keepalived.update({'home'             : '/keepalived',
                      'keepalivedVersion'     : 'keepalived-1.2.13',
                      'zipType'               : '.tar.gz',
-                     'virtual_ipaddress'     : '172.19.22.50'
+                     'virtual_ipaddress'     : '172.19.22.50',
+                     'isMaster'              : True
                     }) %}
 
 {% for key, value in keepalived.iteritems() %}

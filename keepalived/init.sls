@@ -33,3 +33,50 @@ keepalived-conf-dir:
     - user: root
     - group: root
     - makedirs: True
+
+keepalived-script-file:
+  file.copy:
+    - name: /etc/rc.d/init.d/keepalived
+    - source: /usr/local/etc/rc.d/init.d/keepalived
+    - force: True
+    - makedirs: False
+
+keepalived-sysconfig-file:
+  file.copy:
+    - name: /etc/sysconfig/keepalived
+    - source: /usr/local/etc/sysconfig/keepalived
+    - force: True
+    - makedirs: False    
+
+keepalived-exec-file:
+  file.copy:
+    - name: /usr/sbin/keepalived
+    - source: /usr/local/sbin/keepalived
+    - force: True
+    - makedirs: False
+
+{% if keepalived.isMaster %}
+keepalived-redis-master-config:
+  file:
+    - name: /etc/keepalived/keepalived.conf
+    - managed
+    - template: jinja
+    - source: salt://keepalived/files/keepalived_redis_master.conf
+{% else %}
+keepalived-redis-backup-config:
+  file:
+    - name: /etc/keepalived/keepalived.conf
+    - managed
+    - template: jinja
+    - source: salt://keepalived/files/keepalived_redis_backup.conf
+{% endif %}
+
+keepalived-redis-checkfile:
+  file:
+    - name: /etc/keepalived/check_redis.sh
+    - mode: 755
+    - user: root
+    - group: root
+    - managed
+    - template: jinja
+    - source: salt://keepalived/files/check_redis.sh
