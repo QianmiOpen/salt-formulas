@@ -23,6 +23,14 @@ redis-pid-dir:
     - mode: 755
     - user: root
     - group: root
+    - makedirs: True
+
+redis-lib-dir:
+  file.directory:
+    - name: /var/lib/redis
+    - mode: 755
+    - user: root
+    - group: root
     - makedirs: True      
 
 redis-log-dir:
@@ -43,6 +51,9 @@ redis_config:
 redis_service_file:
   file:
     - name: /etc/init.d/redisd
+    - mode: 755
+    - user: root
+    - group: root
     - managed
     - template: jinja
     - source: salt://redis/files/redisd
