@@ -55,21 +55,12 @@ keepalived-exec-file:
     - force: True
     - makedirs: False
 
-{% if keepalived.isMaster %}
-keepalived-redis-master-config:
+keepalived-redis-config:
   file:
     - name: /etc/keepalived/keepalived.conf
     - managed
     - template: jinja
-    - source: salt://keepalived/files/keepalived_redis_master.conf
-{% else %}
-keepalived-redis-backup-config:
-  file:
-    - name: /etc/keepalived/keepalived.conf
-    - managed
-    - template: jinja
-    - source: salt://keepalived/files/keepalived_redis_backup.conf
-{% endif %}
+    - source: salt://keepalived/files/keepalived_redis.conf
 
 keepalived-redis-checkfile:
   file:
