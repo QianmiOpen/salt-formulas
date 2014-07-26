@@ -22,53 +22,53 @@ actions:
     versionMenu: True
     steps:
       - name: 关闭应用
-        sls: "salt {{machine}} state.sls tomcat.shutdown"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
       - name: 部署war包
-        sls: "salt {{machine}} state.sls webapp.deploy pillar='{webapp: {groupId: {{groupId}}, artifactId: {{artifactId}}, version: {{version}}, repository: {{repository}}, unzip: {{unpacked}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{groupId}}, artifactId: {{artifactId}}, version: {{version}}, repository: {{repository}}, unzip: {{unpacked}}}}'"
       - name: 配置文件准备
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
-        sls: "salt {{machine}} state.sls job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
       - name: 启动应用
-        sls: "salt {{machine}} state.sls tomcat.startup"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.startup"
   - name: 安装应用
     css: glyphicon glyphicon-import
     versionMenu: True
     steps:
       - name: 加固os
-        sls: "salt {{machine}} state.sls os.security"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' os.security"
       - name: 安装ntp服务
-        sls: "salt {{machine}} state.sls ntp"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' ntp"
       - name: 安装java
-        sls: "salt {{machine}} state.sls java.install"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' java.install"
         seconds: 10
       - name: 安装tomcat
-        sls: "salt {{machine}} state.sls tomcat.install"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.install"
         seconds: 6
       - name: mount log目录
-        sls: "salt {{machine}} state.sls webapp.mountlog pillar='{webapp: {nfsServer: {{nfsServer}}, projectName: {{projectName}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{nfsServer}}, projectName: {{projectName}}}}'"
       - name: 部署war包
-        sls: "salt {{machine}} state.sls webapp.deploy pillar='{webapp: {groupId: {{groupId}}, artifactId: {{artifactId}}, version: {{version}}, repository: {{repository}}, unzip: {{unpacked}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{groupId}}, artifactId: {{artifactId}}, version: {{version}}, repository: {{repository}}, unzip: {{unpacked}}}}'"
       - name: 配置文件准备
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
-        sls: "salt {{machine}} state.sls job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
       - name: 启动应用
-        sls: "salt {{machine}} state.sls tomcat.startup"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.startup"
   - name: 重启应用
     css: glyphicon glyphicon-repeat
     steps:
       - name: 关闭应用
-        sls: "salt {{machine}} state.sls tomcat.shutdown"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
       - name: 启动应用
-        sls: "salt {{machine}} state.sls tomcat.startup"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.startup"
   - name: 启动应用
     css: glyphicon glyphicon-play
     steps:
       - name: 启动应用
-        sls: "salt {{machine}} state.sls tomcat.startup"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.startup"
   - name: 停止应用
     css: glyphicon glyphicon-stop
     steps:
       - name: 关闭应用
-        sls: "salt {{machine}} state.sls tomcat.shutdown"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
