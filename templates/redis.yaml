@@ -20,26 +20,28 @@ actions:
     css: glyphicon glyphicon-import
     steps:
       - name: 加固os
-        sls: "salt {{machine}} state.sls os.security"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' os.security"
       - name: 安装ntp服务
-        sls: "salt {{machine}} state.sls ntp"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' ntp"
       - name: 编译安装redis
-        sls: "salt {{machine}} state.sls redis keepalived pillar='{keepalived: {isMaster: {{isMaster}}, virtual_router_id: {{virtual_router_id}}, virtual_ipaddress: {{virtual_ipaddress}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' redis keepalived pillar='{keepalived: {isMaster: {{isMaster}}, virtual_router_id: {{virtual_router_id}}, virtual_ipaddress: {{virtual_ipaddress}}}}'"
+
 
   - name: 重启redis
     css: glyphicon glyphicon-repeat
     steps:
       - name: 重启redis
-        sls: "salt {{machine}} state.sls redis.restart"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' redis.restart"
 
   - name: 启动应用
     css: glyphicon glyphicon-play
     steps:
       - name: 启动redis应用
-        sls: "salt {{machine}} state.sls redis.start"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' redis.start"
 
   - name: 停止应用
     css: glyphicon glyphicon-stop
     steps:
-      - name: 关闭redis应用
-        sls: "salt {{machine}} state.sls redis.stop"
+      - name: 关闭应用
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' redis.stop"
+

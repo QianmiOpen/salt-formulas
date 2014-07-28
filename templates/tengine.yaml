@@ -14,32 +14,32 @@ actions:
     css: glyphicon glyphicon-import
     steps:
       - name: 加固os
-        sls: "salt {{machine}} state.sls os.security"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' os.security"
       - name: 安装ntp服务
-        sls: "salt {{machine}} state.sls ntp"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' ntp"
       - name: 编译安装tengine
-        sls: "salt {{machine}} state.sls tengine"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tengine"
 
   - name: 重启tengine
     css: glyphicon glyphicon-repeat
     steps:
       - name: 重启tengine
-        sls: "salt {{machine}} state.sls tengine.reload"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tengine.reload"
 
   - name: 启动应用
     css: glyphicon glyphicon-play
     steps:
       - name: 启动应用
-        sls: "salt {{machine}} state.sls tengine.start"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tengine.start"
 
   - name: 停止应用
     css: glyphicon glyphicon-stop
     steps:
       - name: 关闭应用
-        sls: "salt {{machine}} state.sls tengine.stop"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tengine.stop"
 
   - name: 配置文件检查
     css: glyphicon glyphicon-check
     steps:
       - name: 配置文件检查
-        sls: "salt {{machine}} state.sls tengine.testconf"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tengine.testconf"
