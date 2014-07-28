@@ -4,3 +4,6 @@ redis-stop:
   cmd.run:
     - name: service redisd stop
     - user: root
+
+include:
+  - keepalived.run

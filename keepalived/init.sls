@@ -71,3 +71,8 @@ keepalived-redis-checkfile:
     - managed
     - template: jinja
     - source: salt://keepalived/files/check_redis.sh
+
+keepalived:
+  service:
+    - running
+

@@ -57,3 +57,6 @@ redis_service_file:
     - managed
     - template: jinja
     - source: salt://redis/files/redisd
+
+include:
+  - keepalived.init
