@@ -13,6 +13,8 @@ items:
     itemDesc: groupId
   - itemName: artifactId
     itemDesc: artifactId
+  - itemName: mountDir
+    itemDesc: 日志绑定目录
   - itemName: unpacked
     itemDesc: 自动解压
     default: 'False'
@@ -46,7 +48,7 @@ actions:
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.install"
         seconds: 6
       - name: mount log目录
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{nfsServer}}, projectName: {{projectName}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{nfsServer}}, projectName: {{mountDir}}}}'"
       - name: 部署war包
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{groupId}}, artifactId: {{artifactId}}, version: {{version}}, repository: {{repository}}, unzip: {{unpacked}}}}'"
       - name: 配置文件准备
