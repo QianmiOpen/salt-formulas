@@ -24,7 +24,7 @@ actions:
       - name: 安装ntp服务
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' ntp"
       - name: 编译安装redis
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' redis keepalived pillar='{keepalived: {isMaster: {{isMaster}}, virtual_router_id: {{virtual_router_id}}, virtual_ipaddress: {{virtual_ipaddress}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' redis pillar='{keepalived: {isMaster: {{isMaster}}, virtual_router_id: {{virtual_router_id}}, virtual_ipaddress: {{virtual_ipaddress}}}}'"
 
 
   - name: 重启redis
