@@ -55,6 +55,7 @@ copy-env.conf:
     - template: jinja
     - defaults:
       tomcatHome: {{ tomcat.home }}
+      tomcatPid: {{ tomcat.tomcatPid }}
 
 {{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh:
   file.blockreplace:
