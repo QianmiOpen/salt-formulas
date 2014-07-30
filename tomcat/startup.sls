@@ -2,5 +2,5 @@
 
 tomcat_startup:
   cmd.run:
-    - name: sh {{ tomcat.home }}/{{ tomcat.name }}/bin/startup.sh
+    - name: sh {{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh start
     - user: tomcat

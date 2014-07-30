@@ -38,6 +38,7 @@ def returner(ret):
         }
         
         ip = __salt__['grains.items']()['master']
+        print ip
         httpClient = httplib.HTTPConnection(ip, 2551, timeout=30)
 
         headers = {"Content-type": "application/json", "Accept": "text/plain"}

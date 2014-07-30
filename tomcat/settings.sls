@@ -22,7 +22,8 @@
                       'debug'          : '0',
                       'maxThreads'     : 300,
                       'minSpareThreads': 10,
-                      'connectionTimeout': 20000
+                      'connectionTimeout': 20000,
+                      'stopDelaySeconds' : 5
                       }) %}
 
 {% for key, value in tomcat.iteritems() %}
