@@ -10,3 +10,5 @@ tomcat-config:
     - group: root
     - context:
       tomcatHome: {{ tomcat.home }}/{{ tomcat.name }}
+      tomcatPid: {{ tomcat.tomcatPid }}
+
