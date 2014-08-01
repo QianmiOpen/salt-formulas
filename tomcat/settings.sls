@@ -22,7 +22,8 @@
                       'debug'          : '0',
                       'maxThreads'     : 300,
                       'minSpareThreads': 10,
-                      'connectionTimeout': 20000
+                      'connectionTimeout': 20000,
+                      'stopDelaySeconds' : 60
                       }) %}
 
 {% for key, value in tomcat.iteritems() %}
@@ -32,8 +33,11 @@
 {% set package     = p.get('package', tomcat.packagePrefix + tomcat.version + tomcat.packageSuffix) %}
 {% set versionPath = p.get('versionPath', tomcat.packagePrefix + tomcat.version) %}
 {% set appBase     = p.get('appBase', tomcat.home + '/' + tomcat.name + '/webapps') %}
+{% set tomcatPid   = p.get('tomcatPid', tomcat.home + '/tomcat.pid') %}
+
 
 {%- do tomcat.update({'package'        : package,
                       'appBase'        : appBase,
-                      'versionPath'    : versionPath
+                      'versionPath'    : versionPath,
+                      'tomcatPid'      : tomcatPid
                       }) %}
