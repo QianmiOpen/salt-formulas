@@ -4,10 +4,13 @@ nfs-utils:
   pkg:
     - installed
 
-unmount-oflogs-{{ webapp.projectName }}:
-  mount.unmounted:
-    - name: /oflogs/{{ webapp.projectName }}
-    - persist: False
+unmount-nfs-dirs:
+  cmd.run:
+    - name: "mount -t nfs | awk '{print $3}' | xargs umount -l"
+    - user: root
+    - group: root
+    - require:
+      - pkg: nfs-utils
 
 /oflogs:
   file.directory:
