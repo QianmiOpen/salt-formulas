@@ -9,6 +9,7 @@ unmount-nfs-dirs:
     - name: "mount -t nfs | awk '{print $3}' | xargs umount -l"
     - user: root
     - group: root
+    - onlyif: 'mount -t nfs'
     - require:
       - pkg: nfs-utils
 
