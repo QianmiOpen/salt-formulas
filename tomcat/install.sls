@@ -36,6 +36,12 @@ symlink-tomcat:
     - group: tomcat
     - require:
       - cmd: unpack-tomcat-tarball
+  cmd.run:
+    - name: rm {{ tomcat.home }}/{{ tomcat.package }}
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - cmd: unpack-tomcat-tarball
 
 {% for dir in ['docs', 'examples', 'host-manager', 'manager', 'ROOT'] %}
 delete-tomcat-webapps-{{ dir }}:
