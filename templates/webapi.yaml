@@ -37,6 +37,8 @@ actions:
     css: glyphicon glyphicon-import
     versionMenu: True
     steps:
+      - name: 关闭应用
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
       - name: 加固os
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' os.security"
       - name: 安装ntp服务
