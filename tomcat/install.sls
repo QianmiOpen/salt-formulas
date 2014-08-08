@@ -27,13 +27,15 @@ unpack-tomcat-tarball:
     - group: tomcat
     - require:
       - file: unpack-tomcat-tarball
-  alternatives.install:
-    - name: tomcat-home-link
+
+symlink-tomcat:
+  file.symlink:
+    - name: {{ tomcat.home }}/{{ tomcat.name }}
+    - target: {{ tomcat.home }}/{{ tomcat.versionPath }}
     - user: tomcat
     - group: tomcat
-    - link: {{ tomcat.home }}/{{ tomcat.name }}
-    - path: {{ tomcat.home }}/{{ tomcat.versionPath }}
-    - priority: 30
+    - require:
+      - cmd: unpack-tomcat-tarball
 
 {% for dir in ['docs', 'examples', 'host-manager', 'manager', 'ROOT'] %}
 delete-tomcat-webapps-{{ dir }}:
