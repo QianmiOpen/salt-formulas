@@ -43,10 +43,10 @@ symlink-tomcat:
     - require:
       - cmd: unpack-tomcat-tarball
 
-{% for dir in ['docs', 'examples', 'host-manager', 'manager', 'ROOT'] %}
-delete-tomcat-webapps-{{ dir }}:
+{% for dir in ['webapps', 'temp', 'LICENSE', 'NOTICE', 'RELEASE-NOTES', 'RUNNING.txt'] %}
+delete-tomcat-{{ dir }}:
   file.absent:
-    - name: {{ tomcat.appBase }}/{{ dir }}
+    - name: {{ tomcat.home }}/{{ tomcat.name }}/{{ dir }}
 {% endfor %}
 
 delete-tomcat-users.xml:
