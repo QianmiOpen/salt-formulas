@@ -1,6 +1,10 @@
 {% from 'tomcat/settings.sls' import tomcat with context %}
 {% from 'webapp/settings.sls' import webapp with context %}
 
+delete-tomcat-appbase:
+  file.absent:
+    - name: {{ tomcat.appBase }}
+
 download-war-file:
   file.managed:
     - name: {{ tomcat.appBase }}/{{ webapp.artifactId }}-{{ webapp.version }}.war
@@ -8,6 +12,9 @@ download-war-file:
     - source_hash: http://{{ webapp.fileSha1 }}
     - user: tomcat
     - group: tomcat
+    - makedirs: true
+    - require:
+      - file: delete-tomcat-appbase
 
 {% if webapp.unzip %}
 unzip-war-file:
