@@ -23,6 +23,8 @@ actions:
     css: glyphicon glyphicon-upload
     versionMenu: True
     steps:
+      - name: 记录任务开始状态
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-before-{{version}}}}'"
       - name: 关闭应用
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
       - name: 部署war包
@@ -31,6 +33,8 @@ actions:
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
+      - name: 记录任务结束状态
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-after-{{version}}}}'"
       - name: 启动应用
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.startup"
   - name: 安装应用
@@ -44,19 +48,23 @@ actions:
       - name: 安装java
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' java.install"
         seconds: 10
+      - name: mount log目录
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{nfsServer}}, projectName: {{mountDir}}}}'"
       - name: 安装tomcat
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.install"
         seconds: 6
+      - name: 记录任务开始状态
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-before-{{version}}}}'"
       - name: 关闭应用
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
-      - name: mount log目录
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{nfsServer}}, projectName: {{mountDir}}}}'"
       - name: 部署war包
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{groupId}}, artifactId: {{artifactId}}, version: {{version}}, repository: {{repository}}, unzip: {{unpacked}}}}'"
       - name: 配置文件准备
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
+      - name: 记录任务结束状态
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-after-{{version}}}}'"
       - name: 启动应用
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.startup"
   - name: 重启应用
