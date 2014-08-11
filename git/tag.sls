@@ -1,6 +1,7 @@
 {%- from 'git/settings.sls' import git with context %}
 
 include:
+  - tomcat.user
   - git.init
 
 git-delete:

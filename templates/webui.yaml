@@ -48,13 +48,13 @@ actions:
       - name: 安装java
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' java.install"
         seconds: 10
+      - name: 记录任务开始状态
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-before-{{version}}}}'"
       - name: 安装tomcat
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.install"
         seconds: 6
       - name: mount log目录
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{nfsServer}}, projectName: {{mountDir}}}}'"
-      - name: 记录任务开始状态
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-before-{{version}}}}'"
       - name: 关闭应用
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
       - name: 部署war包

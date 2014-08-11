@@ -1,17 +1,8 @@
 {%- from 'tomcat/settings.sls' import tomcat with context %}
 
-tomcat-user:
-  user.present:
-    - name: tomcat
-    - uid: 6666
-    - gid: 6666
-    - home: {{ tomcat.home }}
-    - shell: /bin/bash
-    - require:
-      - group: tomcat
-  group.present:
-    - name: tomcat
-    - gid: 6666
+include:
+  - tomcat.env
+  - tomcat.user
 
 unpack-tomcat-tarball:
   file.managed:
@@ -70,8 +61,6 @@ copy-env.conf:
     - marker_end: "# Bugzilla 37848"
     - content: CATALINA_OPTS=`sed 's/"//g' $CATALINA_BASE/conf/env.conf |awk '/^[^#]/'| tr "\n" ' '`
 
-include:
-  - tomcat.env
 
 # move to os.security
 # limits_conf:
