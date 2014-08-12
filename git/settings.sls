@@ -15,7 +15,7 @@
 {% do git.update({key: p.get(key, value)}) %}
 {% endfor %}
 
-{% set tagName    = p.get('tagName', git.taskId ~ '-' ~ git.stage ~ '-' git.version) %}
+{% set tagName    = p.get('tagName', git.taskId ~ '-' ~ git.stage ~ '-' ~ git.version) %}
 
 {%- do git.update({'tagName'    : tagName,
                    }) %}
