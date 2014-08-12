@@ -24,7 +24,7 @@ actions:
     versionMenu: True
     steps:
       - name: 记录任务开始状态
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-before-{{version}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version}}}}'"
       - name: 关闭应用
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
       - name: 部署war包
@@ -34,7 +34,7 @@ actions:
       - name: 拷贝配置文件
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
       - name: 记录任务结束状态
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-after-{{version}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version}}}}'"
       - name: 启动应用
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.startup"
   - name: 安装应用
@@ -49,7 +49,7 @@ actions:
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' java.install"
         seconds: 10
       - name: 记录任务开始状态
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-before-{{version}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version}}}}'"
       - name: 安装tomcat
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.install"
         seconds: 6
@@ -64,7 +64,7 @@ actions:
       - name: 拷贝配置文件
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
       - name: 记录任务结束状态
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {tagName: {{taskId}}-after-{{version}}}}'"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version}}}}'"
       - name: 启动应用
         sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.startup"
   - name: 重启应用
