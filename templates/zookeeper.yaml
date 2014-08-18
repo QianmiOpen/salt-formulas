@@ -6,27 +6,27 @@ actions:
     css: glyphicon glyphicon-import
     steps:
       - name: 加固os
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' os.security"
+        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' os.security"
       - name: 安装ntp服务
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' ntp"
+        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' ntp"
       - name: 编译安装zookeeper
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' zookeeper"
+        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' zookeeper"
 
 
   - name: 重启zookeeper
     css: glyphicon glyphicon-repeat
     steps:
       - name: 重启zookeeper
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' zookeeper.restart"
+        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' zookeeper.restart"
 
   - name: 启动应用
     css: glyphicon glyphicon-play
     steps:
       - name: 启动zookeeper应用
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' zookeeper.start"
+        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' zookeeper.start"
 
   - name: 停止应用
     css: glyphicon glyphicon-stop
     steps:
       - name: 关闭应用
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' zookeeper.stop"
+        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' zookeeper.stop"
