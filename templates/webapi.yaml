@@ -10,7 +10,7 @@ name: webapi
 remark: 用于dubbo项目的自动部署，即api类项目
 aliass:
   - aliasName: hostIps
-    aliasValue: "zookeeperurl: {{p.hosts().map(function(host){return host.ip()}).join(",")}}"
+    aliasValue: "zookeeperurl: {{p.hosts().map(function(host){return host.ip()}).join(',')}}"
     aliasDesc: "获取本项目当前环境机器列表，以','分割"
 items:
   - itemName: t.groupId
@@ -87,4 +87,10 @@ actions:
     css: glyphicon glyphicon-stop
     steps:
       - name: 关闭应用
+        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.shutdown"
+  - name: jstack
+    css: glyphicon glyphicon-notes
+    actionType: host
+    steps:
+      - name: jstack
         sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.shutdown"
