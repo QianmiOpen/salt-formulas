@@ -89,7 +89,7 @@ actions:
       - name: 关闭应用
         sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.shutdown"
   - name: jstack
-    css: glyphicon glyphicon-notes
+    css: glyphicon glyphicon-camera
     actionType: host
     steps:
       - name: jstack
