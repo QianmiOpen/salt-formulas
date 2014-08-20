@@ -93,4 +93,4 @@ actions:
     actionType: host
     steps:
       - name: jstack
-        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' tomcat.shutdown"
+        sls: "salt {{machine}} state.sls saltenv='{{scriptVersion}}' webapp.jstack"
