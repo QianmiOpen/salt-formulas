@@ -3,7 +3,7 @@
 # remove file if pid not exist
 remove-tomcat-pid-file:
   cmd.run:
-    - name: rm {{ tomcat.tomcatPid }}
+    - name: rm -f {{ tomcat.tomcatPid }}
     - user: tomcat
     - unless: 'ps -p `cat {{ tomcat.tomcatPid }}`'
 
