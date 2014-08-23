@@ -15,12 +15,7 @@
 {% do webapp.update({key: p.get(key, value)}) %}
 {% endfor %}
 
-{% if webapp.version|replace("^.*(-SNAPSHOT)$", "$1") == "-SNAPSHOT" %}
-{% set fileUrl  = p.get('fileUrl', webapp.repoBase + 'r=snapshots&g=' + webapp.groupId + '&a=' + webapp.artifactId + '&v=' + webapp.version + '&e=' + webapp.fileType) %}
-{% else %}
-{% set fileUrl  = p.get('fileUrl', webapp.repoBase + 'r=releases&g=' + webapp.groupId + '&a=' + webapp.artifactId + '&v=' + webapp.version + '&e=' + webapp.fileType) %}
-{% endif %}
-
+{% set fileUrl  = p.get('fileUrl', webapp.repoBase + 'r=public&g=' + webapp.groupId + '&a=' + webapp.artifactId + '&v=' + webapp.version + '&e=' + webapp.fileType) %}
 {% set fileSha1 = p.get('fileSha1', fileUrl + '.sha1') %}
 
 {%- do webapp.update({'fileUrl'    : fileUrl,
