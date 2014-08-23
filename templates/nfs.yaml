@@ -1,6 +1,6 @@
 name: nfs
 remark: 用于nfs项目的自动部署
 items:
-  - itemName: virtualIp
+  - itemName: t_virtualIp
     itemDesc: nfs的虚ip
     itemType: var
