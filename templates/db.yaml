@@ -1,0 +1,6 @@
+name: db
+remark: 用于db项目的自动部署
+items:
+  - itemName: t_virtualIp
+    itemDesc: db的虚ip
+    itemType: var
