@@ -1,21 +1,21 @@
-#"nfsServer" -> nfsServer
-#"repository" -> repository
-#"taskId" -> taskId
-#"projectName" -> projectName
-#"machine" -> machine
-#"syndic" -> syndic
-#"version" -> version
-
 name: webui
 remark: 用于web项目的自动部署，即前端服务类项目
+dependences: "LogServer, ZookeeperRegister"
+aliass:
+  - aliasName: LogServerVIp
+    aliasValue: "dependence.LogServer.attrs.t_virtualIp"
+    aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
+  - aliasName: zookeeperRegisterIps
+    aliasValue: "dependence.ZookeeperRegister.hosts.map(function(host){return host.ip}).join(',')"
+    aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
 items:
-  - itemName: t.groupId
+  - itemName: t_groupId
     itemDesc: groupId
-  - itemName: t.artifactId
+  - itemName: t_artifactId
     itemDesc: artifactId
-  - itemName: t.mountDir
+  - itemName: t_mountDir
     itemDesc: 日志绑定目录
-  - itemName: t.unpacked
+  - itemName: t_unpacked
     itemDesc: 自动解压
     default: 'False'
 actions:
@@ -24,63 +24,69 @@ actions:
     versionMenu: True
     steps:
       - name: 记录任务开始状态
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' git.tag pillar='{git: {taskId: {{t.taskId}}, stage: before, version: {{t.version}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
       - name: 关闭应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.shutdown"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
       - name: 部署war包
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{t.groupId}}, artifactId: {{t.artifactId}}, version: {{t.version}}, repository: {{t.repository}}, unzip: {{t.unpacked}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: {{attrs.groupId.t_unpacked}}}}'"
       - name: 配置文件准备
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{t.confFileName}}, id: {{t.taskId}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
       - name: 记录任务结束状态
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' git.tag pillar='{git: {taskId: {{t.taskId}}, stage: after, version: {{t.version}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       - name: 启动应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.startup"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
   - name: 安装应用
     css: glyphicon glyphicon-import
     versionMenu: True
     steps:
       - name: 加固os
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' os.security"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
       - name: 安装ntp服务
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' ntp"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
       - name: 安装java
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' java.install"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
         seconds: 10
       - name: 记录任务开始状态
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' git.tag pillar='{git: {taskId: {{t.taskId}}, stage: before, version: {{t.version}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
       - name: 安装tomcat
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.install"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install"
         seconds: 6
       - name: mount log目录
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{t.nfsServer}}, projectName: {{t.mountDir}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{alias.LogServerVIp}}, projectName: {{attrs.t_mountDir}}}}'"
       - name: 关闭应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.shutdown"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
       - name: 部署war包
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{t.groupId}}, artifactId: {{t.artifactId}}, version: {{t.version}}, repository: {{t.repository}}, unzip: {{t.unpacked}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: {{attrs.t_unpacked}}}}'"
       - name: 配置文件准备
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{t.confFileName}}, id: {{t.taskId}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}}}'"
       - name: 记录任务结束状态
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' git.tag pillar='{git: {taskId: {{t.taskId}}, stage: after, version: {{t.version}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       - name: 启动应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.startup"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
   - name: 重启应用
     css: glyphicon glyphicon-repeat
     steps:
       - name: 关闭应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.shutdown"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
       - name: 启动应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.startup"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
   - name: 启动应用
     css: glyphicon glyphicon-play
     steps:
       - name: 启动应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.startup"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
   - name: 停止应用
     css: glyphicon glyphicon-stop
     steps:
       - name: 关闭应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' tomcat.shutdown"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+  - name: jstack
+    css: glyphicon glyphicon-camera
+    actionType: host
+    steps:
+      - name: jstack
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.jstack"

@@ -1,20 +1,12 @@
-#"nfsServer" -> nfsServer
-#"repository" -> repository
-#"taskId" -> taskId
-#"projectName" -> projectName
-#"machine" -> machine
-#"syndic" -> syndic
-#"version" -> version
-
 name: redis
 remark: 用于redis项目的自动部署
 items:
-  - itemName: t.virtual_router_id
+  - itemName: t_virtualRouterId
     itemDesc: 虚拟路由ID
-  - itemName: t.isMaster
+  - itemName: t_isMaster
     itemDesc: 是否主机
     itemType: var
-  - itemName: t.virtual_ipaddress
+  - itemName: t_virtualIp
     itemDesc: 虚拟IP地址
     itemType: var
 actions:
@@ -22,28 +14,28 @@ actions:
     css: glyphicon glyphicon-import
     steps:
       - name: 加固os
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' os.security"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
       - name: 安装ntp服务
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' ntp"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
       - name: 编译安装redis
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' redis pillar='{keepalived: {isMaster: {{t.isMaster}}, virtual_router_id: {{t.virtual_router_id}}, virtual_ipaddress: {{t.virtual_ipaddress}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis pillar='{keepalived: {isMaster: {{attrs.t_isMaster}}, virtual_router_id: {{attrs.t_virtualRouterId}}, virtual_ipaddress: {{attrs.t_virtualIp}}}}'"
 
 
   - name: 重启redis
     css: glyphicon glyphicon-repeat
     steps:
       - name: 重启redis
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' redis.restart"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis.restart"
 
   - name: 启动应用
     css: glyphicon glyphicon-play
     steps:
       - name: 启动redis应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' redis.start"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis.start"
 
   - name: 停止应用
     css: glyphicon glyphicon-stop
     steps:
       - name: 关闭应用
-        sls: "salt {{t.machine}} state.sls saltenv='{{t.scriptVersion}}' redis.stop"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis.stop"
 
