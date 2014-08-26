@@ -44,11 +44,6 @@ symlink-war-file:
     - group: tomcat
 {% endif %}
 
-
-delete-work-dir:
-  file.absent:
-    - name: {{ tomcat.home }}/{{ tomcat.name }}/work
-
 include:
   - tomcat.vhosts
 
