@@ -1,0 +1,34 @@
+name: memcached
+remark: 用于memcached项目的自动部署
+items:
+  - itemName: t_defaultPort
+    itemDesc: 默认端口
+    default: '11211'
+actions:
+  - name: 部署memcached
+    css: glyphicon glyphicon-import
+    steps:
+      - name: 加固os
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+      - name: 安装ntp服务
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      - name: 编译安装memcached
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' memcached"
+
+  - name: 重启memcached
+    css: glyphicon glyphicon-repeat
+    steps:
+      - name: 重启memcached
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' memcached.restart"
+
+  - name: 启动应用
+    css: glyphicon glyphicon-play
+    steps:
+      - name: 启动memcached应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' memcached.start"
+
+  - name: 停止应用
+    css: glyphicon glyphicon-stop
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' memcached.stop"
