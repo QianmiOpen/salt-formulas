@@ -1,6 +1,9 @@
 name: zookeeper
 remark: 用于zookeeper项目的自动部署
-
+items:
+  - itemName: t_defaultPort
+    itemDesc: 默认端口
+    default: '2181'
 actions:
   - name: 部署zookeeper
     css: glyphicon glyphicon-import
