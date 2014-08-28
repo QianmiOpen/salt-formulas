@@ -12,6 +12,8 @@ actions:
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
       - name: 安装ntp服务
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      - name: 安装java
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
       - name: 编译安装activemq
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' activemq"
 
