@@ -3,5 +3,5 @@
 
 remove-tomcat-pid-file:
   cmd.run:
-    - name: jstack `cat {{ tomcat.tomcatPid }}`
+    - name: jstack -F `cat {{ tomcat.tomcatPid }}`
     - user: tomcat
