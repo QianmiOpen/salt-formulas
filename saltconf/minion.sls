@@ -1,3 +1,12 @@
+salt-minion:
+  pkg:
+    - installed
+    - version: 2014.1.10-4.el6
+  service.running:
+    - enable: True
+    - require:
+      - pkg: salt-minion
+
 /etc/salt/minion:
   file.managed:
     - source: salt://saltconf/files/minion
