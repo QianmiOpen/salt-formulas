@@ -34,7 +34,8 @@ symlink-tomcat:
     - require:
       - cmd: unpack-tomcat-tarball
 
-{% for dir in ['webapps', 'temp', 'LICENSE', 'NOTICE', 'RELEASE-NOTES', 'RUNNING.txt'] %}
+# temp 目录不能删除，部分jdk功能中，需要temp目录存放临时文件。
+{% for dir in ['webapps', 'LICENSE', 'NOTICE', 'RELEASE-NOTES', 'RUNNING.txt'] %}
 delete-tomcat-{{ dir }}:
   file.absent:
     - name: {{ tomcat.home }}/{{ tomcat.name }}/{{ dir }}
