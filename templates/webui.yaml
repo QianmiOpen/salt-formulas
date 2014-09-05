@@ -45,9 +45,9 @@ actions:
       - name: 启动应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
       - name: 刷新tengine配置
-        sls: "salt -L {{TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}}}'"
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}}}'"
       - name: 重新加载gengine配置
-        sls: "salt -L {{TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
   - name: 安装应用
     css: glyphicon glyphicon-import
     versionMenu: True
@@ -79,9 +79,9 @@ actions:
       - name: 启动应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
       - name: 刷新tengine配置
-        sls: "salt -L {{TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}}}'"
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}}}'"
       - name: 重新加载gengine配置
-        sls: "salt -L {{TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
   - name: 重启应用
     css: glyphicon glyphicon-repeat
     steps:
