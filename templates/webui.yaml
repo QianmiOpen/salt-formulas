@@ -1,6 +1,6 @@
 name: webui
 remark: 用于web项目的自动部署，即前端服务类项目
-dependences: "LogServer, ZookeeperRegister"
+dependences: "LogServer, ZookeeperRegister, ForestTengine"
 aliass:
   - aliasName: LogServerVIp
     aliasValue: "dependence.LogServer.attrs.t_virtualIp"
@@ -8,11 +8,18 @@ aliass:
   - aliasName: ZookeeperRegisterIps
     aliasValue: "dependence.ZookeeperRegister.hosts.map(function(host){return host.ip + ':' + dependence.ZookeeperRegister.attrs.t_defaultPort}).join(',')"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
+  - aliasName: TengineHostNames
+    aliasValue: "dependence.ForestTengine.hosts.map(function(host){return host.name}).join(',')"
+    aliasDesc: "获取ForestTengine项目当前环境主机名称列表，以','分割"
 items:
   - itemName: t_groupId
     itemDesc: groupId
   - itemName: t_artifactId
     itemDesc: artifactId
+  - itemName: t_domain
+    itemDesc: 域名
+  - itemName: t_serverNameList
+    itemDesc: 代理域名列表
   - itemName: t_mountDir
     itemDesc: 日志绑定目录
   - itemName: t_unpacked
@@ -37,6 +44,10 @@ actions:
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       - name: 启动应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+      - name: 刷新tengine配置
+        sls: "salt -L {{TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: {{attrs.t_serverNameList}}, ip: {{cHost.ip}}}}'"
+      - name: 重新加载gengine配置
+        sls: "salt -L {{TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
   - name: 安装应用
     css: glyphicon glyphicon-import
     versionMenu: True
@@ -67,6 +78,10 @@ actions:
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       - name: 启动应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+      - name: 刷新tengine配置
+        sls: "salt -L {{TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: {{attrs.t_serverNameList}}, ip: {{cHost.ip}}}}'"
+      - name: 重新加载gengine配置
+        sls: "salt -L {{TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
   - name: 重启应用
     css: glyphicon glyphicon-repeat
     steps:
