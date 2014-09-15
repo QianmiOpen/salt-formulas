@@ -1,5 +1,9 @@
 {% from 'spirit/settings.sls' import spirit with context %}
 
+GitPython:
+  pkg:
+    - installed
+
 salt-master:
   pkg:
     - installed
@@ -8,6 +12,7 @@ salt-master:
     - enable: True
     - require:
       - pkg: salt-master
+      - pkg: GitPython
 
 /etc/salt/master:
   file.managed:
