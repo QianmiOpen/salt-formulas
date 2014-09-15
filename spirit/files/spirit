@@ -1,0 +1,2 @@
+java -Dconfig.file=./application.conf  -jar ./spirit.jar &
+echo $! > /root/spirit.pid
