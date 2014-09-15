@@ -3,7 +3,9 @@
 {% set spirit = {} %}
 {%- do spirit.update({'prefix'        : 'spirit_',
                       'version'       : '2.10-1.3.1',
-                      'suffix'        : '-one-jar.jar'
+                      'suffix'        : '-one-jar.jar',
+                      'home'          : '/root',
+                      'pid'           : 'spirit.pid'
                       }) %}
 
 {% for key, value in spirit.iteritems() %}
