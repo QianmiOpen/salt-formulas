@@ -35,6 +35,7 @@ restart-master:
     - group: root
     - mode: 640
     - template: jinja
+    - makedirs: True
     - context:
       ipAddress: {{ salt['network.interfaces']()['eth0']['inet'][0]['address'] }}
 
@@ -44,9 +45,7 @@ restart-master:
     - user: root
     - group: root
     - mode: 640
-    - template: jinja
-    - context:
-      ipAddress: {{ salt['network.interfaces']()['eth0']['inet'][0]['address'] }}
+    - makedirs: True
 
 /etc/init.d/spiritd:
   file.managed:
