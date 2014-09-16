@@ -1,8 +1,6 @@
 {% from 'spirit/settings.sls' import spirit with context %}
 
-spirit_startup:
+spirit-start:
   cmd.run:
-    - name: sh {{ spirit.home }}/spirit
+    - name: service spiritd start
     - user: root
-    - cwd: /root
-    - unless: 'ps -p `cat {{ spirit.home }}/{{ spirit.pid }}`'

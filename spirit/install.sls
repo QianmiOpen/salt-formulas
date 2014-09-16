@@ -28,7 +28,7 @@ restart-master:
     - watch:
       - file: /etc/salt/master
 
-/root/application.conf:
+{{ spirit.home }}/application.conf:
   file.managed:
     - source: salt://spirit/files/application.conf
     - user: root
@@ -38,7 +38,7 @@ restart-master:
     - context:
       ipAddress: {{ salt['network.interfaces']()['eth0']['inet'][0]['address'] }}
 
-/root/spirit.jar:
+{{ spirit.home }}/spirit.jar:
   file.managed:
     - source: salt://spirit/pkgs/{{spirit.package}}
     - user: root
@@ -48,9 +48,12 @@ restart-master:
     - context:
       ipAddress: {{ salt['network.interfaces']()['eth0']['inet'][0]['address'] }}
 
-/root/spirit:
+/etc/init.d/spiritd:
   file.managed:
-    - source: salt://spirit/files/spirit
+    - mode: 755
     - user: root
     - group: root
-    - mode: 700
+    - source: salt://spirit/files/spiritd
+    - template: jinja
+    - context:
+      home: {{ spirit.home }}

@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+# Simple Spirit init.d script conceived to work on Linux systems
+# as it does use of the /proc filesystem.
+
+EXEC=/root/spirit
+
+SPIRITHOME={{ home }}
+
+PIDFILE=/var/run/spirit/spirit.pid
+
+case "$1" in
+    start)
+        if [ -f $PIDFILE ]
+        then
+                echo "$PIDFILE exists, process is already running or crashed"
+        else
+                echo "Starting Spirit server..."
+                java -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar &
+                echo $! > $PIDFILE
+                $EXEC
+        fi
+        ;;
+    stop)
+        if [ ! -f $PIDFILE ]
+        then
+                echo "$PIDFILE does not exist, process is not running"
+        else
+                PID=$(cat $PIDFILE)
+                echo "Stopping ..."
+                kill -9 $PID
+                while [ -x /proc/${PID} ]
+                do
+                    echo "Waiting for Spirit to shutdown ..."
+                    sleep 1
+                done
+                echo "Spirit stopped"
+        fi
+        ;;
+    *)
+        echo "Please use start or stop as first argument"
+        ;;
+esac

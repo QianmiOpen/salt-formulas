@@ -1,8 +1,6 @@
 {% from 'spirit/settings.sls' import spirit with context %}
 
-spirit_shutdown:
+spirit-shutdown:
   cmd.run:
-    - name: kill `cat {{ spirit.home }}/{{ spirit.pid }}`
+    - name: service spiritd stop
     - user: root
-    - cwd: /root
-    - onlyif: 'test -e {{ spirit.home }}/{{ spirit.pid }}'
