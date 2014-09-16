@@ -1,4 +1,5 @@
 {% from 'spirit/settings.sls' import spirit with context %}
+{% from 'java/settings.sls' import java with context %}
 
 GitPython:
   pkg:
@@ -56,3 +57,4 @@ restart-master:
     - template: jinja
     - context:
       home: {{ spirit.home }}
+      java: {{ java.home }}/bin/java

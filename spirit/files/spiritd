@@ -13,9 +13,9 @@ case "$1" in
         then
                 echo "$PIDFILE exists, process is already running or crashed"
         else
+                mkdir -p ${PIDFILE%/*}
                 echo "Starting Spirit server..."
-                /etc/profile.d/java.sh
-                java -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar &
+                {{java}} -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar &
                 echo $! > $PIDFILE
         fi
         ;;
