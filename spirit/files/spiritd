@@ -7,34 +7,46 @@ SPIRITHOME={{ home }}
 
 PIDFILE=/var/run/spirit/spirit.pid
 
+function startSpirit {
+    echo "Starting Spirit server..."
+    {{java}} -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar &
+    echo $! > $PIDFILE
+    echo "Spirit started."
+}
+
 case "$1" in
     start)
         if [ -f $PIDFILE ]
         then
-                echo "$PIDFILE exists, process is already running or crashed"
+            PID=$(cat $PIDFILE)
+            if [ -x /proc/${PID} ]
+            then
+                echo "$PIDFILE exists, process is already running."
+            else
+                echo "$PIDFILE exists, process is crashed."
+                rm -f $PIDFILE
+                startSpirit   
+            fi
         else
-                mkdir -p ${PIDFILE%/*}
-                echo "Starting Spirit server..."
-                {{java}} -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar &
-                echo $! > $PIDFILE
-                echo "Spirit started."
+            mkdir -p ${PIDFILE%/*}
+            startSpirit
         fi
         ;;
     stop)
         if [ ! -f $PIDFILE ]
         then
-                echo "$PIDFILE does not exist, process is not running"
+            echo "$PIDFILE does not exist, process is not running"
         else
-                PID=$(cat $PIDFILE)
-                echo "Stopping ..."
-                kill -9 $PID
-                while [ -x /proc/${PID} ]
-                do
-                    echo "Waiting for Spirit to shutdown ..."
-                    sleep 1
-                done
-                rm -f $PIDFILE
-                echo "Spirit stopped."
+            PID=$(cat $PIDFILE)
+            echo "Stopping ..."
+            kill -9 $PID
+            while [ -x /proc/${PID} ]
+            do
+                echo "Waiting for Spirit to shutdown ..."
+                sleep 1
+            done
+            rm -f $PIDFILE
+            echo "Spirit stopped."
         fi
         ;;
     *)
