@@ -9,7 +9,7 @@ PIDFILE=/var/run/spirit/spirit.pid
 
 function startSpirit {
     echo "Starting Spirit server..."
-    {{java}} -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar > $SPIRITHOME/app.out 2> $SPIRITHOME/app.err < /dev/null &
+    {{java}} -Dlogback.configurationFile=$SPIRITHOME/logback.xml -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar > $SPIRITHOME/app.out 2> $SPIRITHOME/app.err < /dev/null &
     echo $! > $PIDFILE
     echo "Spirit started."
 }
@@ -25,7 +25,7 @@ case "$1" in
             else
                 echo "$PIDFILE exists, process is crashed."
                 rm -f $PIDFILE
-                startSpirit   
+                startSpirit
             fi
         else
             mkdir -p ${PIDFILE%/*}

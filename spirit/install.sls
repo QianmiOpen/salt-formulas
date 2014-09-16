@@ -58,3 +58,13 @@ restart-master:
     - context:
       home: {{ spirit.home }}
       java: {{ java.home }}/bin/java
+
+{{ spirit.home }}/logback.xml:
+  file.managed:
+    - mode: 755
+    - user: root
+    - group: root
+    - source: salt://spirit/files/logback.xml
+    - template: jinja
+    - context:
+      home: {{ spirit.home }}
