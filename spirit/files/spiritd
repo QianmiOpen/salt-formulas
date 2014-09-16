@@ -17,6 +17,7 @@ case "$1" in
                 echo "Starting Spirit server..."
                 {{java}} -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar &
                 echo $! > $PIDFILE
+                echo "Spirit started."
         fi
         ;;
     stop)
@@ -32,7 +33,8 @@ case "$1" in
                     echo "Waiting for Spirit to shutdown ..."
                     sleep 1
                 done
-                echo "Spirit stopped"
+                rm -f $PIDFILE
+                echo "Spirit stopped."
         fi
         ;;
     *)
