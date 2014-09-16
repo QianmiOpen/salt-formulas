@@ -9,7 +9,7 @@ PIDFILE=/var/run/spirit/spirit.pid
 
 function startSpirit {
     echo "Starting Spirit server..."
-    {{java}} -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar &
+    {{java}} -Dconfig.file=$SPIRITHOME/application.conf  -jar $SPIRITHOME/spirit.jar > $SPIRITHOME/app.out 2> $SPIRITHOME/app.err < /dev/null &
     echo $! > $PIDFILE
     echo "Spirit started."
 }
