@@ -71,5 +71,5 @@ restart-master:
 
 fiirewall:
   cmd.run:
-    - name: lokkit -p 22:tcp -p 4505:tcp -p 4506:tcp -p 2552:tcp -p 2552:udp -p 2551:tcp
+    - name: lokkit -p 22:tcp -p 4505:tcp -p 4506:tcp -p 2552:tcp -p 2551:udp -p 2551:tcp
     - user: root
