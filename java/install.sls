@@ -13,7 +13,7 @@ unpack-jdk-tarball:
   file.managed:
     - name: {{ java.installPath }}/{{ java.package }}
     - source: salt://java/pkgs/{{ java.package }}
-    # - env: base
+    - saltenv: base
   cmd.run:
     - name: tar xf {{ java.installPath }}/{{ java.package }} -C {{ java.installPath }}
     - require:
