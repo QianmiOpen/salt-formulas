@@ -17,3 +17,8 @@ tomcat
 - 组件根目录用于存放执行动作对应的sls文件。
 - 需要上传到minion主机中的文件统一存放到组件的files文件中
 - 组件需要用到的安装包，如果需要从外网下载的，考虑到网速，统一放到组件的pkgs（参见：<http://git.dev.ofpay.com/TDA/salt-pkgs>）目录中。
+
+在进行file managed时，使用saltenv从base环境获取对应的包。
+以java的安装为例子：
+    - source: salt://java/pkgs/{{ java.package }}
+    - saltenv: base
