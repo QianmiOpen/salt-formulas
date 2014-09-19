@@ -4,6 +4,7 @@ get-activemq-package:
   file.managed:
     - name: /root/{{ activemq.activemqVersion }}{{ activemq.zipType }}
     - source: salt://activemq/pkgs/{{ activemq.activemqVersion }}{{ activemq.zipType }}
+    - saltenv: base
   cmd.run:
     - name: tar -zxf /root/{{ activemq.activemqVersion }}{{ activemq.zipType }} -C /root 
     - watch:

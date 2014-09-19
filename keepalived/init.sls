@@ -4,6 +4,7 @@ get-keepalived-package:
   file.managed:
     - name: /root/{{ keepalived.keepalivedVersion }}{{ keepalived.zipType }}
     - source: salt://keepalived/pkgs/{{ keepalived.keepalivedVersion }}{{ keepalived.zipType }}
+    - saltenv: base
   cmd.run:
     - name: tar -zxf /root/{{ keepalived.keepalivedVersion }}{{ keepalived.zipType }} -C /root 
     - watch:

@@ -43,6 +43,7 @@ restart-master:
 {{ spirit.home }}/spirit.jar:
   file.managed:
     - source: salt://spirit/pkgs/{{spirit.package}}
+    - saltenv: base
     - user: root
     - group: root
     - mode: 640

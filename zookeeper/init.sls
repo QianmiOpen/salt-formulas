@@ -4,6 +4,7 @@ get-zookeeper-package:
   file.managed:
     - name: /{{ zookeeper.zookeeperVersion }}{{ zookeeper.zipType }}
     - source: salt://zookeeper/pkgs/{{ zookeeper.zookeeperVersion }}{{ zookeeper.zipType }}
+    - saltenv: base
   cmd.run:
     - name: tar -zxf /{{ zookeeper.zookeeperVersion }}{{ zookeeper.zipType }} -C / 
     - watch:

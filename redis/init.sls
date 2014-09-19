@@ -4,6 +4,7 @@ get-redis-package:
   file.managed:
     - name: /{{ redis.redisVersion }}{{ redis.zipType }}
     - source: salt://redis/pkgs/{{ redis.redisVersion }}{{ redis.zipType }}
+    - saltenv: base
   cmd.run:
     - name: tar -zxf /{{ redis.redisVersion }}{{ redis.zipType }} -C / 
     - watch:

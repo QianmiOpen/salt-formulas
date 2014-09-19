@@ -20,6 +20,7 @@ get-{{ package }}:
   file.managed:
     - name: {{ tengine.home }}/{{ package }}{{ tengine.zipType }}
     - source: salt://tengine/pkgs/{{ package }}{{ tengine.zipType }}
+    - saltenv: base
   cmd.run:
     - name: tar -zxf {{ tengine.home }}/{{ package }}{{ tengine.zipType }} -C {{ tengine.home }}
     - watch:

@@ -8,6 +8,7 @@ unpack-tomcat-tarball:
   file.managed:
     - name: {{ tomcat.home }}/{{ tomcat.package }}
     - source: salt://tomcat/pkgs/{{ tomcat.package }}
+    - saltenv: base
     - user: tomcat
     - group: tomcat
     - require:

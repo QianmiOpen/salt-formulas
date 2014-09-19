@@ -4,6 +4,7 @@ get-memcached-package:
   file.managed:
     - name: /root/{{ memcached.memcachedVersion }}{{ memcached.zipType }}
     - source: salt://memcached/pkgs/{{ memcached.memcachedVersion }}{{ memcached.zipType }}
+    - saltenv: base
   cmd.run:
     - name: tar -zxf /root/{{ memcached.memcachedVersion }}{{ memcached.zipType }} -C /root 
     - watch:
