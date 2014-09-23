@@ -69,6 +69,7 @@ actions:
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
   - name: 重启应用
     css: glyphicon glyphicon-repeat
+    versionMenu: True
     steps:
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
