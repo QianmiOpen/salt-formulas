@@ -11,6 +11,12 @@ aliass:
   - aliasName: TengineHostNames
     aliasValue: "dependence.ForestTengine.hosts.map(function(host){return host.name}).join(',')"
     aliasDesc: "获取ForestTengine项目当前环境主机名称列表，以','分割"
+  - aliasName: CATALINA_HOME
+    aliasValue: "'/home/tomcat/tomcat'"
+    aliasDesc: "获取CATALINA_HOME"
+  - aliasName: HOME
+    aliasValue: "'/home/tomcat'"
+    aliasDesc: "获取HOME"
 items:
   - itemName: t_groupId
     itemDesc: groupId
