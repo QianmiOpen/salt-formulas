@@ -21,6 +21,9 @@ items:
     itemDesc: artifactId
   - itemName: t_mountDir
     itemDesc: 日志绑定目录
+  - itemName: t_mountRootDir
+    itemDesc: 日志绑定根目录
+    default: '/oflogs'
   - itemName: t_unpacked
     itemDesc: 自动解压
     default: 'False'
