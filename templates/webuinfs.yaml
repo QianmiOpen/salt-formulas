@@ -35,9 +35,11 @@ items:
     itemDesc: 自动解压
     default: 'True'
   - itemName: t_nfsDir
-    itemDesc: 远端nfs路径
+    itemDesc: 建站远端nfs路径
+    itemType: var
   - itemName: t_serverDir
     itemDesc: 建站目录
+    itemType: var
 actions:
   - name: 升级应用
     css: glyphicon glyphicon-upload
