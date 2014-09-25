@@ -1,4 +1,4 @@
-{%- from 'redis/settings.sls' import redis with context %}
+{%- from 'redis/map.jinja' import redis with context %}
 
 get-redis-package:
   file.managed:

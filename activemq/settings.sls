@@ -3,7 +3,8 @@
 {% set activemq = {} %}
 {%- do activemq.update({'home'             : '/activemq',
                      'activemqVersion'     : 'apache-activemq-5.9.0',
-                     'zipType'          : '.tar.gz',
+                     'zipType'             : '.tar.gz',
+                     'openwire'            : '61616',
                      'installPath'      : '/root/apache-activemq-5.9.0'
                     }) %}
 

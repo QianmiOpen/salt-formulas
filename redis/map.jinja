@@ -1,10 +1,14 @@
 {% set p  = salt['pillar.get']('redis', {}) %}
 
 {% set redis = {} %}
-{%- do redis.update({'prot'           : '6379',
+{%- do redis.update({'port'           : '6379',
                      'bind'           : '127.0.0.1',
-                     'loglevel'       : 'notice'
-                      }) %}
+                     'loglevel'       : 'notice',
+                     'home'             : '/redis',
+                     'redisVersion'     : 'redis-2.8.13',
+                     'zipType'          : '.tar.gz',
+                     'installPath'      : '/usr/local/bin',
+                     'databases'      : '500'}) %}
 
 {% for key, value in redis.iteritems() %}
 {% do redis.update({key: p.get(key, value)}) %}
