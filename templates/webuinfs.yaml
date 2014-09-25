@@ -56,7 +56,7 @@ actions:
       - name: 拷贝配置文件
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
       - name: mount建站目录
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}}}\"'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}\"}}'"
       # - name: 记录任务结束状态
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       # - name: 启动应用
@@ -92,7 +92,7 @@ actions:
       - name: 拷贝配置文件
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
       - name: mount建站目录
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}}}\"'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}\"}}'"
       # - name: 记录任务结束状态
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       # - name: 启动应用
@@ -112,7 +112,7 @@ actions:
       - name: 拷贝配置文件
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
       - name: mount建站目录
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}}}\"'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}\"}}'"
       - name: 启动应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
   - name: 启动应用
