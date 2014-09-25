@@ -1,0 +1,131 @@
+name: webuinfs
+remark: 用于web项目的自动部署，即前端服务类项目，自动绑定nfs
+dependences: "LogServer, ZookeeperRegister, ForestTengine"
+aliass:
+  - aliasName: LogServerVIp
+    aliasValue: "dependence.LogServer.attrs.t_virtualIp"
+    aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
+  - aliasName: ZookeeperRegisterIps
+    aliasValue: "dependence.ZookeeperRegister.hosts.map(function(host){return host.ip + ':' + dependence.ZookeeperRegister.attrs.t_defaultPort}).join(',')"
+    aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
+  - aliasName: TengineHostNames
+    aliasValue: "dependence.ForestTengine.hosts.map(function(host){return host.name}).join(',')"
+    aliasDesc: "获取ForestTengine项目当前环境主机名称列表，以','分割"
+  - aliasName: CATALINA_HOME
+    aliasValue: "'/home/tomcat/tomcat'"
+    aliasDesc: "获取CATALINA_HOME"
+  - aliasName: HOME
+    aliasValue: "'/home/tomcat'"
+    aliasDesc: "获取HOME"
+items:
+  - itemName: t_groupId
+    itemDesc: groupId
+  - itemName: t_artifactId
+    itemDesc: artifactId
+  - itemName: t_domain
+    itemDesc: 域名
+  - itemName: t_serverNameList
+    itemDesc: 代理域名列表
+  - itemName: t_mountDir
+    itemDesc: 日志绑定目录
+  - itemName: t_mountRootDir
+    itemDesc: 日志绑定根目录
+    default: '/oflogs'
+  - itemName: t_unpacked
+    itemDesc: 自动解压
+    default: 'True'
+  - itemName: t_nfsDir
+    itemDesc: 远端nfs路径
+  - itemName: t_serverDir
+    itemDesc: 建站目录
+actions:
+  - name: 升级应用
+    css: glyphicon glyphicon-upload
+    versionMenu: True
+    steps:
+      # - name: 记录任务开始状态
+      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+      - name: 部署war包
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: {{attrs.t_unpacked}}}}'"
+      - name: 配置文件准备
+        sls: "bugatti copyfile"
+      - name: 拷贝配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+      - name: mount建站目录
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: {{attrs.t_nfsDir}}, serverDir: {{attrs.t_serverDir}}}}'"
+      # - name: 记录任务结束状态
+      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
+      # - name: 启动应用
+      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+      - name: 刷新tengine配置
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}}}'"
+      - name: 重新加载gengine配置
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
+  - name: 安装应用
+    css: glyphicon glyphicon-import
+    versionMenu: True
+    steps:
+      - name: 加固os
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+      - name: 安装ntp服务
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      - name: 安装java
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
+        seconds: 10
+      # - name: 记录任务开始状态
+      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
+      - name: 安装tomcat
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install"
+        seconds: 6
+      - name: mount log目录
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{alias.LogServerVIp}}, projectName: {{attrs.t_mountDir}}, logHome: {{attrs.t_mountRootDir}}}}'"
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+      - name: 部署war包
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: {{attrs.t_unpacked}}}}'"
+      - name: 配置文件准备
+        sls: "bugatti copyfile"
+      - name: 拷贝配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+      - name: mount建站目录
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: {{attrs.t_nfsDir}}, serverDir: {{attrs.t_serverDir}}}}'"
+      # - name: 记录任务结束状态
+      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
+      # - name: 启动应用
+      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+      - name: 刷新tengine配置
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}}}'"
+      - name: 重新加载tengine配置
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
+  - name: 重启应用
+    css: glyphicon glyphicon-repeat
+    versionMenu: True
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+      - name: 配置文件准备
+        sls: "bugatti copyfile"
+      - name: 拷贝配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+      - name: mount建站目录
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountnfs pillar='{webapp: {nfsDir: {{attrs.t_nfsDir}}, serverDir: {{attrs.t_serverDir}}}}'"
+      - name: 启动应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+  - name: 启动应用
+    css: glyphicon glyphicon-play
+    steps:
+      - name: 启动应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+  - name: 停止应用
+    css: glyphicon glyphicon-stop
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+  - name: jstack
+    css: glyphicon glyphicon-camera
+    actionType: host
+    steps:
+      - name: jstack
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.jstack"
