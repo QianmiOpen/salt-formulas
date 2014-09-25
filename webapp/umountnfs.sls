@@ -2,5 +2,5 @@
 
 unmount-nfs:
   mount.unmounted:
-    - name: {{ webapp.serverDir }}
+    - name: {{ webapp.nfsDir }}
     - persist: False
