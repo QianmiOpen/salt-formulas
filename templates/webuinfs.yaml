@@ -49,6 +49,8 @@ actions:
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+      - name: unmount建站目录
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.umountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}\"}}'"
       - name: 部署war包
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: {{attrs.t_unpacked}}}}'"
       - name: 配置文件准备
@@ -85,6 +87,8 @@ actions:
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{alias.LogServerVIp}}, projectName: {{attrs.t_mountDir}}, logHome: {{attrs.t_mountRootDir}}}}'"
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+      - name: unmount建站目录
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.umountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}\"}}'"
       - name: 部署war包
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: {{attrs.t_unpacked}}}}'"
       - name: 配置文件准备
