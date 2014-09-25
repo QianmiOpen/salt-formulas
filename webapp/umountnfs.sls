@@ -2,5 +2,7 @@
 
 unmount-nfs:
   mount.unmounted:
-    - name: {{ webapp.nfsDir }}
-    - persist: False
+    cmd.run:
+    - name: "umount -l {{ webapp.nfsDir }}"
+    - user: root
+    - group: root
