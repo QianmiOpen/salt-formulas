@@ -1,7 +1,7 @@
 name: activemq
 remark: 用于activemq项目的自动部署
 items:
-  - itemName: t_defaultPort
+  - itemName: t_openwire
     itemDesc: 默认端口
     default: '61616'
 actions:
@@ -15,7 +15,7 @@ actions:
       - name: 安装java
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
       - name: 编译安装activemq
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' activemq"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' activemq pillar='{activemq: {openwire: {{attrs.t_openwire}}}}'"
 
   - name: 重启activemq
     css: glyphicon glyphicon-repeat

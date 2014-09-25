@@ -43,7 +43,7 @@ pidfile {{ redis.pidfile|default('/var/run/redis/redis.pid') }}
 
 # Accept connections on the specified port, default is 6379.
 # If port 0 is specified Redis will not listen on a TCP socket.
-port {{ redis.port|default(6379) }}
+port {{ redis.port }}
 
 # TCP listen() backlog.
 #
@@ -121,7 +121,7 @@ syslog-facility {{ redis.syslog.facility|default('local0') }}
 # Set the number of databases. The default database is DB 0, you can select
 # a different one on a per-connection basis using SELECT <dbid> where
 # dbid is a number between 0 and 'databases'-1
-databases {{ redis.databases|default('16') }}
+databases {{ redis.databases }}
 
 ################################ SNAPSHOTTING  ################################
 #

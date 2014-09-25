@@ -9,6 +9,12 @@ items:
   - itemName: t_virtualIp
     itemDesc: 虚拟IP地址
     itemType: var
+  - itemName: t_databases
+    itemDesc: redis数据库数
+    itemType: var
+  - itemName: t_port
+    itemDesc: redis端口
+    itemType: var         
 actions:
   - name: 部署redis
     css: glyphicon glyphicon-import
@@ -18,7 +24,7 @@ actions:
       - name: 安装ntp服务
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
       - name: 编译安装redis
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis pillar='{keepalived: {isMaster: {{attrs.t_isMaster}}, virtual_router_id: {{attrs.t_virtualRouterId}}, virtual_ipaddress: {{attrs.t_virtualIp}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis pillar='{keepalived: {isMaster: {{attrs.t_isMaster}}, virtual_router_id: {{attrs.t_virtualRouterId}}, virtual_ipaddress: {{attrs.t_virtualIp}}}, redis: {databases: {{attrs.t_databases}}, port: {{attrs.t_port}}}}'"
 
 
   - name: 重启redis
@@ -38,4 +44,3 @@ actions:
     steps:
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis.stop"
-
