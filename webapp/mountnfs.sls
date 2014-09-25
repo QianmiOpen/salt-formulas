@@ -4,7 +4,7 @@
   file.directory:
     - user: tomcat
     - group: tomcat
-    - mode: 755
+    - mode: 777
     - makedirs: True
   mount.mounted:
     - device: {{ webapp.nfsDir }}
