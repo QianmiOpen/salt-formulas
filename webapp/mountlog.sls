@@ -13,14 +13,14 @@ unmount-nfs-dirs:
     - require:
       - pkg: nfs-utils
 
-/oflogs:
+{{ webapp.logHome }}:
   file.directory:
     - user: tomcat
     - group: tomcat
     - mode: 755
     - makedirs: True
   mount.mounted:
-    - device: {{ webapp.nfsServer }}:/oflogs
+    - device: {{ webapp.nfsServer }}:{{ webapp.logHome }}
     - fstype: nfs
     - opts: nosuid,nodev,rw,bg,soft,nolock
     - persist: True
@@ -29,21 +29,21 @@ unmount-nfs-dirs:
 
 unmount-oflogs:
   file.directory:
-    - name: /oflogs/{{ webapp.projectName }}
+    - name: {{ webapp.logHome }}/{{ webapp.projectName }}
     - mode: 777
     - makedirs: True
   mount.unmounted:
-    - name: /oflogs
+    - name: {{ webapp.logHome }}
     - persist: False
 
-/oflogs/{{ webapp.projectName }}:
+{{ webapp.logHome }}/{{ webapp.projectName }}:
   file.directory:
     - user: tomcat
     - group: tomcat
     - mode: 777
     - makedirs: True
   mount.mounted:
-    - device: {{ webapp.nfsServer }}:/oflogs/{{ webapp.projectName }}
+    - device: {{ webapp.nfsServer }}:{{ webapp.logHome }}/{{ webapp.projectName }}
     - fstype: nfs
     - opts: nosuid,nodev,rw,bg,soft,nolock
     - persist: True
