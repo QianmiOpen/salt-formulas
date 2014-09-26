@@ -2,5 +2,6 @@
 
 zookeeper-start:
   cmd.run:
-    - name: /{{ zookeeper.zookeeperVersion }}/bin/zkServer.sh start
-    - user: root
+    - name: /{{ zookeeper.home }}/{{ zookeeper.zookeeperVersion }}/bin/zkServer.sh start
+    - user: zookeeper
+    - group: zookeeper 

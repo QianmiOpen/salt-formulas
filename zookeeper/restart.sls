@@ -2,5 +2,6 @@
 
 zookeeper-restart:
   cmd.run:
-    - name: /{{ zookeeper.zookeeperVersion }}/bin/zkServer.sh restart
-    - user: root
+    - name: /{{ zookeeper.home }}/{{ zookeeper.zookeeperVersion }}/bin/zkServer.sh restart
+    - user: zookeeper
+    - group: zookeeper 

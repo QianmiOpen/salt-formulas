@@ -2,5 +2,6 @@
 
 zookeeper-stop:
   cmd.run:
-    - name: sh /{{ zookeeper.zookeeperVersion }}/bin/zkServer.sh stop
-    - user: root
+    - name: sh /{{ zookeeper.home }}/{{ zookeeper.zookeeperVersion }}/bin/zkServer.sh stop
+    - user: zookeeper
+    - group: zookeeper 

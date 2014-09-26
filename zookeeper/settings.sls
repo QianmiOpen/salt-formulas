@@ -1,9 +1,10 @@
 {% set p  = salt['pillar.get']('zookeeper', {}) %}
 
 {% set zookeeper = {} %}
-{%- do zookeeper.update({'home'             : '/zookeeper',
+{%- do zookeeper.update({'home'             : '/home/zookeeper',
                      'zookeeperVersion'     : 'zookeeper-3.4.6',
-                     'zipType'          : '.tar.gz'
+                     'zkdataPath'           : 'zk_data',
+                     'zipType'              : '.tar.gz'
                     }) %}
 
 {% for key, value in zookeeper.iteritems() %}
