@@ -1,6 +1,14 @@
 name: webapi
 remark: 用于dubbo项目的自动部署，即api类项目
-dependences: "LogServer, ZookeeperRegister"
+dependences:
+  - name: logServer
+    type: nfs
+    description: 日志服务器
+    default: LogServer
+  - name: dubboRegister
+    type: zookeeper
+    description: dubbo注册中心
+    default: ZookeeperRegister
 aliass:
   - aliasName: LogServerVIp
     aliasValue: "dependence.LogServer.attrs.t_virtualIp"

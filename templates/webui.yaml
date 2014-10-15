@@ -1,6 +1,15 @@
 name: webui
 remark: 用于web项目的自动部署，即前端服务类项目
-dependences: "LogServer, ZookeeperRegister, ForestTengine"
+dependences:
+  - name: logServer
+    type: nfs
+    default: LogServer
+  - name: dubboRegister
+    type: zookeeper
+    default: ZookeeperRegister
+  - name: frontTengine
+    type: tengine
+    default: ForestTengine
 aliass:
   - aliasName: LogServerVIp
     aliasValue: "dependence.LogServer.attrs.t_virtualIp"
