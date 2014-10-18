@@ -11,10 +11,10 @@ dependences:
     default: ZookeeperRegister
 aliass:
   - aliasName: LogServerVIp
-    aliasValue: "dependence.LogServer.attrs.t_virtualIp"
+    aliasValue: "dependence.logServer.attrs.t_virtualIp"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: ZookeeperRegisterIps
-    aliasValue: "dependence.ZookeeperRegister.hosts.map(function(host){return host.ip + ':' + dependence.ZookeeperRegister.attrs.t_defaultPort}).join(',')"
+    aliasValue: "dependence.dubboRegister.hosts.map(function(host){return host.ip + ':' + dependence.ZookeeperRegister.attrs.t_defaultPort}).join(',')"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: CATALINA_HOME
     aliasValue: "'/home/tomcat/tomcat'"
