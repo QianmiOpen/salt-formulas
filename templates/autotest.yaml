@@ -1,0 +1,33 @@
+name: autotest
+remark: 用于自动化测试项目的自动部署
+items:
+  - itemName: t_gitUrl
+    itemDesc: gitUrl
+actions:
+- name: 安装应用
+    css: glyphicon glyphicon-import
+    steps:
+      - name: 加固os
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+      - name: 安装ntp服务
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      - name: 安装java
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
+        seconds: 10
+      - name: 安装sbt
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' sbt.install"
+      - name: 部署自动化测试项目
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.deploy pillar='{autotest: {gitUrl: {{attrs.t_gitUrl}} }}'"
+           
+  - name: 升级应用
+    css: glyphicon glyphicon-upload
+    steps:
+      - name: 部署自动化测试项目
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.deploy pillar='{autotest: {gitUrl: {{attrs.t_gitUrl}} }}'"
+        
+  - name: 执行应用
+    css: glyphicon glyphicon-play
+    steps:
+      - name: 执行应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.startup"
+        
