@@ -1,27 +1,27 @@
 name: webui
 remark: 用于web项目的自动部署，即前端服务类项目
 dependences:
-  - name: "@logServer"
+  - name: "$logServer"
     type: nfs
     description: 日志服务器
     default: LogServer
-  - name: "@dubboRegister"
+  - name: "$dubboRegister"
     type: zookeeper
     description: dubbo注册中心
     default: ZookeeperRegister
-  - name: "@frontTengine"
+  - name: "$frontTengine"
     type: tengine
     description: 前端负载均衡
     default: ForestTengine
 aliass:
   - aliasName: LogServerVIp
-    aliasValue: "dependence.@logServer.attrs.t_virtualIp"
+    aliasValue: "dependence.$logServer.attrs.t_virtualIp"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: ZookeeperRegisterIps
-    aliasValue: "dependence.@dubboRegister.hosts.map(function(host){return host.ip + ':' + dependence.@dubboRegister.attrs.t_defaultPort}).join(',')"
+    aliasValue: "dependence.$dubboRegister.hosts.map(function(host){return host.ip + ':' + dependence.$dubboRegister.attrs.t_defaultPort}).join(',')"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: TengineHostNames
-    aliasValue: "dependence.@frontTengine.hosts.map(function(host){return host.name}).join(',')"
+    aliasValue: "dependence.$frontTengine.hosts.map(function(host){return host.name}).join(',')"
     aliasDesc: "获取ForestTengine项目当前环境主机名称列表，以','分割"
   - aliasName: CATALINA_HOME
     aliasValue: "'/home/tomcat/tomcat'"
