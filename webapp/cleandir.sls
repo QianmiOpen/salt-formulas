@@ -8,5 +8,6 @@ delete-work-dir:
 
 #TODO 在该目录大于10M的时候，删除该目录
 delete-dubbo-cache:
-  file.absent:
-    - name: {{ tomcat.home }}/.dubbocache
+  cmd.run:
+    - name: rm -rf {{ tomcat.home }}/.dubbocache
+    - onlyif: "test `du -sk {{ tomcat.home }}/.dubbocache | awk '{print $1}'` -gt 10240"
