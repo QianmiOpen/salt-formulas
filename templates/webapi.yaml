@@ -1,20 +1,20 @@
 name: webapi
 remark: 用于dubbo项目的自动部署，即api类项目
 dependences:
-  - name: logServer
+  - name: @logServer
     type: nfs
     description: 日志服务器
     default: LogServer
-  - name: dubboRegister
+  - name: @dubboRegister
     type: zookeeper
     description: dubbo注册中心
     default: ZookeeperRegister
 aliass:
   - aliasName: LogServerVIp
-    aliasValue: "dependence.logServer.attrs.t_virtualIp"
+    aliasValue: "dependence.@logServer.attrs.t_virtualIp"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: ZookeeperRegisterIps
-    aliasValue: "dependence.dubboRegister.hosts.map(function(host){return host.ip + ':' + dependence.ZookeeperRegister.attrs.t_defaultPort}).join(',')"
+    aliasValue: "dependence.@dubboRegister.hosts.map(function(host){return host.ip + ':' + dependence.@dubboRegister.attrs.t_defaultPort}).join(',')"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: CATALINA_HOME
     aliasValue: "'/home/tomcat/tomcat'"
