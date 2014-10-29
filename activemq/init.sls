@@ -15,3 +15,9 @@ activemq_config:
     - managed
     - template: jinja
     - source: salt://activemq/files/activemq.xml
+activemq_version:
+  grains.present:
+    - value: {{ activemq.activemqVersion }}
+activemq_port:
+  grains.present:
+    - value: {{ activemq.openwire }}

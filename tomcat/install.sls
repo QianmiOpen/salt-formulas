@@ -63,7 +63,10 @@ copy-env.conf:
     - marker_end: "# Bugzilla 37848"
     - content: CATALINA_OPTS=`sed 's/"//g' $CATALINA_BASE/conf/env.conf |awk '/^[^#]/'| tr "\n" ' '`
 
-
+tomcat_version:
+  grains.present:
+    - value: {{ tomcat.version }}
+    
 # move to os.security
 # limits_conf:
 #   file.append:

@@ -74,3 +74,7 @@ copy-configue-file-{{ file }}:
     - require:
       - cmd: compile-nginx
 {% endfor %}
+
+tengine_version:
+  grains.present:
+    - value: {{ tengine.tengine }}

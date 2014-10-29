@@ -44,6 +44,10 @@ symlink-war-file:
     - group: tomcat
 {% endif %}
 
+webapp_version:
+  grains.present:
+    - value: {{ webapp.version }}
+    
 include:
   - tomcat.vhosts
 

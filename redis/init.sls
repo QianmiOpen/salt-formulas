@@ -59,5 +59,13 @@ redis_service_file:
     - template: jinja
     - source: salt://redis/files/redisd
 
+redis_version:
+  grains.present:
+    - value: {{ redis.redisVersion }}
+
+redis_databases_num:
+  grains.present:
+    - value: {{ redis.databases }}
+
 include:
   - keepalived.init
