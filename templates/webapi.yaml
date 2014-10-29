@@ -5,7 +5,7 @@ dependences:
     type: nfs
     description: 日志服务器
     default: LogServer
-  - name: @dubboRegister
+  - name: "@dubboRegister"
     type: zookeeper
     description: dubbo注册中心
     default: ZookeeperRegister
