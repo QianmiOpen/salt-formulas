@@ -5,7 +5,7 @@
                       'name'           : 'tomcat',
 
                       'packagePrefix'  : 'apache-tomcat-',
-                      'version'        : '7.0.54',
+                      'version'        : '7.0.55',
                       'packageSuffix'  : '.tar.gz',
 
                       'limitSoft'      : 64000,
@@ -34,10 +34,13 @@
 {% set versionPath = p.get('versionPath', tomcat.packagePrefix + tomcat.version) %}
 {% set appBase     = p.get('appBase', tomcat.home + '/' + tomcat.name + '/webapps') %}
 {% set tomcatPid   = p.get('tomcatPid', tomcat.home + '/tomcat.pid') %}
+{% set CATALINA_BASE   = p.get('CATALINA_BASE', tomcat.home ~ '/' ~ tomcat.name) %}
+
 
 
 {%- do tomcat.update({'package'        : package,
                       'appBase'        : appBase,
                       'versionPath'    : versionPath,
-                      'tomcatPid'      : tomcatPid
+                      'tomcatPid'      : tomcatPid,
+                      'CATALINA_BASE'  : CATALINA_BASE
                       }) %}

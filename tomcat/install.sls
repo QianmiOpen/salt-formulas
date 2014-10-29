@@ -7,7 +7,7 @@ include:
 unpack-tomcat-tarball:
   file.managed:
     - name: {{ tomcat.home }}/{{ tomcat.package }}
-    - source: salt://tomcat/pkgs/{{ tomcat.package }}
+    - source: salt://tomcat/pkgs/{{ tomcat.version }}/{{ tomcat.package }}
     - saltenv: base
     - user: tomcat
     - group: tomcat
@@ -64,10 +64,48 @@ copy-env.conf:
     - content: CATALINA_OPTS=`sed 's/"//g' $CATALINA_BASE/conf/env.conf |awk '/^[^#]/'| tr "\n" ' '`
 
 
-# move to os.security
-# limits_conf:
-#   file.append:
-#     - name: /etc/security/limits.conf
-#     - text:
-#       - {{ tomcat.name }} soft nofile {{ tomcat.limitSoft }}
-#       - {{ tomcat.name }} hard nofile {{ tomcat.limitHard }}
+# 配置tomcat，使用log4j输出日志
+juli-jar:
+  file.managed:
+    - name: {{ tomcat.CATALINA_BASE }}/bin/tomcat-juli.jar
+    - source: salt://tomcat/pkgs/{{ tomcat.version }}/tomcat-juli.jar
+    - saltenv: base
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - user: tomcat-user
+
+tomcat-juli-adapters-jar:
+  file.managed:
+    - name: {{ tomcat.CATALINA_BASE }}/lib/tomcat-juli-adapters.jar
+    - source: salt://tomcat/pkgs/{{ tomcat.version }}/tomcat-juli-adapters.jar
+    - saltenv: base
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - user: tomcat-user
+
+{% for jar in ['log4j-1.2.17.jar', 'redis-appender-1.0.1.jar', 'jedis-2.5.2.jar', 'jsonevent-layout-1.7.jar', 'json-smart-1.1.1.jar', 'commons-lang-2.6.jar'] %}
+copy-{{ jar }}:
+  file.managed:
+    - name: {{ tomcat.CATALINA_BASE }}/lib/{{ jar }}
+    - source: salt://tomcat/pkgs/{{ jar }}
+    - saltenv: base
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - user: tomcat-user
+{% endfor %}
+
+{{ tomcat.CATALINA_BASE }}/lib/log4j.properties:
+  file.managed:
+    - source: salt://tomcat/files/log4j.properties
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+    - template: jinja
+
+delete-logging.properties:
+  file.absent:
+    - name: {{ tomcat.CATALINA_BASE }}/conf/logging.properties
+
