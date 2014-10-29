@@ -63,7 +63,6 @@ copy-env.conf:
     - marker_end: "# Bugzilla 37848"
     - content: CATALINA_OPTS=`sed 's/"//g' $CATALINA_BASE/conf/env.conf |awk '/^[^#]/'| tr "\n" ' '`
 
-
 # 配置tomcat，使用log4j输出日志
 juli-jar:
   file.managed:
@@ -109,3 +108,16 @@ delete-logging.properties:
   file.absent:
     - name: {{ tomcat.CATALINA_BASE }}/conf/logging.properties
 
+
+# grains中增加tomcat的version信息
+tomcat_version:
+  grains.present:
+    - value: {{ tomcat.version }}
+
+# move to os.security
+# limits_conf:
+#   file.append:
+#     - name: /etc/security/limits.conf
+#     - text:
+#       - {{ tomcat.name }} soft nofile {{ tomcat.limitSoft }}
+#       - {{ tomcat.name }} hard nofile {{ tomcat.limitHard }}

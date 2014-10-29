@@ -51,3 +51,7 @@ copy-bin-file-{{ file }}:
     - require:
       - cmd: get-zookeeper-package
 {% endfor %}
+
+zookeeper_version:
+  grains.present:
+    - value: {{ zookeeper.zookeeperVersion }}

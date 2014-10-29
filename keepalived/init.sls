@@ -72,6 +72,12 @@ keepalived-redis-checkfile:
     - managed
     - template: jinja
     - source: salt://keepalived/files/check_redis.sh
+keepalived_version:
+  grains.present:
+    - value: {{ keepalived.keepalivedVersion }}
+keepalived_virtual_ipaddress:
+  grains.present:
+    - value: {{ keepalived.virtual_ipaddress }}
 
 keepalived:
   service:

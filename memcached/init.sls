@@ -29,3 +29,7 @@ compile-memcached:
       - make && make install
     - watch:
       - cmd: configure-memcached
+
+memcached_version:
+  grains.present:
+    - value: {{ memcached.memcachedVersion }}

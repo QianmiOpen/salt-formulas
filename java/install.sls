@@ -25,6 +25,9 @@ unpack-jdk-tarball:
     - link: {{ java.home }}
     - path: {{ java.realHome }}
     - priority: 30
+java_version:
+  grains.present:
+    - value: {{ java.version }}
 
 include:
   - java.env
