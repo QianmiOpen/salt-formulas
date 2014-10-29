@@ -1,0 +1,14 @@
+{% set logstash = salt['grains.filter_by']({
+  'Debian': {
+    'pkg': 'logstash',
+    'svc': 'logstash',
+    'pkgstate': 'latest',
+    'indent': 4
+  },
+  'RedHat': {
+    'pkg': 'logstash',
+    'svc': 'logstash',
+    'pkgstate': 'latest',
+    'indent': 4
+  }
+}, merge=salt['pillar.get']('logstash')) %}
