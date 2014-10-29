@@ -1,11 +1,11 @@
 name: webapi
 remark: 用于dubbo项目的自动部署，即api类项目
 dependences:
-  - name: @logServer
+  - name: "@logServer"
     type: nfs
     description: 日志服务器
     default: LogServer
-  - name: @dubboRegister
+  - name: "@dubboRegister"
     type: zookeeper
     description: dubbo注册中心
     default: ZookeeperRegister

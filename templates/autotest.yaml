@@ -1,33 +1,32 @@
 name: autotest
-remark: ÓÃÓÚ×Ô¶¯»¯²âÊÔÏîÄ¿µÄ×Ô¶¯²¿Êğ
+remark: ç”¨äºè‡ªåŠ¨åŒ–æµ‹è¯•é¡¹ç›®çš„è‡ªåŠ¨éƒ¨ç½²
 items:
   - itemName: t_gitUrl
     itemDesc: gitUrl
 actions:
-- name: °²×°Ó¦ÓÃ
-    css: glyphicon glyphicon-import
-    steps:
-      - name: ¼Ó¹Ìos
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
-      - name: °²×°ntp·şÎñ
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
-      - name: °²×°java
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
-        seconds: 10
-      - name: °²×°sbt
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' sbt.install"
-      - name: ²¿Êğ×Ô¶¯»¯²âÊÔÏîÄ¿
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.deploy pillar='{autotest: {gitUrl: {{attrs.t_gitUrl}} }}'"
-           
-  - name: Éı¼¶Ó¦ÓÃ
-    css: glyphicon glyphicon-upload
-    steps:
-      - name: ²¿Êğ×Ô¶¯»¯²âÊÔÏîÄ¿
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.deploy pillar='{autotest: {gitUrl: {{attrs.t_gitUrl}} }}'"
-        
-  - name: Ö´ĞĞÓ¦ÓÃ
-    css: glyphicon glyphicon-play
-    steps:
-      - name: Ö´ĞĞÓ¦ÓÃ
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.startup"
-        
+- name: å®‰è£…åº”ç”¨
+  css: glyphicon glyphicon-import
+  steps:
+    - name: åŠ å›ºos
+      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+    - name: å®‰è£…ntpæœåŠ¡
+      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+    - name: å®‰è£…java
+      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
+      seconds: 10
+    - name: å®‰è£…sbt
+      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' sbt.install"
+    - name: éƒ¨ç½²è‡ªåŠ¨åŒ–æµ‹è¯•é¡¹ç›®
+      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.deploy pillar='{autotest: {gitUrl: {{attrs.t_gitUrl}} }}'"
+
+- name: å‡çº§åº”ç”¨
+  css: glyphicon glyphicon-upload
+  steps:
+    - name: éƒ¨ç½²è‡ªåŠ¨åŒ–æµ‹è¯•é¡¹ç›®
+      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.deploy pillar='{autotest: {gitUrl: {{attrs.t_gitUrl}} }}'"
+
+- name: æ‰§è¡Œåº”ç”¨
+  css: glyphicon glyphicon-play
+  steps:
+    - name: æ‰§è¡Œåº”ç”¨
+      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' autotest.startup"

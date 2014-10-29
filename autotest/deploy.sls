@@ -3,10 +3,10 @@
 delete-appbase:
   file.absent:
     - name: {{ autotest.home }}/*
-    
+
 include:
   - autotest.user
-  
+
 git:
   pkg:
     - installed
