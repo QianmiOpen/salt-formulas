@@ -1,0 +1,2 @@
+{%- from 'tengine/settings.sls' import tengine with context %}
+upstream {{ tengine.domain }} {
