@@ -3,6 +3,7 @@ salt-minion:
 
 salt-install:
   service.running:
+    - name: salt-minion
     - enable: True
     - require:
       - pkg: salt-minion
