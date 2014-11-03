@@ -1,5 +1,7 @@
 salt-minion:
   pkg.latest
+
+salt-install:
   service.running:
     - enable: True
     - require:
