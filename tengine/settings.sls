@@ -11,7 +11,9 @@
                        'domain'      : 'www.1000.com',
                        'serverNameList' : 'www.1000.como www.ofcard.com',
                        'ip'          : '172.19.0.200',
-                       'port'        : '8080'
+                       'port'        : '8080',
+                       'isMaster'    : True,
+                       'isIPhash'    : True                       
                       }) %}
 
 {% for key, value in tengine.iteritems() %}
