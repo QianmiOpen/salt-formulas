@@ -1,7 +1,5 @@
 salt-minion:
-  pkg:
-    - installed
-    - version: 2014.1.10-4.el6
+  pkg.latest
   service.running:
     - enable: True
     - require:
