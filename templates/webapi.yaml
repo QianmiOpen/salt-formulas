@@ -29,6 +29,9 @@ items:
     itemDesc: artifactId
   - itemName: t_mountDir
     itemDesc: 日志绑定目录
+  - itemName: t_jdkversion
+    itemDesc: jdk版本
+    default: 'jdk7'
   - itemName: t_mountRootDir
     itemDesc: 日志绑定根目录
     default: '/oflogs'
@@ -63,7 +66,7 @@ actions:
       - name: 安装ntp服务
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
       - name: 安装java
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install pillar='{java: {version: {{attrs.t_jdkversion}}}}'"
         seconds: 10
       # - name: 记录任务开始状态
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
