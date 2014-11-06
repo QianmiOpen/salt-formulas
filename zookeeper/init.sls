@@ -36,6 +36,9 @@ copy-configue-file-{{ file }}:
     - user: zookeeper
     - group: zookeeper
     - mode: 644
+    - template: jinja
+    - defaults:
+        test: {{ zookeeper|json }}
     - require:
       - cmd: get-zookeeper-package
 {% endfor %}
@@ -51,6 +54,16 @@ copy-bin-file-{{ file }}:
     - require:
       - cmd: get-zookeeper-package
 {% endfor %}
+
+myid-file:
+  cmd.run:
+    - name: 'grep {{ zookeeper.hostip }} /{{ zookeeper.home }}/{{ zookeeper.zookeeperVersion }}/conf/zoo.cfg | cut -c8-8 > /zk_data/myid'
+    - user: zookeeper
+    - group: zookeeper 
+    - onlyif: "test `grep ^server /{{ zookeeper.home }}/{{ zookeeper.zookeeperVersion }}/conf/zoo.cfg |wc -l` -gt 0"
+    - watch:
+      - file: copy-configue-file-zoo.cfg
+
 
 zookeeper_version:
   grains.present:
