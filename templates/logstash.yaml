@@ -1,0 +1,32 @@
+name: logstash
+remark: 用于logstash项目的自动部署
+
+actions:
+  - name: 部署logstash
+    css: glyphicon glyphicon-import
+    steps:
+      - name: 加固os
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+      - name: 安装ntp服务
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      - name: 编译安装logstash
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash"
+
+  - name: 重启logstash
+    css: glyphicon glyphicon-repeat
+    steps:
+      - name: 重启logstash
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.restart"
+
+  - name: 启动应用
+    css: glyphicon glyphicon-play
+    steps:
+      - name: 启动logstash应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.start"
+
+  - name: 停止应用
+    css: glyphicon glyphicon-stop
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.stop"
+        
