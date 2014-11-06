@@ -55,6 +55,12 @@ copy-bin-file-{{ file }}:
       - cmd: get-zookeeper-package
 {% endfor %}
 
+delete-myid-file:
+  file.absent:
+    - name: /zk_data/myid
+    - user: zookeeper
+    - group: zookeeper
+
 myid-file:
   cmd.run:
     - name: 'grep {{ zookeeper.hostip }} /{{ zookeeper.home }}/{{ zookeeper.zookeeperVersion }}/conf/zoo.cfg | cut -c8-8 > /zk_data/myid'
