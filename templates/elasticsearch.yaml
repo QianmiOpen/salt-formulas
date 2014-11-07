@@ -1,0 +1,34 @@
+name: elasticsearch
+remark: 用于elasticsearch项目的自动部署
+
+actions:
+  - name: 部署elasticsearch
+    css: glyphicon glyphicon-import
+    steps:
+      - name: 加固os
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+      - name: 安装ntp服务
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      - name: 安装java
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
+      - name: 编译安装elasticsearch
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch"
+
+  - name: 重启elasticsearch
+    css: glyphicon glyphicon-repeat
+    steps:
+      - name: 重启elasticsearch
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.restart"
+
+  - name: 启动应用
+    css: glyphicon glyphicon-play
+    steps:
+      - name: 启动elasticsearch应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.start"
+
+  - name: 停止应用
+    css: glyphicon glyphicon-stop
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.stop"
+        
