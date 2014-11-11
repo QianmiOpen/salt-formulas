@@ -1,6 +1,11 @@
 name: elasticsearch
 remark: 用于elasticsearch项目的自动部署
 
+items:
+  - itemName: t_clustername
+    itemDesc: 集群名称
+    default: 'elasticsearch'
+
 actions:
   - name: 部署elasticsearch
     css: glyphicon glyphicon-import
@@ -12,7 +17,7 @@ actions:
       - name: 安装java
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
       - name: 编译安装elasticsearch
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.install"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.install pillar='{elasticsearch: {nodename: {{cHost.name}}, clustername: {{attrs.t_clustername}}}}'"
 
   - name: 重启elasticsearch
     css: glyphicon glyphicon-repeat

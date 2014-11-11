@@ -55,3 +55,34 @@ logstash-config-outputs:
     - template: jinja
     - require:
       - pkg: logstash-pkg
+
+logstash-plugins-dir:
+  file.directory:
+    - name: /opt/logstash/lib/logstash/outputs/websocket
+    - mode: 755
+    - user: root
+    - group: root
+    - makedirs: True
+    - require:
+      - pkg: logstash-pkg
+
+logstash-plugins-pubsub:
+  file.managed:
+    - name: /opt/logstash/lib/logstash/outputs/websocket/pubsub.rb
+    - user: root
+    - group: root
+    - mode: 755
+    - source: salt://logstash/plugins/outputs/websocket/pubsub.rb
+    - template: jinja
+
+logstash-plugins-app:
+  file.managed:
+    - name: /opt/logstash/lib/logstash/outputs/websocket/app.rb
+    - user: root
+    - group: root
+    - mode: 755
+    - source: salt://logstash/plugins/outputs/websocket/app.rb
+    - template: jinja
+
+
+

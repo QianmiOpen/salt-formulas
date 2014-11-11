@@ -13,3 +13,10 @@ unpack-elasticsearch-tarball:
     - require:
       - pkg: tar
       - file: unpack-elasticsearch-tarball
+
+elasticsearch_config:
+  file:
+    - name: {{ elasticsearch.base }}/{{ elasticsearch.prefix }}-{{ elasticsearch.version }}/config/elasticsearch.yml
+    - managed
+    - template: jinja
+    - source: salt://elasticsearch/files/elasticsearch.yml
