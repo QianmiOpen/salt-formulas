@@ -103,7 +103,8 @@ copy-{{ jar }}:
     - group: tomcat
     - mode: 644
     - template: jinja
-      - tomcat: {{tomcat|json}}
+    - defaults:
+        tomcat: {{ tomcat|json }}
 
 delete-logging.properties:
   file.absent:
