@@ -2,5 +2,5 @@
 
 logstash-stop:
   cmd.run:
-    - name: /etc/init.d/logstash force-stop
+    - name: /etc/init.d/logstash stop
     - user: root
