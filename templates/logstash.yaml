@@ -17,7 +17,7 @@ aliass:
     aliasValue: "dependence.$logstashredis.attrs.t_port"
     aliasDesc: "获取Logstash所用redis的端口"
   - aliasName: elasticsearchIP
-    aliasValue: "dependence.$elasticsearch.host[0].ip"
+    aliasValue: "dependence.$elasticsearch.hosts[0].ip"
     aliasDesc: "默认取elasticsearch集群的第一台主机地址"
   - aliasName: elasticsearchClustername
     aliasValue: "dependence.$elasticsearch.attrs.t_clustername"
