@@ -81,5 +81,11 @@ logstash-plugins-app:
     - source: salt://logstash/plugins/outputs/websocket/app.rb
     - template: jinja
 
-
-
+logstash-plugins-websocket:
+  file.managed:
+    - name: /opt/logstash/lib/logstash/outputs/websocket.rb
+    - user: root
+    - group: root
+    - mode: 755
+    - source: salt://logstash/plugins/outputs/websocket.rb
+    - template: jinja
