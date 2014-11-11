@@ -1,13 +1,9 @@
 {%- from 'logstash/map.jinja' import logstash with context %}
 
-include:
-  - .repo
 
 logstash-pkg:
   pkg.{{logstash.pkgstate}}:
     - name: {{logstash.pkg}}
-    - require:
-      - pkgrepo: logstash-repo
 
 logstash-svc:
   service:
