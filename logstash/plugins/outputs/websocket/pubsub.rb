@@ -41,7 +41,7 @@ class LogStash::Outputs::WebSocket::Pubsub
         message = jsonEvent['message']
         puts event
         puts "#{message}"
-        if(message.to_s == taskId.to_s)
+        if(message['source_host'] + ".localdomain" == taskId.to_s)
           queue << event
         end
       end
