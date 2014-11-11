@@ -31,7 +31,7 @@ logstash-config-inputs:
     - require:
       - pkg: logstash-pkg
 
-{%- if logstash.filters is defined %}
+##{%- if logstash.filters is defined %}
 logstash-config-filters:
   file.managed:
     - name: /etc/logstash/conf.d/02-filters.conf
@@ -42,11 +42,11 @@ logstash-config-filters:
     - template: jinja
     - require:
       - pkg: logstash-pkg
-{%- else %}
-logstash-config-filters:
-  file.absent:
-    - name: /etc/logstash/conf.d/02-filters.conf
-{%- endif %}
+##{%- else %}
+##logstash-config-filters:
+##  file.absent:
+##    - name: /etc/logstash/conf.d/02-filters.conf
+##{%- endif %}
 
 logstash-config-outputs:
   file.managed:
