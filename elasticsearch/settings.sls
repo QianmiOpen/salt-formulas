@@ -4,7 +4,7 @@
 {%- do elasticsearch.update({'home'        : '/opt/elasticsearch',
                              'base'        : '/opt',
                              'prefix'      : 'elasticsearch',
-                             'version'     : '1.1.1',
+                             'version'     : '1.2.4',
                              'fileType'    : 'tar.gz'
                              }) %}
 
