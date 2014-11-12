@@ -11,7 +11,7 @@
                       'limitSoft'      : 64000,
                       'limitHard'      : 64000,
                       'hostName'       : 'localhost',
-                      'path'           : '/',
+                      'path'           : '',
                       'appName'        : 'server',
                       'unpackWARs'     : false,
                       'autoDeploy'     : false,
