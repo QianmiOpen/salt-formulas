@@ -10,7 +10,7 @@ dependences:
     description: dubbo注册中心
     default: ZookeeperRegister
   - name: "$logredis"
-    type: nfs
+    type: redis
     description: 日志服务器
     default: LogstashRedis
 aliass:
