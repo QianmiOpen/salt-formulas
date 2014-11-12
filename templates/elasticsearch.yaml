@@ -4,6 +4,7 @@ remark: 用于elasticsearch项目的自动部署
 items:
   - itemName: t_clustername
     itemDesc: 集群名称
+    itemType: var
     default: 'elasticsearch'
 
 actions:
