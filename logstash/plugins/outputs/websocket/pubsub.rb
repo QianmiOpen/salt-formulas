@@ -38,7 +38,7 @@ class LogStash::Outputs::WebSocket::Pubsub
     @subscribers_lock.synchronize do
       @subscribers << proc do |event|
         jsonEvent = JSON.parse(event)
-        sourceHost = jsonEvent.fetch("message").fetch("source_host")
+        sourceHost = jsonEvent.fetch("source_host")
         puts "sourceHost is #{sourceHost}"
         if(sourceHost + ".localdomain" == taskId.to_s)
           queue << event
