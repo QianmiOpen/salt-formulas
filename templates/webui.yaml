@@ -38,8 +38,10 @@ items:
     itemDesc: 域名
   - itemName: t_isMaster
     itemDesc: 是否为主
+    default: 'True'
   - itemName: t_isIPhash
     itemDesc: 是否IPhash
+    default: 'False'
   - itemName: t_serverNameList
     itemDesc: 代理域名列表
   - itemName: t_mountDir

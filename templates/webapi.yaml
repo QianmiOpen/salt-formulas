@@ -9,6 +9,10 @@ dependences:
     type: zookeeper
     description: dubbo注册中心
     default: ZookeeperRegister
+  - name: "$logredis"
+    type: redis
+    description: 日志服务器
+    default: LogstashRedis
 aliass:
   - aliasName: LogServerVIp
     aliasValue: "dependence.$logServer.attrs.t_virtualIp"
@@ -71,7 +75,7 @@ actions:
       # - name: 记录任务开始状态
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
       - name: 安装tomcat
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {logstashRedisHost: \"{{dependence.$logredis.attrs.t_virtualIp}}\", logstashRedisPort: {{dependence.$logredis.attrs.t_port}}}}'"
         seconds: 6
       - name: mount log目录
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{alias.LogServerVIp}}, projectName: {{attrs.t_mountDir}}, logHome: {{attrs.t_mountRootDir}}}}'"

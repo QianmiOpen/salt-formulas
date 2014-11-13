@@ -1,7 +1,7 @@
 {% set p  = salt['pillar.get']('logstash', {}) %}
 
 {% set logstash = {} %}
-{%- do logstash.update({'home'        : '/opt/logstash',
+{%- do logstash.update({'home'        : '/home/logstash',
                         'base'        : '/opt',
                         'prefix'      : 'logstash',
                         'version'     : '1.4.2',
