@@ -1,8 +1,9 @@
 salt-minion:
-  pkg:
-    - installed
-    - version: 2014.1.10-4.el6
+  pkg.latest
+
+salt-install:
   service.running:
+    - name: salt-minion
     - enable: True
     - require:
       - pkg: salt-minion

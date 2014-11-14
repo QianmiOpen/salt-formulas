@@ -1,0 +1,6 @@
+{%- from 'tengine/settings.sls' import tengine with context %}
+    {% if tengine.isMaster %} 
+    server {{ tengine.ip }}:{{ tengine.port }};
+    {% else %}
+    server {{ tengine.ip }}:{{ tengine.port }} backup;
+    {% endif %}

@@ -4,8 +4,10 @@
 {%- do elasticsearch.update({'home'        : '/opt/elasticsearch',
                              'base'        : '/opt',
                              'prefix'      : 'elasticsearch',
-                             'version'     : '1.1.1',
-                             'fileType'    : 'tar.gz'
+                             'version'     : '1.2.4',
+                             'fileType'    : 'tar.gz',
+                             'nodename'    : '192.1168.0.1',
+                             'clustername' : 'elasticsearch'
                              }) %}
 
 {% for key, value in elasticsearch.iteritems() %}

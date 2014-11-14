@@ -1,0 +1,61 @@
+name: logstash
+remark: 用于logstash项目的自动部署
+dependences:
+  - name: "$logstashredis"
+    type: redis
+    description: LogstashRedis
+    default: LogstashRedis
+  - name: "$elasticsearch"
+    type: elasticsearch
+    description: 日志搜索引擎
+    default: elasticsearch
+aliass:
+  - aliasName: LogstashRedisIP
+    aliasValue: "dependence.$logstashredis.attrs.t_virtualIp"
+    aliasDesc: "获取Logstash所用redis的virtualIp"
+  - aliasName: LogstashRedisPort
+    aliasValue: "dependence.$logstashredis.attrs.t_port"
+    aliasDesc: "获取Logstash所用redis的端口"
+  - aliasName: elasticsearchIP
+    aliasValue: "dependence.$elasticsearch.hosts[0].ip"
+    aliasDesc: "默认取elasticsearch集群的第一台主机地址"
+  - aliasName: elasticsearchClustername
+    aliasValue: "dependence.$elasticsearch.attrs.t_clustername"
+    aliasDesc: "获取elasticsearch集群的名称"
+
+
+actions:
+  - name: 部署logstash
+    css: glyphicon glyphicon-import
+    steps:
+      - name: 加固os
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+      - name: 安装ntp服务
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      - name: 安装java
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.stop"
+      - name: 编译安装logstash
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.init_new pillar='{logstash: {redisIP: {{alias.LogstashRedisIP}}, redisPort: {{alias.LogstashRedisPort}}, hostIP: {{alias.elasticsearchIP}}, clustername: {{alias.elasticsearchClustername}}}}'"
+
+  - name: 重启logstash
+    css: glyphicon glyphicon-repeat
+    steps:
+      - name: 重新同步配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.synccfg pillar='{logstash: {redisIP: {{alias.LogstashRedisIP}}, redisPort: {{alias.LogstashRedisPort}}, hostIP: {{alias.elasticsearchIP}}, clustername: {{alias.elasticsearchClustername}}}}'"
+      - name: 重启logstash
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.restart"
+
+  - name: 启动应用
+    css: glyphicon glyphicon-play
+    steps:
+      - name: 启动logstash应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.start"
+
+  - name: 停止应用
+    css: glyphicon glyphicon-stop
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.stop"
+        

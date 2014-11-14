@@ -1,5 +1,4 @@
 {%- from 'logstash/map.jinja' import logstash with context %}
-
 include:
   - .repo
 
@@ -32,7 +31,6 @@ logstash-config-inputs:
     - require:
       - pkg: logstash-pkg
 
-{%- if logstash.filters is defined %}
 logstash-config-filters:
   file.managed:
     - name: /etc/logstash/conf.d/02-filters.conf
@@ -43,11 +41,6 @@ logstash-config-filters:
     - template: jinja
     - require:
       - pkg: logstash-pkg
-{%- else %}
-logstash-config-filters:
-  file.absent:
-    - name: /etc/logstash/conf.d/02-filters.conf
-{%- endif %}
 
 logstash-config-outputs:
   file.managed:
@@ -59,3 +52,40 @@ logstash-config-outputs:
     - template: jinja
     - require:
       - pkg: logstash-pkg
+
+logstash-plugins-dir:
+  file.directory:
+    - name: /opt/logstash/lib/logstash/outputs/websocket
+    - mode: 755
+    - user: root
+    - group: root
+    - makedirs: True
+    - require:
+      - pkg: logstash-pkg
+
+logstash-plugins-pubsub:
+  file.managed:
+    - name: /opt/logstash/lib/logstash/outputs/websocket/pubsub.rb
+    - user: root
+    - group: root
+    - mode: 755
+    - source: salt://logstash/plugins/outputs/websocket/pubsub.rb
+    - template: jinja
+
+logstash-plugins-app:
+  file.managed:
+    - name: /opt/logstash/lib/logstash/outputs/websocket/app.rb
+    - user: root
+    - group: root
+    - mode: 755
+    - source: salt://logstash/plugins/outputs/websocket/app.rb
+    - template: jinja
+
+logstash-plugins-websocket:
+  file.managed:
+    - name: /opt/logstash/lib/logstash/outputs/websocket.rb
+    - user: root
+    - group: root
+    - mode: 755
+    - source: salt://logstash/plugins/outputs/websocket.rb
+    - template: jinja

@@ -19,11 +19,12 @@
                       'deployOnStartup': false,
                       'reloadable'     : false,
                       'privileged'     : true,
-                      'debug'          : '0',
                       'maxThreads'     : 300,
                       'minSpareThreads': 10,
                       'connectionTimeout': 20000,
-                      'stopDelaySeconds' : 60
+                      'stopDelaySeconds' : 60,
+                      'logstashRedisHost' : '192.168.59.3',
+                      'logstashRedisPort' : 6379
                       }) %}
 
 {% for key, value in tomcat.iteritems() %}
@@ -44,3 +45,4 @@
                       'tomcatPid'      : tomcatPid,
                       'CATALINA_BASE'  : CATALINA_BASE
                       }) %}
+

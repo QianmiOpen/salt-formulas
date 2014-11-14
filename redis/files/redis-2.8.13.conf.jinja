@@ -145,10 +145,7 @@ databases {{ redis.databases }}
 #
 #   save ""
 
-#save 900 1
-#save 300 10
-#save 60 10000
-
+{% if redis.isSaveDBFile %}
 {% if redis.snapshots is defined %}
 {% for s in redis.snapshots -%}
 save {{ s }}
@@ -157,6 +154,11 @@ save {{ s }}
 save 900 1
 save 300 10
 save 60 10000
+{% endif -%}
+{% else %}
+#save 900 1
+#save 300 10
+#save 60 10000
 {% endif -%}
 
 # By default Redis will stop accepting writes if RDB snapshots are enabled

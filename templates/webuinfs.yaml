@@ -36,6 +36,10 @@ items:
     itemDesc: artifactId
   - itemName: t_domain
     itemDesc: 域名
+  - itemName: t_isMaster
+    itemDesc: 是否为主
+  - itemName: t_isIPhash
+    itemDesc: 是否IPhash
   - itemName: t_serverNameList
     itemDesc: 代理域名列表
   - itemName: t_mountDir
@@ -76,7 +80,7 @@ actions:
       # - name: 启动应用
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
       - name: 刷新tengine配置
-        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}}}'"
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}, isMaster: {{attrs.t_isMaster}}, isIPhash: {{attrs.t_isIPhash}}}}'"
       - name: 重新加载tengine配置
         sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
   - name: 安装应用
@@ -114,7 +118,7 @@ actions:
       # - name: 启动应用
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
       - name: 刷新tengine配置
-        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}}}'"
+        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}, isMaster: {{attrs.t_isMaster}}, isIPhash: {{attrs.t_isIPhash}}}}'"
       - name: 重新加载tengine配置
         sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
   - name: 重启应用

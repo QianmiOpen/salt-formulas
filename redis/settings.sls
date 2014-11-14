@@ -5,6 +5,7 @@
                      'redisVersion'     : 'redis-2.8.13',
                      'zipType'          : '.tar.gz',
                      'installPath'      : '/usr/local/bin',
+                     'isSaveDBFile'     : True,
                      'databases'        : '16'
                     }) %}
 

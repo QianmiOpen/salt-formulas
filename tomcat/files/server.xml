@@ -64,7 +64,7 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL HTTP/1.1 Connector on port 8080
     -->
-    <Connector port="8080" executor="tomcatThreadPool" maxThreads="{{ tomcat.maxThreads }}" maxSpareThreads="1500" enableLookups="false" acceptCount="1000" protocol="HTTP/1.1" connectionTimeout="{{ tomcat.connectionTimeout }}" redirectPort="8443"   useBodyEncodingForURI="true" URIEncoding="UTF-8"  />
+    <Connector port="8080" executor="tomcatThreadPool" maxThreads="{{ tomcat.maxThreads }}" enableLookups="false" acceptCount="1000" protocol="HTTP/1.1" connectionTimeout="{{ tomcat.connectionTimeout }}" redirectPort="8443"   useBodyEncodingForURI="true" URIEncoding="UTF-8"  />
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
@@ -78,7 +78,7 @@
          described in the APR documentation -->
     <!--
     <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
-               maxThreads="150" scheme="https" secure="true"
+               maxThreads="150" scheme="https" secure="true"debug
                clientAuth="false" sslProtocol="TLS" />
     -->
 
@@ -115,8 +115,8 @@
                resourceName="UserDatabase"/>
       </Realm>
 
-      <Host name="{{ tomcat.hostName }}" appBase="{{ tomcat.appBase }}" debug="{{ tomcat.debug }}" unpackWARs="{{ tomcat.unpackWARs }}" deployXML="{{ tomcat.deployXML }}" autoDeploy="{{ tomcat.autoDeploy }}" deployOnStartup="{{ tomcat.deployOnStartup }}">
-        <Context path="{{ tomcat.path }}" docBase="{{ tomcat.appName }}.war" debug="{{ tomcat.debug }}" privileged="{{ tomcat.privileged }}" reloadable="{{ tomcat.reloadable }}"/>
+      <Host name="{{ tomcat.hostName }}" appBase="{{ tomcat.appBase }}" unpackWARs="{{ tomcat.unpackWARs }}" deployXML="{{ tomcat.deployXML }}" autoDeploy="{{ tomcat.autoDeploy }}" deployOnStartup="{{ tomcat.deployOnStartup }}">
+        <Context path="{{ tomcat.path }}" docBase="{{ tomcat.appName }}.war" privileged="{{ tomcat.privileged }}" reloadable="{{ tomcat.reloadable }}"/>
         <Alias>{{ tomcat.appName }}</Alias>
       </Host>
     </Engine>
