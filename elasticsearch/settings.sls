@@ -1,8 +1,7 @@
 {% set p  = salt['pillar.get']('elasticsearch', {}) %}
 
 {% set elasticsearch = {} %}
-{%- do elasticsearch.update({'home'        : '/opt/elasticsearch',
-                             'base'        : '/opt',
+{%- do elasticsearch.update({'base'        : '/home/elasticsearch',
                              'prefix'      : 'elasticsearch',
                              'version'     : '1.2.4',
                              'fileType'    : 'tar.gz',
@@ -15,6 +14,8 @@
 {% endfor %}
 
 {% set package = p.get('package', elasticsearch.prefix ~ '-' ~ elasticsearch.version ~ '.' ~ elasticsearch.fileType) %}
+{% set home = p.get('home', elasticsearch.base ~ '/' ~ elasticsearch.prefix ~ '-' ~ elasticsearch.version) %}
 
-{%- do elasticsearch.update({'package'    : package
+{%- do elasticsearch.update({'package'    : package,
+                             'home'       : home
                              }) %}

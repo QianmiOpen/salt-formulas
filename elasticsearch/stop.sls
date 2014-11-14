@@ -1,6 +1,6 @@
 {%- from 'elasticsearch/settings.sls' import elasticsearch with context %}
 
-elasticsearch-stop:
+elasticsearch_stop:
   cmd.run:
-    - name: kill -9 `ps -ef |grep elasticsearch |grep -v grep |awk '{print $2}'`
-    - user: root
+    - name: {{ elasticsearch.home }}/bin/service/elasticsearch stop
+    - user: elasticsearch
