@@ -9,6 +9,7 @@ unpack-elasticsearch-tarball:
     - source: salt://elasticsearch/pkgs/{{ elasticsearch.package }}
     - saltenv: base
     - user: elasticsearch
+    - group: elasticsearch
   cmd.run:
     - name: tar xf {{ elasticsearch.base }}/{{ elasticsearch.package }} -C {{ elasticsearch.base }}
     - user: elasticsearch
@@ -17,9 +18,8 @@ unpack-elasticsearch-tarball:
       - file: unpack-elasticsearch-tarball
 
 elasticsearch_config:
-  file:
+  file.managed:
     - name: {{ elasticsearch.home }}/config/elasticsearch.yml
-    - managed
     - template: jinja
     - source: salt://elasticsearch/files/elasticsearch.yml
     - user: elasticsearch
@@ -30,6 +30,7 @@ unpack_service_tarball:
     - source: salt://elasticsearch/pkgs/service.tar.gz
     - saltenv: base
     - user: elasticsearch
+    - group: elasticsearch
   cmd.run:
     - name: tar xf {{ elasticsearch.base }}/service.tar.gz -C {{ elasticsearch.home }}/bin
     - user: elasticsearch
