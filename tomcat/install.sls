@@ -57,6 +57,13 @@ copy-env.conf:
     - defaults:
       tomcatHome: {{ tomcat.home }}
 
+/home/tomcat/tomcat/conf/context.xml:
+  file.managed:
+    - source: salt://tomcat/files/context.xml
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+
 {{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh:
   file.blockreplace:
     - marker_start: "# ----- Execute The Requested Command -----"
