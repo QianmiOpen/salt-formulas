@@ -20,11 +20,14 @@ unpack-jdk-tarball:
       - pkg: tar
       - file: {{ java.installPath }}
       - file: unpack-jdk-tarball
-  alternatives.install:
-    - name: java-home-link
-    - link: {{ java.home }}
-    - path: {{ java.realHome }}
-    - priority: 30
+
+symlink-java:
+  file.symlink:
+    - name: /usr/lib/java
+    - target: {{ java.realHome }}
+    - user: root
+    - group: root
+
 java_version:
   grains.present:
     - value: {{ java.version }}
