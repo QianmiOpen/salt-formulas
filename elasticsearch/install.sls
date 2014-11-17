@@ -24,6 +24,13 @@ elasticsearch_config:
     - source: salt://elasticsearch/files/elasticsearch.yml
     - user: elasticsearch
 
+elasticsearch_appfile:
+  file.managed:
+    - name: {{ elasticsearch.home }}/bin/elasticsearch
+    - template: jinja
+    - source: salt://elasticsearch/files/elasticsearch
+    - user: elasticsearch
+
 unpack_service_tarball:
   file.managed:
     - name: {{ elasticsearch.base }}/service.tar.gz
