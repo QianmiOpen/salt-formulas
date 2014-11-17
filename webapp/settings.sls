@@ -9,6 +9,7 @@
                       'repoBase'   : 'nexus.dev.ofpay.com/nexus/service/local/artifact/maven/redirect?',
                       'fileType'   : 'war',
                       'logHome'    : '/oflogs',
+                      'volHome'    : '/vol',
                       'nfsDir'     : '',
                       'serverDir'  : '',
                       'unzip'      : false
