@@ -91,7 +91,7 @@ tomcat-juli-adapters-jar:
     - require:
       - user: tomcat-user
 
-{% for jar in ['log4j-1.2.17.jar', 'redis-appender-1.0.1.jar', 'jedis-2.5.2.jar', 'jsonevent-layout-1.7.jar', 'json-smart-1.1.1.jar', 'commons-lang-2.6.jar'] %}
+{% for jar in ['log4j-1.2.17.jar', 'redis-appender-1.0.2-SNAPSHOT.jar', 'jedis-2.5.2.jar', 'jsonevent-layout-1.7.jar', 'json-smart-1.1.1.jar', 'commons-lang-2.6.jar'] %}
 copy-{{ jar }}:
   file.managed:
     - name: {{ tomcat.CATALINA_BASE }}/lib/{{ jar }}
