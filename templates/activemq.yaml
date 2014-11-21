@@ -2,7 +2,7 @@ name: activemq
 remark: 用于activemq项目的自动部署
 aliass:
   - aliasName: IPs
-    aliasValue: "function(){if (this.hosts.length > 1) {var __port=this.attrs.t_defaultPort; return 'failover:(' + this.hosts.map(function(host){return 'tcp://' + host.ip + ':' + __port}).join(',') + '')?randomize=false' } else { var __port=this.attrs.t_defaultPort; return this.hosts.map(function(host){return 'tcp://' + host.ip + ':' + __port}).join(',') }}.call(this)"
+    aliasValue: "function(){if (this.hosts.length > 1) {var __port=this.attrs.t_defaultPort; return 'failover:(' + this.hosts.map(function(host){return 'tcp://' + host.ip + ':' + __port}).join(',') + ')?randomize=false' } else { var __port=this.attrs.t_defaultPort; return this.hosts.map(function(host){return 'tcp://' + host.ip + ':' + __port}).join(',') }}.call(this)"
     aliasDesc: "获取activemq项目当前环境机器列表"
 items:
   - itemName: t_defaultPort
