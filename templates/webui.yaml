@@ -22,7 +22,7 @@ aliass:
     aliasValue: "dependence.$logServer.attrs.t_virtualIp"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: ZookeeperRegisterIps
-    aliasValue: "dependence.$dubboRegister.hosts.map(function(host){return host.ip + ':' + dependence.$dubboRegister.attrs.t_defaultPort}).join(',')"
+    aliasValue: "dependence.$dubboRegister.alias.IPs"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: TengineHostNames
     aliasValue: "dependence.$frontTengine.hosts.map(function(host){return host.name}).join(',')"

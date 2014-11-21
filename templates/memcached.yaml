@@ -1,5 +1,9 @@
 name: memcached
 remark: 用于memcached项目的自动部署
+aliass:
+  - aliasName: IPs
+    aliasValue: "this.hosts.map(function(host){return host.ip + ':' + this.attrs.t_defaultPort}).join(' ')"
+    aliasDesc: "获取memcache项目当前环境机器列表，以','分割"
 items:
   - itemName: t_defaultPort
     itemDesc: 默认端口

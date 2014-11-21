@@ -1,8 +1,11 @@
 name: zookeeper
 remark: 用于zookeeper项目的自动部署
 aliass:
-  - aliasName: zookeeperHostNames
-    aliasValue: "hosts.map(function(host){return host.name}).join(',')"
+  - aliasName: hostNames
+    aliasValue: "this.hosts.map(function(host){return host.name}).join(',')"
+    aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
+  - aliasName: IPs
+    aliasValue: "this.hosts.map(function(host){return host.ip + ':' + this.attrs.t_defaultPort}).join(',')"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
 items:
   - itemName: t_defaultPort
@@ -19,9 +22,9 @@ actions:
       - name: 编译安装zookeeper
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' zookeeper pillar='{zookeeper: {hostslist: \"{{ hosts.map(function(host){return host.ip}).join(',') }}\", hostip: {{ cHost.ip }}}}'"
       - name: 刷新所有zookeeper主机配置
-        sls: "salt -L {{alias.zookeeperHostNames}} state.sls saltenv='{{env.scriptVersion}}' zookeeper pillar='{zookeeper: {hostslist: \"{{ hosts.map(function(host){return host.ip}).join(',') }}\", hostip: {{ cHost.ip }}}}'"
+        sls: "salt -L {{alias.hostNames}} state.sls saltenv='{{env.scriptVersion}}' zookeeper pillar='{zookeeper: {hostslist: \"{{ hosts.map(function(host){return host.ip}).join(',') }}\", hostip: {{ cHost.ip }}}}'"
       - name: 重新加载所有zookeeper主机配置
-        sls: "salt -L {{alias.zookeeperHostNames}} state.sls saltenv='{{env.scriptVersion}}' zookeeper.restart"
+        sls: "salt -L {{alias.hostNames}} state.sls saltenv='{{env.scriptVersion}}' zookeeper.restart"
 
   - name: 重启zookeeper
     css: glyphicon glyphicon-repeat
