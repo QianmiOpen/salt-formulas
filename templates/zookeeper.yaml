@@ -5,7 +5,7 @@ aliass:
     aliasValue: "this.hosts.map(function(host){return host.name}).join(',')"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: IPs
-    aliasValue: "this.hosts.map(function(host){return host.ip + ':' + this.attrs.t_defaultPort}).join(',')"
+    aliasValue: "var __port = this.attrs.t_defaultPort;this.hosts.map(function(host){return host.ip + ':' + __port}).join(',')"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
 items:
   - itemName: t_defaultPort
