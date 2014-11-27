@@ -1,6 +1,2 @@
 name: mongodb
 remark: 用于mongodb项目的自动部署
-items:
-  - itemName: t_virtualIp
-    itemDesc: mongodb的虚ip
-    itemType: var
