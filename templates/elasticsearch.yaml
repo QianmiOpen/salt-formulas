@@ -13,7 +13,7 @@ items:
   - itemName: t_numberofreplicas
     itemDesc: 副本数量
     itemType: var
-    default: '5'
+    default: '1'
 
 actions:
   - name: 部署elasticsearch
