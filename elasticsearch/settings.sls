@@ -1,12 +1,14 @@
 {% set p  = salt['pillar.get']('elasticsearch', {}) %}
 
 {% set elasticsearch = {} %}
-{%- do elasticsearch.update({'base'        : '/home/elasticsearch',
-                             'prefix'      : 'elasticsearch',
-                             'version'     : '1.2.4',
-                             'fileType'    : 'tar.gz',
-                             'nodename'    : '192.1168.0.1',
-                             'clustername' : 'elasticsearch'
+{%- do elasticsearch.update({'base'               : '/home/elasticsearch',
+                             'prefix'             : 'elasticsearch',
+                             'version'            : '1.2.4',
+                             'fileType'           : 'tar.gz',
+                             'nodename'           : '192.1168.0.1',
+                             'clustername'        : 'elasticsearch',
+                             'number_of_shards'   : '5',
+                             'number_of_replicas' : '1'
                              }) %}
 
 {% for key, value in elasticsearch.iteritems() %}

@@ -105,7 +105,7 @@ node.name: "{{ elasticsearch.nodename }}"
 
 # Set the number of shards (splits) of an index (5 by default):
 #
-#index.number_of_shards: 5
+index.number_of_shards: {{ elasticsearch.number_of_shards }}
 
 # Set the number of replicas (additional copies) of an index (1 by default):
 #
