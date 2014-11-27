@@ -6,6 +6,14 @@ items:
     itemDesc: 集群名称
     itemType: var
     default: 'elasticsearch'
+  - itemName: t_numberofshards
+    itemDesc: 分片数量
+    itemType: var
+    default: '5'
+  - itemName: t_numberofreplicas
+    itemDesc: 副本数量
+    itemType: var
+    default: '5'
 
 actions:
   - name: 部署elasticsearch
@@ -18,7 +26,7 @@ actions:
       - name: 安装java
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
       - name: 编译安装elasticsearch
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.install pillar='{elasticsearch: {nodename: {{cHost.name}}, clustername: {{attrs.t_clustername}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.install pillar='{elasticsearch: {nodename: {{cHost.name}}, clustername: {{attrs.t_clustername}}, number_of_shards: {{attrs.t_numberofshards}}, number_of_replicas: {{attrs.t_numberofreplicas}}}}'"
 
   - name: 重启elasticsearch
     css: glyphicon glyphicon-repeat
