@@ -42,6 +42,8 @@ unmount-oflogs:
 
 {{ webapp.logHome }}/{{ webapp.projectName }}:
   file.directory:
+    - user: tomcat
+    - group: tomcat
     - mode: 777
     - makedirs: True
   mount.mounted:
@@ -77,6 +79,8 @@ unmount-oflogs:
 
 {{ webapp.logHome }}/{{ webapp.projectName }}:
   file.directory:
+    - user: tomcat
+    - group: tomcat
     - mode: 777
     - makedirs: True
   mount.mounted:
