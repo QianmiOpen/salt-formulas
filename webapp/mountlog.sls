@@ -32,8 +32,6 @@ unmount-nfs-dirs:
 unmount-oflogs:
   file.directory:
     - name: {{ webapp.logHome }}/{{ webapp.projectName }}
-    - user: tomcat
-    - group: tomcat
     - mode: 777
     - makedirs: True
   mount.unmounted:
@@ -69,8 +67,6 @@ unmount-oflogs:
 unmount-oflogs:
   file.directory:
     - name: {{ webapp.logHome }}/{{ webapp.projectName }}
-    - user: tomcat
-    - group: tomcat
     - mode: 777
     - makedirs: True
   mount.unmounted:
