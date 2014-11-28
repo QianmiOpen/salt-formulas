@@ -9,8 +9,6 @@ logstash-config-{{ configfile }}:
     - mode: 755
     - source: salt://logstash/files/{{ configfile }}
     - template: jinja
-    - require:
-      - cmd: unpack-logstash-tarball
 {% endfor %}
 
 {% set ip_str = logstash.redisIPList  %}
@@ -27,7 +25,5 @@ logstash-config-01-inputs-conf-{{ ip }}:
     - template: jinja
     - context:
       redisIP: {{ ip }}
-    - require:
-      - cmd: unpack-logstash-tarball
 {% endif %}
 {% endfor %}
