@@ -10,9 +10,9 @@ dependences:
     description: 日志搜索引擎
     default: elasticsearch
 aliass:
-  - aliasName: LogstashRedisIP
-    aliasValue: "dependence.$logstashredis.attrs.t_virtualIp"
-    aliasDesc: "获取Logstash所用redis的virtualIp"
+  - aliasName: LogstashRedisIPList
+    aliasValue: "dependence.$logstashredis.hosts.map(function(host){return host.ip}).join(',')"
+    aliasDesc: "获取Logstash所用redis的list"
   - aliasName: LogstashRedisPort
     aliasValue: "dependence.$logstashredis.attrs.t_port"
     aliasDesc: "获取Logstash所用redis的端口"
@@ -37,13 +37,13 @@ actions:
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.stop"
       - name: 编译安装logstash
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.init_new pillar='{logstash: {redisIP: {{alias.LogstashRedisIP}}, redisPort: {{alias.LogstashRedisPort}}, hostIP: {{alias.elasticsearchIP}}, clustername: {{alias.elasticsearchClustername}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.init_new pillar='{logstash: {redisIPList: {{alias.LogstashRedisIPList}}, redisPort: {{alias.LogstashRedisPort}}, hostIP: {{alias.elasticsearchIP}}, clustername: {{alias.elasticsearchClustername}}}}'"
 
   - name: 重启logstash
     css: glyphicon glyphicon-repeat
     steps:
       - name: 重新同步配置文件
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.synccfg pillar='{logstash: {redisIP: {{alias.LogstashRedisIP}}, redisPort: {{alias.LogstashRedisPort}}, hostIP: {{alias.elasticsearchIP}}, clustername: {{alias.elasticsearchClustername}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.synccfg pillar='{logstash: {redisIPList: {{alias.LogstashRedisIPList}}, redisPort: {{alias.LogstashRedisPort}}, hostIP: {{alias.elasticsearchIP}}, clustername: {{alias.elasticsearchClustername}}}}'"
       - name: 重启logstash
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.restart"
 
