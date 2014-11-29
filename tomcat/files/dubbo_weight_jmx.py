@@ -92,7 +92,9 @@ class dubbo(object):
 
 if __name__ == "__main__":
     if(len(sys.argv) != 6):
-        print("您需要传递5个参数，格式为：python dubbo_weight.py dubboadmin:port adminUser adminPassword providerPort weight;\n 1、dubboadmin:port(dubboadmin应用暴露的服务),2、adminUser(dubboadmin登录用户),3、adminPassword(dubboadmin登录密码),4、providerPort(应用的dubbo端口),5、weight(权重)")
+        errorStr = "您需要传递5个参数，格式为：python dubbo_weight.py dubboadmin:port adminUser adminPassword providerPort weight;\n 1、dubboadmin:port(dubboadmin应用暴露的服务),2、adminUser(dubboadmin登录用户),3、adminPassword(dubboadmin登录密码),4、providerPort(应用的dubbo端口),5、weight(权重)"
+        print errorStr
+        raise Exception(errorStr)
     else:
         print(sys.argv[0])
         dubboadmin = sys.argv[1]
