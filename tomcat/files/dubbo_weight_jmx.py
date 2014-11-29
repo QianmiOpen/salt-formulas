@@ -60,7 +60,7 @@ class dubbo(object):
         self.provider = provider
         self.weight = str(weight)
 
-        self.boolean_true = 'dubbo execute true'
+        self.boolean_true = '操作成功'
         self.boolean_false = 'dubbo execute false'
         self.boolean_noProvider = 'there is no provider'
 
