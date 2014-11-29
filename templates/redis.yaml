@@ -32,8 +32,10 @@ actions:
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
       - name: 安装ntp服务
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
-      - name: 编译安装redis
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis pillar='{keepalived: {isMaster: {{attrs.t_isMaster}}, virtual_router_id: {{attrs.t_virtualRouterId}}, virtual_ipaddress: {{attrs.t_virtualIp}}}, redis: {databases: {{attrs.t_databases}}, port: {{attrs.t_port}}, isSaveDBFile: {{attrs.t_isSaveDBFile}}}}'"
+      - name: 编译安装keepalived
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' keepalived pillar='{keepalived: {isMaster: {{attrs.t_isMaster}}, virtual_router_id: {{attrs.t_virtualRouterId}}, virtual_ipaddress: \"{{attrs.t_virtualIp}}\"}}'"
+      - name: 编译安装redi
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis pillar='{redis: {databases: {{attrs.t_databases}}, port: {{attrs.t_port}}, isSaveDBFile: {{attrs.t_isSaveDBFile}}}}'"
 
 
   - name: 重启redis
