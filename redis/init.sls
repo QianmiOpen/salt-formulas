@@ -67,5 +67,5 @@ redis_databases_num:
   grains.present:
     - value: {{ redis.databases }}
 
-include:
-  - keepalived.init
+#include:
+#  - keepalived.init
