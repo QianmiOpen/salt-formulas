@@ -57,6 +57,21 @@ copy-env.conf:
     - defaults:
       tomcatHome: {{ tomcat.home }}
 
+/home/tomcat/dubbo_weight_jmx.py:
+  file.managed:
+    - source: salt://tomcat/files/dubbo_weight_jmx.py
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+
+/home/tomcat/cmdline-jmxclient-0.10.3.jar:
+  file.managed:
+    - source: salt://tomcat/pkgs/cmdline-jmxclient-0.10.3.jar
+    - saltenv: base
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+
 /home/tomcat/tomcat/conf/context.xml:
   file.managed:
     - source: salt://tomcat/files/context.xml
