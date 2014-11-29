@@ -64,6 +64,13 @@ copy-env.conf:
     - group: tomcat
     - mode: 644
 
+/home/tomcat/shutdown_tocmat.sh:
+  file.managed:
+    - source: salt://tomcat/files/shutdown_tocmat.sh
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+
 /home/tomcat/cmdline-jmxclient-0.10.3.jar:
   file.managed:
     - source: salt://tomcat/pkgs/cmdline-jmxclient-0.10.3.jar
