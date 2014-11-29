@@ -86,13 +86,13 @@ copy-env.conf:
     - group: tomcat
     - mode: 644
 
-{{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh:
-  file.blockreplace:
-    - marker_start: "# ----- Execute The Requested Command -----"
-    - marker_end: "# Bugzilla 37848"
-    - content: CATALINA_OPTS=`sed 's/"//g' $CATALINA_BASE/conf/env.conf |awk '/^[^#]/'| tr "\n" ' '`
+{{ tomcat.CATALINA_BASE }}/bin/catalina.sh:
+  file.managed:
+    - source: salt://tomcat/files/catalina.sh
+    - user: tomcat
+    - group: tomcat
 
-# 配置tomcat，使用log4j输出日志
+# 配置tomcat，使用logback输出日志
 juli-jar:
   file.managed:
     - name: {{ tomcat.CATALINA_BASE }}/bin/tomcat-juli.jar
@@ -103,18 +103,7 @@ juli-jar:
     - require:
       - user: tomcat-user
 
-tomcat-juli-adapters-jar:
-  file.managed:
-    - name: {{ tomcat.CATALINA_BASE }}/lib/tomcat-juli-adapters.jar
-    - source: salt://tomcat/pkgs/{{ tomcat.version }}/tomcat-juli-adapters.jar
-    - saltenv: base
-    - user: tomcat
-    - group: tomcat
-    - require:
-      - user: tomcat-user
-
-# redis-appender-1.0.2-SNAPSHOT.jar
-{% for jar in ['log4j-1.2.17.jar', 'redis-appender-1.0.1.jar', 'jedis-2.5.2.jar', 'jsonevent-layout-1.7.jar', 'json-smart-1.1.1.jar', 'commons-lang-2.6.jar'] %}
+{% for jar in ['jackson-core-2.4.2.jar', 'jackson-databind-2.4.2.jar', 'logstash-logback-encoder-3.3-qianmi-4.jar', 'jackson-annotations-2.4.2.jar'] %}
 copy-{{ jar }}:
   file.managed:
     - name: {{ tomcat.CATALINA_BASE }}/lib/{{ jar }}
@@ -126,9 +115,9 @@ copy-{{ jar }}:
       - user: tomcat-user
 {% endfor %}
 
-{{ tomcat.CATALINA_BASE }}/lib/log4j.properties:
+{{ tomcat.CATALINA_BASE }}/conf/tomcat-logback.xml:
   file.managed:
-    - source: salt://tomcat/files/log4j.properties
+    - source: salt://tomcat/files/tomcat-logback.xml
     - user: tomcat
     - group: tomcat
     - mode: 644

@@ -5,7 +5,7 @@
                       'name'           : 'tomcat',
 
                       'packagePrefix'  : 'apache-tomcat-',
-                      'version'        : '7.0.55',
+                      'version'        : '7.0.57',
                       'packageSuffix'  : '.tar.gz',
 
                       'limitSoft'      : 64000,
