@@ -60,9 +60,9 @@ class dubbo(object):
         self.provider = provider
         self.weight = str(weight)
 
-        self.boolean_true = u'操作成功'
-        self.boolean_false = u'操作失败'
-        self.boolean_noProvider = u'没有找到符合要求的Provider'
+        self.boolean_true = '操作成功'
+        self.boolean_false = '操作失败'
+        self.boolean_noProvider = '没有找到符合要求的Provider'
 
     def operatorFun(self):
         #拼接url，批量禁用providers
