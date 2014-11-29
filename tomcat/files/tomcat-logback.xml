@@ -9,8 +9,8 @@
     </appender>
 
     <appender name="LOGSTASHREDISAPPENDER_CATALINA" class="net.logstash.logback.appender.LogstashRedisAppender">
-        <host>172.19.65.53</host>
-        <port>6379</port>
+        <host>{{tomcat.logstashRedisHost}}</host>
+        <port>{{tomcat.logstashRedisPort}}</port>
         <key>LOGSTASH_CATALINA</key>
         <enableBatch>true</enableBatch>     <!-- true is batch write to redis; default is true -->
         <batchSize>100</batchSize>          <!-- batch size, default 100 -->
