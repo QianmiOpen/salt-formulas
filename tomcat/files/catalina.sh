@@ -95,7 +95,6 @@
 #                   LOGGING_MANAGER="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager"
 # -----------------------------------------------------------------------------
 
-LOGGING_MANAGER=-Dnop
 JAVA_OPTS="$JAVA_OPTS -Djuli-logback.configurationFile=file:$CATALINA_HOME/conf/tomcat-logback.xml"
 
 CATALINA_OPTS=`sed 's/"//g' $CATALINA_BASE/conf/env.conf |awk '/^[^#]/'| tr "\n" ' '`
@@ -198,9 +197,9 @@ fi
 # Add tomcat-juli.jar to classpath
 # tomcat-juli.jar can be over-ridden per instance
 if [ -r "$CATALINA_BASE/bin/tomcat-juli.jar" ] ; then
-  CLASSPATH=$CLASSPATH:$CATALINA_BASE/bin/tomcat-juli.jar:$CATALINA_BASE/lib/jackson-core-2.4.2.jar:$CATALINA_BASE/lib/jackson-databind-2.4.2.jar:$CATALINA_BASE/lib/jackson-annotations-2.4.2.jar:$CATALINA_BASE/lib/logstash-logback-encoder-3.3-qianmi-4.jar
+  CLASSPATH=$CLASSPATH:$CATALINA_BASE/bin/tomcat-juli.jar
 else
-  CLASSPATH=$CLASSPATH:$CATALINA_BASE/bin/tomcat-juli.jar:$CATALINA_BASE/lib/jackson-core-2.4.2.jar:$CATALINA_BASE/lib/jackson-databind-2.4.2.jar:$CATALINA_BASE/lib/jackson-annotations-2.4.2.jar:$CATALINA_BASE/lib/logstash-logback-encoder-3.3-qianmi-4.jar
+  CLASSPATH=$CLASSPATH:$CATALINA_BASE/bin/tomcat-juli.jar
 fi
 
 # Bugzilla 37848: When no TTY is available, don't output to console
