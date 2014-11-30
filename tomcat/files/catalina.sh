@@ -238,6 +238,7 @@ fi
 #JAVA_OPTS="$JAVA_OPTS -Dorg.apache.catalina.security.SecurityListener.UMASK=`umask`"
 
 # ----- Execute The Requested Command -----------------------------------------
+
 # Bugzilla 37848: only output this if we have a TTY
 if [ $have_tty -eq 1 ]; then
   echo "Using CATALINA_BASE:   $CATALINA_BASE"
