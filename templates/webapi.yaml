@@ -13,6 +13,10 @@ dependences:
     type: redis
     description: 日志服务器
     default: LogstashRedis
+  - name: "$dubboadmin"
+    type: dubboadmin
+    description: DubboAdmin服务器
+    default: DubboAdmin
 aliass:
   - aliasName: LogServerVIp
     aliasValue: "dependence.$logServer.attrs.t_virtualIp"
@@ -36,9 +40,6 @@ items:
   - itemName: t_jdkversion
     itemDesc: jdk版本
     default: 'jdk7'
-  - itemName: t_mountRootDir
-    itemDesc: 日志绑定根目录
-    default: '/oflogs'
   - itemName: t_unpacked
     itemDesc: 自动解压
     default: 'False'
@@ -78,7 +79,7 @@ actions:
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {logstashRedisHost: \"{{dependence.$logredis.attrs.t_virtualIp}}\", logstashRedisPort: {{dependence.$logredis.attrs.t_port}}}}'"
         seconds: 6
       - name: mount log目录
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{alias.LogServerVIp}}, projectName: {{attrs.t_mountDir}}, logHome: {{attrs.t_mountRootDir}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{alias.LogServerVIp}}, projectName: {{attrs.t_mountDir}}, logHome: {{dependence.$logServer.attrs.t_mountRootDir}}}}'"
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
       - name: 部署war包
