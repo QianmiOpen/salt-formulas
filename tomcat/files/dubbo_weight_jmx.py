@@ -43,7 +43,10 @@ class cmd(object):
             if(eventStatus == 1):
                 raise Exception(self.event)
             else:
-                self.event = int(self.event)
+                try:
+                    self.event = int(self.event)
+                except:
+                    print "except error: DubboInvokeMBean is not a registered bean"
             print('result is ' + str(self.event))
             self.executeTimes = self.executeTimes + 1
             self.cmdInterval()
