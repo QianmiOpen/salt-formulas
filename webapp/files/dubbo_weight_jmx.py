@@ -30,7 +30,7 @@ class cmd(object):
                 if (not ret):
                     return False
                 executeTime += 1
-                print("wait %d times" % executeTime)
+                print("wait %d times, invoke num %d" % (executeTime, invokeNum))
 
             print("dubbo thread num is %d" % invokeNum)
             return False
