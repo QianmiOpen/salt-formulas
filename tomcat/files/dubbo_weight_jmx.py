@@ -47,7 +47,7 @@ class cmd(object):
                 except:
                     print "except error: DubboInvokeMBean is not a registered bean"
                     # 当jmx查询有误时，可以等待timeout
-                    if(self.executeTimes < self.maxExecuteTimes):
+                    if(self.executeTimes < self.maxExecuteTimes - 1):
                         self.event = self.maxEvent + 1
                     else:
                         self.event = self.maxEvent - 1
