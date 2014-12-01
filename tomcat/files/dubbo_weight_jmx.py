@@ -124,7 +124,8 @@ if __name__ == "__main__":
         # weight = 0
         try:
             dubbo(dubboadmin, adminUser, adminPassword, myaddr+':'+str(providerPort), weight).operatorFun()
-            cmdResult = cmd(1, 3, 30).cmdInterval()
+            if(int(weight) == 0):
+                cmdResult = cmd(1, 3, 30).cmdInterval()
         except:
             print "Unexpected error:", sys.exc_info()[0]
             raise
