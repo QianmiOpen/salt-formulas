@@ -24,7 +24,6 @@ class cmd(object):
         self.maxExecuteTimes = (self.timeout / self.interval) + 1
         print(self.maxExecuteTimes)
         if(self.event > self.maxEvent and self.executeTimes < self.maxExecuteTimes):
-            print(self.executeTimes)
             self.s.enter(5, 1, self.cmdExecute, ())
             self.s.run()
 
@@ -47,6 +46,11 @@ class cmd(object):
                     self.event = int(self.event)
                 except:
                     print "except error: DubboInvokeMBean is not a registered bean"
+                    # 当jmx查询有误时，可以等待timeout
+                    if(self.executeTimes < self.maxExecuteTimes):
+                        self.event = self.maxEvent + 1
+                    else:
+                        self.event = self.maxEvent - 1
             print('result is ' + str(self.event))
             self.executeTimes = self.executeTimes + 1
             self.cmdInterval()
