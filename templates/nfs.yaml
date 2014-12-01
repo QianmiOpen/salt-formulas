@@ -4,3 +4,6 @@ items:
   - itemName: t_virtualIp
     itemDesc: nfs的虚ip
     itemType: var
+  - itemName: t_mountRootDir
+    itemDesc: 日志绑定根目录
+    default: '/oflogs'
