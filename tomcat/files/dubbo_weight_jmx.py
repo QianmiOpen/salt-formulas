@@ -83,7 +83,7 @@ class dubbo(object):
                 else:
                     raise Exception(self.boolean_false)
             else :
-                print self.boolean_true
+                print self.boolean_true.encode('utf-8')
                 return True
         except:
             print "Unexpected error:", sys.exc_info()[0]
