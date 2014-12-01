@@ -1,4 +1,5 @@
 {%- from 'tomcat/settings.sls' import tomcat with context %}
+{%- from 'webapp/settings.sls' import webapp with context %}
 
 copy-jmx-jar:
   file.managed:
@@ -12,7 +13,7 @@ copy-jmx-jar:
 set-dubbo-weight-0:
   cmd.script:
     - name: salt://webapp/files/dubbo_weight_jmx.py
-    - args: "172.19.65.13:8080 root master123 20882 0"
+    - args: "{{webapp.dubboAdminIp}}:{{webapp.dubboAdminPort}} root {{webapp.dubboRootPasswd}} 0"
     - user: tomcat
     - require:
       - file: copy-jmx-jar
