@@ -57,29 +57,9 @@ copy-env.conf:
     - defaults:
       tomcatHome: {{ tomcat.home }}
 
-/home/tomcat/dubbo_weight_jmx.py:
-  file.managed:
-    - source: salt://tomcat/files/dubbo_weight_jmx.py
-    - user: tomcat
-    - group: tomcat
-    - mode: 644
-
-/home/tomcat/shutdown_tocmat.sh:
-  file.managed:
-    - source: salt://tomcat/files/shutdown_tocmat.sh
-    - user: tomcat
-    - group: tomcat
-    - mode: 644
-
-/home/tomcat/cmdline-jmxclient-0.10.3.jar:
-  file.managed:
-    - source: salt://tomcat/pkgs/cmdline-jmxclient-0.10.3.jar
-    - saltenv: base
-    - user: tomcat
-    - group: tomcat
-    - mode: 644
-
-/home/tomcat/tomcat/conf/context.xml:
+# 配置tomcat，使用logback输出日志
+{% if  tomcat.useLogback %}
+{{ tomcat.CATALINA_BASE }}/conf/context.xml:
   file.managed:
     - source: salt://tomcat/files/context.xml
     - user: tomcat
@@ -92,7 +72,6 @@ copy-env.conf:
     - user: tomcat
     - group: tomcat
 
-# 配置tomcat，使用logback输出日志
 juli-jar:
   file.managed:
     - name: {{ tomcat.CATALINA_BASE }}/bin/tomcat-juli.jar
@@ -114,7 +93,6 @@ logback-copy-jars:
     - require:
       - user: tomcat-user
 
-
 {{ tomcat.CATALINA_BASE }}/conf/catalina.properties:
   file.managed:
     - source: salt://tomcat/files/catalina.properties
@@ -134,6 +112,7 @@ logback-copy-jars:
     - template: jinja
     - defaults:
         tomcat: {{ tomcat|json }}
+{% endif %}
 
 delete-logging.properties:
   file.absent:
