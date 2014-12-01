@@ -98,8 +98,8 @@ class dubbo(object):
         
 
 if __name__ == "__main__":
-    if(len(sys.argv) != 6):
-        errorStr = "您需要传递5个参数，格式为：python dubbo_weight.py dubboadmin:port adminUser adminPassword providerPort weight;\n 1、dubboadmin:port(dubboadmin应用暴露的服务),2、adminUser(dubboadmin登录用户),3、adminPassword(dubboadmin登录密码),4、providerPort(应用的dubbo端口),5、weight(权重)"
+    if(len(sys.argv) != 5):
+        errorStr = "您需要传递4个参数，格式为：python dubbo_weight.py dubboadmin:port adminUser adminPassword weight;\n 1、dubboadmin:port(dubboadmin应用暴露的服务),2、adminUser(dubboadmin登录用户),3、adminPassword(dubboadmin登录密码),4、weight(权重)"
         print errorStr
         raise Exception(errorStr)
     else:
@@ -110,9 +110,7 @@ if __name__ == "__main__":
         print(adminUser)
         adminPassword = sys.argv[3]
         print(adminPassword)
-        providerPort = int(sys.argv[4])
-        print(providerPort)
-        weight = sys.argv[5]
+        weight = sys.argv[4]
         print(weight)
 
         myname = socket.getfqdn(socket.gethostname())
@@ -124,10 +122,9 @@ if __name__ == "__main__":
         # adminUser = "root"
         # adminPassword = "master123"    
         # myaddr = "172.19.65.22"
-        # providerPort = 20882
         # weight = 0
         try:
-            dubbo(dubboadmin, adminUser, adminPassword, myaddr+':'+str(providerPort), weight).operatorFun()
+            dubbo(dubboadmin, adminUser, adminPassword, myaddr+':', weight).operatorFun()
             if(int(weight) == 0):
                 cmdResult = cmd(1, 3, 30).cmdInterval()
         except:
