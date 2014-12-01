@@ -12,8 +12,6 @@ tomcat_shutdown:
     - name: salt://tomcat/files/shutdown_tocmat.sh -force
     - user: tomcat
     - onlyif: 'test -e {{ tomcat.tomcatPid }}'
-    - watch:
-      - cmd: set-dubbo-weight-0
 
 # /home/tomcat/shutdown_tocmat.sh:
 #   file.managed:
