@@ -17,7 +17,7 @@ class cmd(object):
         self.timeout = timeout
 
     def cmdInterval(self):
-        maxExecuteTimes = (self.timeout / self.interval) + 1
+        maxExecuteTimes = (self.timeout + self.interval -1) / self.interval
         (ret, invokeNum) = self.cmdExecute()
         print("execute result %r, %d" % (ret, invokeNum))
         if (ret):
