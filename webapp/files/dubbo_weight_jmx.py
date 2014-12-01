@@ -22,7 +22,7 @@ class cmd(object):
         if (ret):
             executeTime = 0
             while (executeTime < maxExecuteTimes):
-                if (invokeNum <= maxInvoke):
+                if (invokeNum <= self.maxInvoke):
                     return True
                 time.sleep(self.interval)
                 (ret, invokeNum) = self.cmdExecute()
