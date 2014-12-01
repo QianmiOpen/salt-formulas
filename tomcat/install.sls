@@ -103,18 +103,17 @@ juli-jar:
     - require:
       - user: tomcat-user
 
-{% for jar in ['tomcat-juli-logback.jar', 'slf4j-api-1.7.7.jar', 'logback-core-1.1.2.jar', 'jackson-core-2.4.2.jar', 'jackson-databind-2.4.2.jar', 'logstash-logback-encoder-3.3-qianmi-4.jar', 'jackson-annotations-2.4.2.jar'] %}
-copy-{{ jar }}:
-  file.managed:
-    - name: {{ tomcat.CATALINA_BASE }}/srvlib/{{ jar }}
-    - source: salt://tomcat/pkgs/{{ jar }}
+logback-copy-jars:
+  file.recurse:
+    - name: {{ tomcat.CATALINA_BASE }}/srvlib
+    - source: salt://tomcat/pkgs/logback
     - saltenv: base
     - makedirs: true
     - user: tomcat
     - group: tomcat
     - require:
       - user: tomcat-user
-{% endfor %}
+
 
 {{ tomcat.CATALINA_BASE }}/conf/catalina.properties:
   file.managed:
@@ -125,7 +124,6 @@ copy-{{ jar }}:
     - template: jinja
     - defaults:
         tomcat: {{ tomcat|json }}
-
 
 {{ tomcat.CATALINA_BASE }}/conf/tomcat-logback.xml:
   file.managed:
@@ -140,7 +138,6 @@ copy-{{ jar }}:
 delete-logging.properties:
   file.absent:
     - name: {{ tomcat.CATALINA_BASE }}/conf/logging.properties
-
 
 # grains中增加tomcat的version信息
 tomcat_version:
