@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from requests.auth import HTTPBasicAuth
-import requests
+# from requests.auth import HTTPBasicAuth
+# import requests
 import time
 import socket
 import os
 import sys
 import sched, time
 import commands
+import urllib
 
 
 class cmd(object):
@@ -69,19 +70,17 @@ class dubbo(object):
         self.boolean_noProvider = 'there is no provider'
 
     def operatorFun(self):
-        #拼接url，批量禁用providers
-        # opeUrl = 'http://'+self.monitor+'/governance/addresses/'+self.provider+'/providers/'+str(0.6)+'/weight?weight=0.5'
-        opeUrl = 'http://'+self.monitor+'/governance/addresses/'+self.provider+'/providers/weight?weight=' + self.weight
+        opeUrl = 'http://'+self.user+':'+self.pwd+'@'+self.monitor+'/governance/addresses/'+self.provider+'/providers/weight?weight=' + self.weight
         print opeUrl
         try:
-            r_ope = requests.get(opeUrl,auth=HTTPBasicAuth(self.user, self.pwd))
-            # print r_ope.text
-            
+            r_ope = urllib.urlopen(opeUrl)
+            text = r_ope.read().decode('utf-8')
+            # print text
 
-            int_result = r_ope.text.find(self.boolean_true)
+            int_result = text.find(self.boolean_true)
             # print int_result
             if int_result == -1:
-                if(r_ope.text.find(self.boolean_noProvider) != -1):
+                if(text.find(self.boolean_noProvider) != -1):
                     print self.boolean_noProvider
                     raise Exception(self.boolean_noProvider)
                 else:
@@ -92,7 +91,6 @@ class dubbo(object):
         except:
             print "Unexpected error:", sys.exc_info()[0]
             raise
-        
 
 if __name__ == "__main__":
     if(len(sys.argv) != 5):
