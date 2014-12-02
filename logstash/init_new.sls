@@ -60,6 +60,17 @@ logstash-config-{{ configfile }}:
       - cmd: unpack-logstash-tarball
 {% endfor %}
 
+logstash-lib-sh:
+  file.managed:
+    - name: {{ logstash.home }}/{{ logstash.prefix }}/bin/logstash.lib.sh
+    - user: logstash
+    - group: logstash
+    - mode: 755
+    - source: salt://logstash/files/logstash.lib.sh
+    - template: jinja
+    - require:
+      - cmd: unpack-logstash-tarball
+
 {% set ip_str = logstash.redisIPList  %}
 {% set ip_arr = ip_str.split(',') %}
 {% for ip in ip_str.split(',') %}

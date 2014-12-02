@@ -36,12 +36,16 @@ actions:
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.stop"
+      - name: 清理配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.delconf"
       - name: 编译安装logstash
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.init_new pillar='{logstash: {redisIPList: \"{{alias.LogstashRedisIPList}}\", redisPort: {{alias.LogstashRedisPort}}, hostIP: {{alias.elasticsearchIP}}, clustername: {{alias.elasticsearchClustername}}}}'"
 
   - name: 重启logstash
     css: glyphicon glyphicon-repeat
     steps:
+      - name: 清理配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.delconf"
       - name: 重新同步配置文件
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' logstash.synccfg pillar='{logstash: {redisIPList: \"{{alias.LogstashRedisIPList}}\", redisPort: {{alias.LogstashRedisPort}}, hostIP: {{alias.elasticsearchIP}}, clustername: {{alias.elasticsearchClustername}}}}'"
       - name: 重启logstash
