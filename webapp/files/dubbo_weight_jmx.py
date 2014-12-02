@@ -11,52 +11,49 @@ import commands
 
 
 class cmd(object):
-    def __init__(self, maxEvent, interval, timeout):
-        self.maxEvent = maxEvent
-        self.event = 1000
-        self.executeTimes = 0
+    def __init__(self, maxInvoke, interval, timeout):
+        self.maxInvoke = maxInvoke
         self.interval = interval
         self.timeout = timeout
-        self.s = sched.scheduler(time.time, time.sleep)
-
 
     def cmdInterval(self):
-        self.maxExecuteTimes = (self.timeout / self.interval) + 1
-        print(self.maxExecuteTimes)
-        if(self.event > self.maxEvent and self.executeTimes < self.maxExecuteTimes):
-            self.s.enter(5, 1, self.cmdExecute, ())
-            self.s.run()
+        maxExecuteTimes = (self.timeout + self.interval -1) / self.interval
+        (ret, invokeNum) = self.cmdExecute()
+        print("execute result %r, %d. max execute %d" % (ret, invokeNum, maxExecuteTimes))
+        if (ret):
+            executeTime = 0
+            while (executeTime < maxExecuteTimes):
+                if (invokeNum < self.maxInvoke):
+                    return True
+                time.sleep(self.interval)
+                (ret, invokeNum) = self.cmdExecute()
+                if (not ret):
+                    return False
+                executeTime += 1
+                print("wait %d times, invoke num %d" % (executeTime, invokeNum))
 
-        elif(self.event > self.maxEvent):
-            print('dubbo thread num is too much ' + str(self.event) + '; time is ' + str(self.executeTimes * self.interval))
-            raise Exception('dubbo thread num is too much ' + str(self.event) + '; time is ' + str(self.executeTimes * self.interval))
+            print("dubbo thread num is %d" % invokeNum)
+            return False
         else:
-            print('dubbo thread num is ' + str(self.event) + '; time is ' + str(self.executeTimes * self.interval))
+            time.sleep(self.timeout)
             return True
 
     def cmdExecute(self):
         try:
-            (eventStatus, self.event) = commands.getstatusoutput('java -jar /home/tomcat/cmdline-jmxclient-0.10.3.jar - 127.0.0.1:9000 com.qianmi:name=DubboInvokeMBean AliveProviderEvents')
+            (eventStatus, eventResult) = commands.getstatusoutput('java -jar /home/tomcat/cmdline-jmxclient-0.10.3.jar - 127.0.0.1:9000 com.qianmi:name=DubboInvokeMBean AliveProviderEvents')
             eventStatus >>= 8
-            self.event = self.event[self.event.rfind(':') + 1:]
-            if(eventStatus == 1):
-                raise Exception(self.event)
+            eventResult = eventResult[eventResult.rfind(':') + 1:]
+            if(eventStatus != 0):
+                return (False, 0)
             else:
                 try:
-                    self.event = int(self.event)
+                    return (True, int(eventResult))
                 except:
                     print "except error: DubboInvokeMBean is not a registered bean"
-                    # 当jmx查询有误时，可以等待timeout
-                    if(self.executeTimes < self.maxExecuteTimes - 1):
-                        self.event = self.maxEvent + 1
-                    else:
-                        self.event = self.maxEvent - 1
-            print('result is ' + str(self.event))
-            self.executeTimes = self.executeTimes + 1
-            self.cmdInterval()
+                    return (False, 0)
         except:
             print "Unexpected error:", sys.exc_info()[0]
-            raise
+            return (False, 0)
 
 #dubbo服务
 class dubbo(object):
@@ -126,14 +123,9 @@ if __name__ == "__main__":
         try:
             dubbo(dubboadmin, adminUser, adminPassword, myaddr+':', weight).operatorFun()
             if(int(weight) == 0):
-                cmdResult = cmd(1, 3, 30).cmdInterval()
+                if not cmd(1, 3, 30).cmdInterval():
+                    raise Exception("cmd execute exception")
         except:
             print "Unexpected error:", sys.exc_info()[0]
             raise
         # return cmdResult
-            
-            
-    
-
-
-

@@ -9,7 +9,7 @@ remove-tomcat-pid-file:
 
 tomcat_shutdown:
   cmd.script:
-    - name: salt://tomcat/files/shutdown_tocmat.sh -force
+    - name: salt://tomcat/files/shutdown_tocmat.sh
     - user: tomcat
     - onlyif: 'test -e {{ tomcat.tomcatPid }}'
 
