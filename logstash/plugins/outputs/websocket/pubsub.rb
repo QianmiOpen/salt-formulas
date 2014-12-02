@@ -40,7 +40,7 @@ class LogStash::Outputs::WebSocket::Pubsub
         jsonEvent = JSON.parse(event)
         sourceHost = jsonEvent.fetch("source_host")
         puts "sourceHost is #{sourceHost}"
-        if(sourceHost + ".localdomain" == taskId.to_s)
+        if(sourceHost == taskId.to_s)
           queue << event
         end
       end
