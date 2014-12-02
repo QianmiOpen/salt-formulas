@@ -13,6 +13,13 @@ elasticsearch_user:
     - name: elasticsearch
     - gid: 8888
 
+{{ elasticsearch.base }}:
+  file.directory:
+    - user: elasticsearch
+    - group: elasticsearch
+    - mode: 755
+    - makedirs: True
+
 {{ elasticsearch.home }}:
   file.directory:
     - user: elasticsearch
