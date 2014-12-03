@@ -48,8 +48,8 @@ actions:
     css: glyphicon glyphicon-upload
     versionMenu: True
     steps:
-      # - name: 停止dubbo接口
-      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.dubbodown pillar='{webapp: {dubboAdminIp: {{dependence.$dubboadmin.hosts[0].ip}}, dubboRootPasswd: {{dependence.$dubboadmin.attrs.t_rootPassword}}}}'"
+      - name: 停止dubbo接口
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.dubbodown pillar='{webapp: {dubboAdminIp: {{dependence.$dubboadmin.hosts[0].ip}}, dubboRootPasswd: {{dependence.$dubboadmin.attrs.t_rootPassword}}}}'"
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
       - name: 部署war包
@@ -74,8 +74,8 @@ actions:
         seconds: 6
       - name: mount log目录
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{alias.LogServerVIp}}, projectName: {{attrs.t_mountDir}}, logHome: {{dependence.$logServer.attrs.t_mountRootDir}}}}'"
-      # - name: 停止dubbo接口
-      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.dubbodown pillar='{webapp: {dubboAdminIp: {{dependence.$dubboadmin.hosts[0].ip}}, dubboRootPasswd: {{dependence.$dubboadmin.attrs.t_rootPassword}}}}'"
+      - name: 停止dubbo接口
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.dubbodown pillar='{webapp: {dubboAdminIp: {{dependence.$dubboadmin.hosts[0].ip}}, dubboRootPasswd: {{dependence.$dubboadmin.attrs.t_rootPassword}}}}'"
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
       - name: 部署war包
@@ -88,8 +88,8 @@ actions:
     css: glyphicon glyphicon-repeat
     versionMenu: True
     steps:
-      # - name: 停止dubbo接口
-      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.dubbodown pillar='{webapp: {dubboAdminIp: {{dependence.$dubboadmin.hosts[0].ip}}, dubboRootPasswd: {{dependence.$dubboadmin.attrs.t_rootPassword}}}}'"
+      - name: 停止dubbo接口
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.dubbodown pillar='{webapp: {dubboAdminIp: {{dependence.$dubboadmin.hosts[0].ip}}, dubboRootPasswd: {{dependence.$dubboadmin.attrs.t_rootPassword}}}}'"
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
       - name: 配置文件准备
@@ -106,8 +106,8 @@ actions:
   - name: 停止应用
     css: glyphicon glyphicon-stop
     steps:
-      # - name: 停止dubbo接口
-      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.dubbodown pillar='{webapp: {dubboAdminIp: {{dependence.$dubboadmin.hosts[0].ip}}, dubboRootPasswd: {{dependence.$dubboadmin.attrs.t_rootPassword}}}}'"
+      - name: 停止dubbo接口
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.dubbodown pillar='{webapp: {dubboAdminIp: {{dependence.$dubboadmin.hosts[0].ip}}, dubboRootPasswd: {{dependence.$dubboadmin.attrs.t_rootPassword}}}}'"
       - name: 关闭应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
   - name: jstack
