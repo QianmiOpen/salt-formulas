@@ -4,6 +4,12 @@ include:
   - tomcat.env
   - tomcat.user
 
+delete-tomcat-linked-dir:
+  cmd.run:
+    - name: "rm -rf `readlink {{ tomcat.home }}/{{ tomcat.name }}`"
+    - user: tomcat
+    - onlyif: 'test -e {{ tomcat.home }}/{{ tomcat.name }}'
+
 unpack-tomcat-tarball:
   file.managed:
     - name: {{ tomcat.home }}/{{ tomcat.package }}
@@ -13,6 +19,7 @@ unpack-tomcat-tarball:
     - group: tomcat
     - require:
       - user: tomcat-user
+      - cmd: delete-tomcat-linked-dir
   cmd.run:
     - name: tar xf {{ tomcat.home }}/{{ tomcat.package }} -C {{ tomcat.home }}
     - user: tomcat
@@ -82,7 +89,18 @@ juli-jar:
     - require:
       - user: tomcat-user
 
-logback-copy-jars:
+copy-lib-jars:
+  file.recurse:
+    - name: {{ tomcat.CATALINA_BASE }}/lib
+    - source: salt://tomcat/pkgs/lib
+    - saltenv: base
+    - makedirs: true
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - user: tomcat-user
+
+copy-logback-jars:
   file.recurse:
     - name: {{ tomcat.CATALINA_BASE }}/srvlib
     - source: salt://tomcat/pkgs/logback
