@@ -7,26 +7,32 @@ import urllib
 import time
 
 class cmd(object):
+    CONNECT_REFUSED = "Connection refused"
+
+    JMX_OK = 0
+    JMX_CONNECT_REFUSED = 1
+    JMX_ERROR = 2
+
     def check_app_start(self, interval, timeout):
         jmx_name = "com.ofpay.health:name=HealthStatus"
         jxm_attr = "Started"
         max_execute_times = (timeout + interval - 1) / interval
         (ret, started) = self.get_jmx(jmx_name, jxm_attr, lambda x: "true" in x.lower(), False)
         print("execute result %r, %r. max execute %d." % (ret, started, max_execute_times))
-        if (ret):
+        if ret == cmd.JMX_OK:
             execute_time = 0
             while (execute_time < max_execute_times):
                 if (started):
                     return True
                 time.sleep(interval)
                 (ret, started) = self.get_jmx(jmx_name, jxm_attr, lambda x: "true" in x.lower(), False)
-                if (not ret):
+                if (ret != cmd.JMX_OK):
                     return False
                 execute_time += 1
                 print("wait %d times, is started: %r" % (execute_time, started))
 
             return False
-        else:
+        elif ret == cmd.JMX_ERROR:
             time.sleep(timeout)
             return True
 
@@ -36,20 +42,20 @@ class cmd(object):
         max_execute_times = (timeout + interval - 1) / interval
         (ret, invoke_num) = self.get_jmx(jmx_name, jxm_attr, int, 0)
         print("execute result %r, %d. max execute %d" % (ret, invoke_num, max_execute_times))
-        if (ret):
+        if ret == cmd.JMX_OK:
             execute_time = 0
             while (execute_time < max_execute_times):
                 if (invoke_num < max_invoke):
                     return True
                 time.sleep(interval)
                 (ret, invoke_num) = self.get_jmx(jmx_name, jxm_attr, int, 0)
-                if (not ret):
+                if (ret != cmd.JMX_OK):
                     return False
                 execute_time += 1
                 print("wait %d times, invoke num %d" % (execute_time, invoke_num))
 
             return False
-        else:
+        elif ret == cmd.JMX_ERROR:
             time.sleep(timeout)
             return True
 
@@ -58,18 +64,21 @@ class cmd(object):
             (event_status, event_result) = commands.getstatusoutput("java -jar /home/tomcat/cmdline-jmxclient-0.10.3.jar - 127.0.0.1:9000 %s %s" % (name, attr))
             print "jmx result: %d, %s" % (event_status, event_result)
             event_status >>= 8
-            event_result = event_result[event_result.rfind(':') + 1:]
             if(event_status != 0):
-                return (False, default)
+                if cmd.CONNECT_REFUSED in event_result:
+                    return (cmd.JMX_CONNECT_REFUSED, default)
+                else:
+                    return (cmd.JMX_ERROR, default)
             else:
                 try:
-                    return (True, retTrans(event_result))
+                    event_result = event_result[event_result.rfind(':') + 1:]
+                    return (cmd.JMX_OK, retTrans(event_result))
                 except:
                     print "except error: DubboInvokeMBean is not a registered bean"
-                    return (False, default)
+                    return (cmd.JMX_ERROR, default)
         except:
             print "Unexpected error:", sys.exc_info()[0]
-            return (False, default)
+            return (cmd.JMX_ERROR, default)
 
 class dubbo(object):
     SUCCESS = u'操作成功'
@@ -113,10 +122,12 @@ if __name__ == "__main__":
 
         try:
             if (operate.lower() == "up"):
-                if not cmd().check_app_start(3, 180):
+                cmd_ret = cmd().check_app_start(3, 180)
+                if cmd_ret == cmd.JMX_ERROR:
                     raise Exception("cmd execute exception")
-                if not dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight):
-                    raise Exception("stop dubbo exception")
+                elif cmd_ret == cmd.JMX_OK:
+                    if not dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight):
+                        raise Exception("stop dubbo exception")
             else:
                 dubbo_ret = dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight)
                 if dubbo_ret == dubbo.RET_ERROR:
