@@ -3,5 +3,5 @@
 logstash_delete_conf:
   cmd.run:
     - name: rm -rf  {{ logstash.home }}/{{ logstash.prefix }}/conf/*.conf
-    - user: logstash
+    - user: root
     - onlyif: 'test -d {{ logstash.home }}/{{ logstash.prefix }}/conf'
