@@ -75,6 +75,10 @@ class dubbo(object):
     SUCCESS = u'操作成功'
     NO_PROVIDER = 'there is no provider'
 
+    RET_OK = 0
+    RET_NO_PROVIDER = 1
+    RET_ERROR = 2
+
     def set_dubbo_weight(self, monitor, user, pwd, provider, weight):
         opeUrl = "http://%s:%s@%s/governance/addresses/%s:/providers/weight?weight=%s" % (user, pwd, monitor, provider, weight)
         print opeUrl
@@ -84,13 +88,13 @@ class dubbo(object):
             if text.find(dubbo.SUCCESS) == -1:
                 if(text.find(dubbo.NO_PROVIDER) != -1):
                     print dubbo.NO_PROVIDER
-                    return False
+                    return dubbo.RET_NO_PROVIDER
                 else:
                     print text
-                    return False
+                    return dubbo.RET_ERROR
             else :
                 print dubbo.SUCCESS.encode('utf-8')
-                return True
+                return dubbo.RET_OK
         except:
             print "Unexpected error:", sys.exc_info()[0]
             raise
@@ -114,10 +118,12 @@ if __name__ == "__main__":
                 if not dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight):
                     raise Exception("stop dubbo exception")
             else:
-                if not dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight):
+                dubbo_ret = dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight)
+                if dubbo_ret == dubbo.RET_ERROR:
                     raise Exception("stop dubbo exception")
-                if not cmd().check_dubbo_stop(1, 3, 30):
-                    raise Exception("cmd execute exception")
+                elif dubbo_ret == dubbo.RET_OK:
+                    if not cmd().check_dubbo_stop(1, 3, 30):
+                        raise Exception("cmd execute exception")
         except:
             print "Unexpected error:", sys.exc_info()[0]
             raise
