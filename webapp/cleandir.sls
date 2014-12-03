@@ -11,3 +11,8 @@ delete-dubbo-cache:
   cmd.run:
     - name: rm -rf {{ tomcat.home }}/.dubbocache
     - onlyif: "test `du -sk {{ tomcat.home }}/.dubbocache | awk '{print $1}'` -gt 10240"
+
+delete-tomcat-log:
+  cmd.run:
+    - name: rm -rf {{ tomcat.home }}/{{ tomcat.name }}/logs/*
+

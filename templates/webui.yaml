@@ -13,16 +13,20 @@ dependences:
     type: tengine
     description: 前端负载均衡
     default: ForestTengine
+  - name: "$logredis"
+    type: redis
+    description: 日志服务器
+    default: LogstashRedis
 aliass:
   - aliasName: LogServerVIp
     aliasValue: "dependence.$logServer.attrs.t_virtualIp"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
   - aliasName: ZookeeperRegisterIps
-    aliasValue: "dependence.$dubboRegister.hosts.map(function(host){return host.ip + ':' + dependence.$dubboRegister.attrs.t_defaultPort}).join(',')"
+    aliasValue: "dependence.$dubboRegister.alias.IPs"
     aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
-  - aliasName: TengineHostNames
-    aliasValue: "dependence.$frontTengine.hosts.map(function(host){return host.name}).join(',')"
-    aliasDesc: "获取ForestTengine项目当前环境主机名称列表，以','分割"
+  #- aliasName: TengineHostNames
+  #  aliasValue: "dependence.$frontTengine.hosts.map(function(host){return host.name}).join(',')"
+  #  aliasDesc: "获取ForestTengine项目当前环境主机名称列表，以','分割"
   - aliasName: CATALINA_HOME
     aliasValue: "'/home/tomcat/tomcat'"
     aliasDesc: "获取CATALINA_HOME"
@@ -71,10 +75,10 @@ actions:
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       # - name: 启动应用
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
-      - name: 刷新tengine配置
-        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}, isMaster: {{attrs.t_isMaster}}, isIPhash: {{attrs.t_isIPhash}}}}'"
-      - name: 重新加载gengine配置
-        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
+      #- name: 刷新tengine配置
+      #  sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}, isMaster: {{attrs.t_isMaster}}, isIPhash: {{attrs.t_isIPhash}}}}'"
+      #- name: 重新加载tengine配置
+      #  sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
   - name: 安装应用
     css: glyphicon glyphicon-import
     versionMenu: True
@@ -89,7 +93,7 @@ actions:
       # - name: 记录任务开始状态
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
       - name: 安装tomcat
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {logstashRedisHost: \"{{dependence.$logredis.attrs.t_virtualIp}}\", logstashRedisPort: {{dependence.$logredis.attrs.t_port}}}}'"
         seconds: 6
       - name: mount log目录
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.mountlog pillar='{webapp: {nfsServer: {{alias.LogServerVIp}}, projectName: {{attrs.t_mountDir}}, logHome: {{attrs.t_mountRootDir}}}}'"
@@ -105,10 +109,10 @@ actions:
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       # - name: 启动应用
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
-      - name: 刷新tengine配置
-        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}, isMaster: {{attrs.t_isMaster}}, isIPhash: {{attrs.t_isIPhash}}}}'"
-      - name: 重新加载tengine配置
-        sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
+      #- name: 刷新tengine配置
+      #  sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.server pillar='{tengine: {domain: {{attrs.t_domain}}, serverNameList: \"{{attrs.t_serverNameList}}\", ip: {{cHost.ip}}, isMaster: {{attrs.t_isMaster}}, isIPhash: {{attrs.t_isIPhash}}}}'"
+      #- name: 重新加载tengine配置
+      #  sls: "salt -L {{alias.TengineHostNames}} state.sls saltenv='{{env.scriptVersion}}' tengine.reload"
   - name: 重启应用
     css: glyphicon glyphicon-repeat
     versionMenu: True

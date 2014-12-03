@@ -13,6 +13,8 @@ unmount-nfs-dirs:
     - require:
       - pkg: nfs-utils
 
+
+{% if  webapp.logHome  == '/oflogs' %}
 {{ webapp.logHome }}:
   file.directory:
     - user: tomcat
@@ -30,6 +32,8 @@ unmount-nfs-dirs:
 unmount-oflogs:
   file.directory:
     - name: {{ webapp.logHome }}/{{ webapp.projectName }}
+    - user: tomcat
+    - group: tomcat
     - mode: 777
     - makedirs: True
   mount.unmounted:
@@ -47,3 +51,41 @@ unmount-oflogs:
     - fstype: nfs
     - opts: nosuid,nodev,rw,bg,soft,nolock
     - persist: True
+{% elif  webapp.logHome  == '/qmlogs' %}
+{{ webapp.logHome }}:
+  file.directory:
+    - user: tomcat
+    - group: tomcat
+    - mode: 755
+    - makedirs: True
+  mount.mounted:
+    - device: {{ webapp.nfsServer }}:{{ webapp.volHome }}{{ webapp.logHome }}
+    - fstype: nfs
+    - opts: nosuid,nodev,rw,bg,soft,nolock
+    - persist: True
+    - require:
+      - pkg: nfs-utils
+
+unmount-oflogs:
+  file.directory:
+    - name: {{ webapp.logHome }}/{{ webapp.projectName }}
+    - user: tomcat
+    - group: tomcat
+    - mode: 777
+    - makedirs: True
+  mount.unmounted:
+    - name: {{ webapp.logHome }}
+    - persist: False
+
+{{ webapp.logHome }}/{{ webapp.projectName }}:
+  file.directory:
+    - user: tomcat
+    - group: tomcat
+    - mode: 777
+    - makedirs: True
+  mount.mounted:
+    - device: {{ webapp.nfsServer }}:{{ webapp.volHome }}{{ webapp.logHome }}/{{ webapp.projectName }}
+    - fstype: nfs
+    - opts: nosuid,nodev,rw,bg,soft,nolock
+    - persist: True
+{% endif %}

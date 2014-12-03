@@ -57,6 +57,13 @@ copy-env.conf:
     - defaults:
       tomcatHome: {{ tomcat.home }}
 
+/home/tomcat/tomcat/conf/context.xml:
+  file.managed:
+    - source: salt://tomcat/files/context.xml
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+
 {{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh:
   file.blockreplace:
     - marker_start: "# ----- Execute The Requested Command -----"
@@ -84,6 +91,7 @@ tomcat-juli-adapters-jar:
     - require:
       - user: tomcat-user
 
+# redis-appender-1.0.2-SNAPSHOT.jar
 {% for jar in ['log4j-1.2.17.jar', 'redis-appender-1.0.1.jar', 'jedis-2.5.2.jar', 'jsonevent-layout-1.7.jar', 'json-smart-1.1.1.jar', 'commons-lang-2.6.jar'] %}
 copy-{{ jar }}:
   file.managed:
