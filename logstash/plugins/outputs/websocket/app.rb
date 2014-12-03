@@ -13,7 +13,7 @@ class LogStash::Outputs::WebSocket::App < Sinatra::Base
 
   set :reload_templates, false
 
-  get "/:taskId" do |taskId|
+  get "/:taskId/:type" do |taskId, type|
     # TODO(sissel): Support filters/etc.
     # params = request.env['rack.request.query_hash']
     # puts "taskId is #{params[:taskId]}"
@@ -22,7 +22,7 @@ class LogStash::Outputs::WebSocket::App < Sinatra::Base
     @logger.debug("New websocket client")
     stream(:keep_open) do |out|
       puts "out is #{out}"
-      @pubsub.subscribe(taskId) do |event|
+      @pubsub.subscribe(taskId, type) do |event|
         puts "event is #{event}"
         ws.publish(event)
       end # pubsub
