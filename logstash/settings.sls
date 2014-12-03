@@ -6,7 +6,7 @@
                         'prefix'      : 'logstash',
                         'version'     : '1.4.2',
                         'fileType'    : 'tar.gz',
-                        'redisIPList' : '192.168.65.1,192.168.65.2,192.168.65.3',
+                        'redisIPList' : '192.168.0.1,192.168.0.2',
                         'redisPort'   : '6379',
                         'hostIP'      : '172.168.0.1',
                         'clustername' : 'elasticsearch'

@@ -60,6 +60,20 @@ logstash-config-{{ configfile }}:
       - cmd: unpack-logstash-tarball
 {% endfor %}
 
+<<<<<<< HEAD
+=======
+logstash-lib-sh:
+  file.managed:
+    - name: {{ logstash.home }}/{{ logstash.prefix }}/bin/logstash.lib.sh
+    - user: logstash
+    - group: logstash
+    - mode: 755
+    - source: salt://logstash/files/logstash.lib.sh
+    - template: jinja
+    - require:
+      - cmd: unpack-logstash-tarball
+
+>>>>>>> prod
 {% set ip_str = logstash.redisIPList  %}
 {% set ip_arr = ip_str.split(',') %}
 {% for ip in ip_str.split(',') %}
@@ -79,7 +93,10 @@ logstash-config-01-inputs-conf-{{ ip }}:
 {% endif %}
 {% endfor %}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> prod
 logstash-plugins-dir:
   file.directory:
     - name: {{ logstash.home }}/{{ logstash.prefix }}/lib/logstash/outputs/websocket
