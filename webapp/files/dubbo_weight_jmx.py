@@ -82,7 +82,7 @@ class dubbo(object):
             if int_result == -1:
                 if(text.find(self.boolean_noProvider) != -1):
                     print self.boolean_noProvider
-                    raise Exception(self.boolean_noProvider)
+                    # raise Exception(self.boolean_noProvider)
                 else:
                     raise Exception(self.boolean_false)
             else :
