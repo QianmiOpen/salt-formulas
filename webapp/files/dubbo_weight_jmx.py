@@ -110,8 +110,8 @@ class dubbo(object):
 
 if __name__ == "__main__":
     if(len(sys.argv) != 6):
-        error_str = "您需要传递5个参数，格式为：python dubbo_weight.py up|down dubboadmin:port adminUser adminPassword weight;\n 1、操作动作 \n 2、dubboadmin:port(dubboadmin应用暴露的服务) \n 3、adminUser(dubboadmin登录用户) \n 4、adminPassword(dubboadmin登录密码) \n 5、weight(权重)"
-        print error_str
+        error_str = "您需要传递5个参数，格式为：python dubbo_weight_jmx.py up|down dubboadmin:port adminUser adminPassword weight;\n 1、操作动作 \n 2、dubboadmin:port(dubboadmin应用暴露的服务) \n 3、adminUser(dubboadmin登录用户) \n 4、adminPassword(dubboadmin登录密码) \n 5、weight(权重)"
+        print error_str, sys.argv[1:]
         raise Exception(error_str)
     else:
         operate, dubbo_admin, admin_user, admin_password, weight = sys.argv[1:6]
