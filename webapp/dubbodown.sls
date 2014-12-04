@@ -13,7 +13,7 @@ copy-jmx-jar:
 set-dubbo-weight-0:
   cmd.script:
     - name: salt://webapp/files/dubbo_weight_jmx.py
-    - args: "{{webapp.dubboAdminIp}}:{{webapp.dubboAdminPort}} root {{webapp.dubboRootPasswd}} 0"
+    - args: "down {{webapp.dubboAdminIp}}:{{webapp.dubboAdminPort}} root {{webapp.dubboRootPasswd}} 0"
     - user: tomcat
     - require:
       - file: copy-jmx-jar
