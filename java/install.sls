@@ -21,6 +21,18 @@ unpack-jdk-tarball:
       - file: {{ java.installPath }}
       - file: unpack-jdk-tarball
 
+{% if  java.version  == 'jdk7' %}
+{% for jar in ['local_policy.jar', 'US_export_policy.jar'] %}
+copy-{{ jar }}:
+  file.managed:
+    - name: {{ java.realHome }}/jre/lib/security/{{ jar }}
+    - source: salt://java/pkgs/jdk7_lib/{{ jar }}
+    - saltenv: base
+    - user: root
+    - group: root
+{% endfor %}
+{% endif %}
+
 symlink-java:
   file.symlink:
     - name: /usr/lib/java

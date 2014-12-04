@@ -8,7 +8,22 @@ remove-tomcat-pid-file:
     - unless: 'ps -p `cat {{ tomcat.tomcatPid }}`'
 
 tomcat_shutdown:
-  cmd.run:
-    - name: sh {{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh stop {{ tomcat.stopDelaySeconds }} -force
+  cmd.script:
+    - name: salt://tomcat/files/shutdown_tocmat.sh
     - user: tomcat
     - onlyif: 'test -e {{ tomcat.tomcatPid }}'
+
+# /home/tomcat/shutdown_tocmat.sh:
+#   file.managed:
+#     - source: salt://tomcat/files/shutdown_tocmat.sh
+#     - user: tomcat
+#     - group: tomcat
+#     - mode: 644
+#     - watch:
+#       - cmd: set-dubbo-weight-0
+
+# tomcat_shutdown:
+#   cmd.run:
+#     - name: sh {{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh stop {{ tomcat.stopDelaySeconds }} -force
+#     - user: tomcat
+#     - onlyif: 'test -e {{ tomcat.tomcatPid }}'

@@ -1,0 +1,67 @@
+name: dubboadmin
+remark: 用于DubboAdmin项目的自动部署
+dependences:
+  - name: "$dubboRegister"
+    type: zookeeper
+    description: dubbo注册中心
+    default: ZookeeperRegister
+aliass:
+  - aliasName: ZookeeperRegisterIps
+    aliasValue: "dependence.$dubboRegister.alias.IPs"
+    aliasDesc: "获取zookeeper register项目当前环境机器列表，以','分割"
+items:
+  - itemName: t_groupId
+    itemDesc: groupId
+  - itemName: t_artifactId
+    itemDesc: artifactId
+  - itemName: t_rootPassword
+    itemDesc: root密码
+actions:
+  - name: 升级应用
+    css: glyphicon glyphicon-upload
+    versionMenu: True
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+      - name: 部署war包
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: true}}'"
+      - name: 配置文件准备
+        sls: "bugatti copyfile"
+      - name: 拷贝配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+      - name: 启动应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+  - name: 安装应用
+    css: glyphicon glyphicon-import
+    versionMenu: True
+    steps:
+      - name: 加固os
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+      - name: 安装ntp服务
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      - name: 安装java
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
+        seconds: 10
+      - name: 安装tomcat
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {useLogback: false}}'"
+        seconds: 6
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+      - name: 部署war包
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: true}}'"
+      - name: 配置文件准备
+        sls: "bugatti copyfile"
+      - name: 拷贝配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+      - name: 启动应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+  - name: 启动应用
+    css: glyphicon glyphicon-play
+    steps:
+      - name: 启动应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+  - name: 停止应用
+    css: glyphicon glyphicon-stop
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"

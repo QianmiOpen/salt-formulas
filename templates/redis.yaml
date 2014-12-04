@@ -37,6 +37,7 @@ actions:
       - name: 编译安装redis
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' redis pillar='{redis: {databases: {{attrs.t_databases}}, port: {{attrs.t_port}}, isSaveDBFile: {{attrs.t_isSaveDBFile}}}}'"
 
+
   - name: 重启redis
     css: glyphicon glyphicon-repeat
     steps:

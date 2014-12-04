@@ -49,6 +49,12 @@ redis_config:
     - template: jinja
     - source: salt://redis/files/{{ redis.redisVersion }}.conf.jinja
 
+set_overcommit_memory:
+  cmd.run:
+    - name: sysctl vm.overcommit_memory=1
+    - user: root
+    - group: root
+
 redis_service_file:
   file:
     - name: /etc/init.d/redisd

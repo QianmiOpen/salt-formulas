@@ -4,6 +4,12 @@ include:
   - tomcat.env
   - tomcat.user
 
+delete-tomcat-linked-dir:
+  cmd.run:
+    - name: "rm -rf `readlink {{ tomcat.home }}/{{ tomcat.name }}`"
+    - user: tomcat
+    - onlyif: 'test -e {{ tomcat.home }}/{{ tomcat.name }}'
+
 unpack-tomcat-tarball:
   file.managed:
     - name: {{ tomcat.home }}/{{ tomcat.package }}
@@ -13,6 +19,7 @@ unpack-tomcat-tarball:
     - group: tomcat
     - require:
       - user: tomcat-user
+      - cmd: delete-tomcat-linked-dir
   cmd.run:
     - name: tar xf {{ tomcat.home }}/{{ tomcat.package }} -C {{ tomcat.home }}
     - user: tomcat
@@ -57,20 +64,21 @@ copy-env.conf:
     - defaults:
       tomcatHome: {{ tomcat.home }}
 
-/home/tomcat/tomcat/conf/context.xml:
+# 配置tomcat，使用logback输出日志
+{% if  tomcat.useLogback %}
+{{ tomcat.CATALINA_BASE }}/conf/context.xml:
   file.managed:
     - source: salt://tomcat/files/context.xml
     - user: tomcat
     - group: tomcat
     - mode: 644
 
-{{ tomcat.home }}/{{ tomcat.name }}/bin/catalina.sh:
-  file.blockreplace:
-    - marker_start: "# ----- Execute The Requested Command -----"
-    - marker_end: "# Bugzilla 37848"
-    - content: CATALINA_OPTS=`sed 's/"//g' $CATALINA_BASE/conf/env.conf |awk '/^[^#]/'| tr "\n" ' '`
+{{ tomcat.CATALINA_BASE }}/bin/catalina.sh:
+  file.managed:
+    - source: salt://tomcat/files/catalina.sh
+    - user: tomcat
+    - group: tomcat
 
-# 配置tomcat，使用log4j输出日志
 juli-jar:
   file.managed:
     - name: {{ tomcat.CATALINA_BASE }}/bin/tomcat-juli.jar
@@ -81,32 +89,31 @@ juli-jar:
     - require:
       - user: tomcat-user
 
-tomcat-juli-adapters-jar:
-  file.managed:
-    - name: {{ tomcat.CATALINA_BASE }}/lib/tomcat-juli-adapters.jar
-    - source: salt://tomcat/pkgs/{{ tomcat.version }}/tomcat-juli-adapters.jar
+copy-lib-jars:
+  file.recurse:
+    - name: {{ tomcat.CATALINA_BASE }}/lib
+    - source: salt://tomcat/pkgs/lib
     - saltenv: base
+    - makedirs: true
     - user: tomcat
     - group: tomcat
     - require:
       - user: tomcat-user
 
-# redis-appender-1.0.2-SNAPSHOT.jar
-{% for jar in ['log4j-1.2.17.jar', 'redis-appender-1.0.1.jar', 'jedis-2.5.2.jar', 'jsonevent-layout-1.7.jar', 'json-smart-1.1.1.jar', 'commons-lang-2.6.jar'] %}
-copy-{{ jar }}:
-  file.managed:
-    - name: {{ tomcat.CATALINA_BASE }}/lib/{{ jar }}
-    - source: salt://tomcat/pkgs/{{ jar }}
+copy-logback-jars:
+  file.recurse:
+    - name: {{ tomcat.CATALINA_BASE }}/srvlib
+    - source: salt://tomcat/pkgs/logback
     - saltenv: base
+    - makedirs: true
     - user: tomcat
     - group: tomcat
     - require:
       - user: tomcat-user
-{% endfor %}
 
-{{ tomcat.CATALINA_BASE }}/lib/log4j.properties:
+{{ tomcat.CATALINA_BASE }}/conf/catalina.properties:
   file.managed:
-    - source: salt://tomcat/files/log4j.properties
+    - source: salt://tomcat/files/catalina.properties
     - user: tomcat
     - group: tomcat
     - mode: 644
@@ -114,10 +121,20 @@ copy-{{ jar }}:
     - defaults:
         tomcat: {{ tomcat|json }}
 
+{{ tomcat.CATALINA_BASE }}/conf/tomcat-logback.xml:
+  file.managed:
+    - source: salt://tomcat/files/tomcat-logback.xml
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+    - template: jinja
+    - defaults:
+        tomcat: {{ tomcat|json }}
+{% endif %}
+
 delete-logging.properties:
   file.absent:
     - name: {{ tomcat.CATALINA_BASE }}/conf/logging.properties
-
 
 # grains中增加tomcat的version信息
 tomcat_version:

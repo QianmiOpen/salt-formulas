@@ -12,7 +12,10 @@
                       'volHome'    : '/vol',
                       'nfsDir'     : '',
                       'serverDir'  : '',
-                      'unzip'      : false
+                      'unzip'      : false,
+                      'dubboAdminIp'    : '172.19.65.13',
+                      'dubboAdminPort'  : '8080',
+                      'dubboRootPasswd' : 'master123'
                       }) %}
 
 {% for key, value in webapp.iteritems() %}
