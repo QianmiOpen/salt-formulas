@@ -32,9 +32,8 @@ class cmd(object):
                 print("wait %d times, is started: %r" % (execute_time, started))
 
             return False
-        elif ret == cmd.JMX_ERROR:
-            time.sleep(timeout)
-            return True
+        else:
+            return False
 
     def check_dubbo_stop(self, max_invoke, interval, timeout):
         jmx_name = "com.qianmi:name=DubboProviderMBean"
@@ -56,6 +55,10 @@ class cmd(object):
 
             return False
         elif ret == cmd.JMX_ERROR:
+            time.sleep(timeout)
+            return True
+        elif ret == cmd.JMX_CONNECT_REFUSED:
+            print "%s, please use 9000 for jmx port. " % cmd.CONNECT_REFUSED
             time.sleep(timeout)
             return True
 
@@ -123,9 +126,9 @@ if __name__ == "__main__":
         try:
             if (operate.lower() == "up"):
                 cmd_ret = cmd().check_app_start(3, 180)
-                if cmd_ret == cmd.JMX_ERROR:
+                if not cmd_ret:
                     raise Exception("cmd execute exception")
-                elif cmd_ret == cmd.JMX_OK:
+                elif:
                     if not dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight):
                         raise Exception("stop dubbo exception")
             else:
