@@ -129,7 +129,9 @@ if __name__ == "__main__":
                 if not cmd_ret:
                     raise Exception("cmd execute exception")
                 else:
-                    if not dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight):
+                    dubbo_ret = dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight)
+                    if dubbo_ret != dubbo.RET_OK:
+                        print "err:", dubbo_ret
                         raise Exception("stop dubbo exception")
             else:
                 dubbo_ret = dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight)
