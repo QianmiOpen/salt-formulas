@@ -80,7 +80,7 @@ class cmd(object):
                     print "except error: DubboInvokeMBean is not a registered bean"
                     return (cmd.JMX_ERROR, default)
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected error 1:", sys.exc_info()[0]
             return (cmd.JMX_ERROR, default)
 
 class dubbo(object):
@@ -108,7 +108,7 @@ class dubbo(object):
                 print dubbo.SUCCESS.encode('utf-8')
                 return dubbo.RET_OK
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected error 2:", sys.exc_info()[0]
             raise
 
 if __name__ == "__main__":
@@ -139,5 +139,5 @@ if __name__ == "__main__":
                     if not cmd().check_dubbo_stop(1, 3, 30):
                         raise Exception("cmd execute exception")
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected error 3:", sys.exc_info()[0]
             raise
