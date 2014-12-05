@@ -111,7 +111,9 @@
       </Realm> -->
 
       <Host name="{{ tomcat.hostName }}" appBase="{{ tomcat.appBase }}" unpackWARs="{{ tomcat.unpackWARs }}" deployXML="{{ tomcat.deployXML }}" autoDeploy="{{ tomcat.autoDeploy }}" deployOnStartup="{{ tomcat.deployOnStartup }}">
-        <Context path="{{ tomcat.path }}" docBase="{{ tomcat.appName }}.war" privileged="{{ tomcat.privileged }}" reloadable="{{ tomcat.reloadable }}"/>
+        <Context path="{{ tomcat.path }}" docBase="{{ tomcat.appName }}.war" privileged="{{ tomcat.privileged }}" reloadable="{{ tomcat.reloadable }}">
+          <!-- <Resources className="org.apache.naming.resources.VirtualDirContext" extraResourcePaths="/dir=/hostdir" /> -->
+        </Context>
         <Alias>{{ tomcat.appName }}</Alias>
       </Host>
     </Engine>
