@@ -128,7 +128,7 @@ if __name__ == "__main__":
                 cmd_ret = cmd().check_app_start(3, 180)
                 if not cmd_ret:
                     raise Exception("cmd execute exception")
-                elif:
+                else:
                     if not dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight):
                         raise Exception("stop dubbo exception")
             else:
