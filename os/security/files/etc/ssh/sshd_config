@@ -106,7 +106,6 @@ AcceptEnv XMODIFIERS
 #AllowTcpForwarding yes
 #GatewayPorts no
 #X11Forwarding no
-X11Forwarding yes
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PrintMotd yes
@@ -114,7 +113,7 @@ X11Forwarding yes
 #TCPKeepAlive yes
 #UseLogin no
 #UsePrivilegeSeparation yes
-#PermitUserEnvironment no
+PermitUserEnvironment yes  #for set ssh_user in env
 #Compression delayed
 #ClientAliveInterval 0
 #ClientAliveCountMax 3
