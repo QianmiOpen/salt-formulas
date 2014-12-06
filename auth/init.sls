@@ -10,7 +10,7 @@
 add-{{user|trim}}-ssh-key:
   ssh_auth.present:
     - user: tomcat
-    - source: salt://auth/files/{{user|trim}}
+    - source: salt://auth/keys/{{user|trim}}
     - saltenv: base
 {% endfor %}
 {% endif %}
