@@ -28,6 +28,13 @@ limits_conf:
       - '* soft nofile {{ security.limitSoft }}'
       - '* hard nofile {{ security.limitHard }}'
 
+# /etc/profile
+/etc/profile:
+  file.managed:
+    - source: salt://os/security/files/etc/profile
+    - user: root
+    - group: root
+    - mode: 644
 
 # disable selinux ?
 # sed -i '/SELINUX/s/enforcing/disabled/' /etc/selinux/config
