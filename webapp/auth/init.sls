@@ -1,4 +1,4 @@
-{%- from 'auth/settings.sls' import auth with context %}
+{%- from 'webapp/auth/settings.sls' import auth with context %}
 {%- from 'tomcat/settings.sls' import tomcat with context %}
 
 {{tomcat.home}}/.ssh/authorized_keys:
