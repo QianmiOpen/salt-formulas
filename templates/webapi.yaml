@@ -30,6 +30,9 @@ aliass:
   - aliasName: HOME
     aliasValue: "'/home/tomcat'"
     aliasDesc: "获取HOME"
+  - aliasName: Users
+    aliasValue: "function(project){if(this.env.level == 'safe'){return this.leaders.join()}else{return (this.leaders.concat(this.members)).join()}}.call(this, project)"
+    aliasDesc: "获取用户列表，以','分割"
 items:
   - itemName: t_groupId
     itemDesc: groupId
@@ -58,8 +61,8 @@ actions:
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
-      - name: 处理证书文件
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.auth pillar='{auth: {users: \"{{function(project){if(this.env.level == 'safe'){return this.leaders.join();}else{return (this.leaders.concat(this.members)).join();}}.call(this, project)}}\"}}'"
+      # - name: 处理证书文件
+      #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.auth pillar='{auth: {users: \"{{}}\"}}'"
   - name: 安装应用
     css: glyphicon glyphicon-import
     versionMenu: True
