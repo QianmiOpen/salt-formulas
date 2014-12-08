@@ -410,6 +410,7 @@ fileserver_backend:
 gitfs_remotes:
   - http://git.dev.ofpay.com/git/TDA/salt-formulas.git
   - http://git.dev.ofpay.com/git/TDA/salt-pkgs.git
+  - git+ssh://cicode@git.dev.ofpay.com:29418/cicode/salt-keys.git
 #  - git+ssh://cicode@git.dev.ofpay.com:29418/cicode/salt-work.git
 #  - git://github.com/saltstack/salt-states.git
 #  - file:///var/git/saltmaster
