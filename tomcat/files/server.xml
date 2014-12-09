@@ -1,3 +1,4 @@
+{%- from 'tomcat/settings.sls' import tomcat with context %}
 <?xml version='1.0' encoding='utf-8'?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -32,8 +33,9 @@
   <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
   <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
 
+  {% if tomcat.gracefulOpen %}
   <Listener className="com.ofpay.health.HealthFilter" />
-
+  {% endif %}
   <!-- Global JNDI resources
        Documentation at /docs/jndi-resources-howto.html
   -->

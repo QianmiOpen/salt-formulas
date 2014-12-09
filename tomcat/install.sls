@@ -65,7 +65,7 @@ copy-env.conf:
       tomcatHome: {{ tomcat.home }}
 
 # 配置tomcat，使用logback输出日志
-{% if  tomcat.useLogback %}
+{% if tomcat.useLogback %}
 {{ tomcat.CATALINA_BASE }}/conf/context.xml:
   file.managed:
     - source: salt://tomcat/files/context.xml
@@ -84,17 +84,6 @@ juli-jar:
     - name: {{ tomcat.CATALINA_BASE }}/bin/tomcat-juli.jar
     - source: salt://tomcat/pkgs/{{ tomcat.version }}/tomcat-juli.jar
     - saltenv: base
-    - user: tomcat
-    - group: tomcat
-    - require:
-      - user: tomcat-user
-
-copy-lib-jars:
-  file.recurse:
-    - name: {{ tomcat.CATALINA_BASE }}/lib
-    - source: salt://tomcat/pkgs/lib
-    - saltenv: base
-    - makedirs: true
     - user: tomcat
     - group: tomcat
     - require:
@@ -130,6 +119,19 @@ copy-logback-jars:
     - template: jinja
     - defaults:
         tomcat: {{ tomcat|json }}
+{% endif %}
+
+{% if tomcat.gracefulOpen %}
+copy-lib-jars:
+  file.recurse:
+    - name: {{ tomcat.CATALINA_BASE }}/lib
+    - source: salt://tomcat/pkgs/lib
+    - saltenv: base
+    - makedirs: true
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - user: tomcat-user
 {% endif %}
 
 delete-logging.properties:
