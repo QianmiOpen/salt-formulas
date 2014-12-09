@@ -33,6 +33,9 @@ aliass:
   - aliasName: HOME
     aliasValue: "'/home/tomcat'"
     aliasDesc: "获取HOME"
+  - aliasName: AuthUsers
+    aliasValue: "function(project){if(this.env.level == 'safe'){return this.leaders.join()}else{return (this.leaders.concat(this.members)).join()}}.call(this, project)"
+    aliasDesc: "获取用户列表，以','分割"
 items:
   - itemName: t_groupId
     itemDesc: groupId
@@ -138,3 +141,10 @@ actions:
     steps:
       - name: jstack
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.jstack"
+  - name: auth
+    css: glyphicon glyphicon-user
+    actionType: host
+    steps:
+      - name: 处理证书文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.auth pillar='{auth: {users: \"{{alias.AuthUsers}}\"}}'"
+

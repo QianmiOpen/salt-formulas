@@ -82,6 +82,5 @@ if [ "$SSH_USER" != "" ]; then
   logger -ip auth.notice -t sshd "Accepted publickey for $SSH_USER"
   export HISTFILE="$HOME/.history_$SSH_USER"
   readonly HISTFILE
-  export HISTTIMEFORMAT="%y/%m/%d %T "
-  export PROMPT_COMMAND='history -a >(tee -a ~/.history_$SSH_USER | logger -t "$SSH_USER[$$] $SSH_CONNECTION")'
+  export PROMPT_COMMAND='history -a >(tee -a ~/.history_$SSH_USER | logger -t "$SSH_USER($USER)[$$] $SSH_CONNECTION")'
 fi
