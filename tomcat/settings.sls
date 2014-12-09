@@ -25,7 +25,8 @@
                       'stopDelaySeconds' : 60,
                       'logstashRedisHost' : '192.168.59.3',
                       'logstashRedisPort' : 6379,
-                      'useLogback'      : true
+                      'useLogback'      : true,
+                      'gracefulOpen'    : true
                       }) %}
 
 {% for key, value in tomcat.iteritems() %}
