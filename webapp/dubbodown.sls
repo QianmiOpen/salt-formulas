@@ -1,6 +1,9 @@
 {%- from 'tomcat/settings.sls' import tomcat with context %}
 {%- from 'webapp/settings.sls' import webapp with context %}
 
+include:
+  - tomcat.user
+
 copy-jmx-jar:
   file.managed:
     - name: {{ tomcat.home }}/cmdline-jmxclient-0.10.3.jar
