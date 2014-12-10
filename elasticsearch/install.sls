@@ -24,6 +24,13 @@ elasticsearch_config:
     - source: salt://elasticsearch/files/elasticsearch.yml
     - user: elasticsearch
 
+copy-ik-dir:
+  file.recurse:
+    - name: {{ elasticsearch.home }}/config/ik
+    - source: salt://elasticsearch/files/ik
+    - makedirs: true
+    - user: elasticsearch
+
 elasticsearch_appfile:
   file.managed:
     - name: {{ elasticsearch.home }}/bin/elasticsearch
