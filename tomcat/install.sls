@@ -137,16 +137,3 @@ copy-lib-jars:
 delete-logging.properties:
   file.absent:
     - name: {{ tomcat.CATALINA_BASE }}/conf/logging.properties
-
-# grains中增加tomcat的version信息
-tomcat_version:
-  grains.present:
-    - value: {{ tomcat.version }}
-
-# move to os.security
-# limits_conf:
-#   file.append:
-#     - name: /etc/security/limits.conf
-#     - text:
-#       - {{ tomcat.name }} soft nofile {{ tomcat.limitSoft }}
-#       - {{ tomcat.name }} hard nofile {{ tomcat.limitHard }}

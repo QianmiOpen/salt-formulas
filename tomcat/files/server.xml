@@ -34,7 +34,7 @@
   <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
 
   {% if tomcat.gracefulOpen %}
-  <!-- <Listener className="com.ofpay.health.HealthFilter" /> -->
+  <Listener className="com.ofpay.health.HealthFilter" />
   {% endif %}
   <!-- Global JNDI resources
        Documentation at /docs/jndi-resources-howto.html
