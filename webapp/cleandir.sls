@@ -5,6 +5,9 @@ delete-work-dir:
   file.absent:
     - name: {{ tomcat.home }}/{{ tomcat.name }}/work
 
+delete-dubbo-lock-file:
+  cmd.run:
+    - name: rm -rf {{ tomcat.home }}/.dubbocache/*.lock
 
 #TODO 在该目录大于10M的时候，删除该目录
 delete-dubbo-cache:
