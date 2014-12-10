@@ -30,6 +30,7 @@ copy-ik-dir:
     - source: salt://elasticsearch/files/ik
     - makedirs: true
     - user: elasticsearch
+    - group: elasticsearch
 
 elasticsearch_appfile:
   file.managed:
