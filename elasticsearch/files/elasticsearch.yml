@@ -376,3 +376,18 @@ index.number_of_shards: {{ elasticsearch.number_of_shards }}
 #monitor.jvm.gc.old.warn: 10s
 #monitor.jvm.gc.old.info: 5s
 #monitor.jvm.gc.old.debug: 2s
+
+index:
+  analysis:
+    analyzer:
+      ik:
+          alias: [news_analyzer_ik,ik_analyzer]
+          type: org.elasticsearch.index.analysis.IkAnalyzerProvider
+      ik_max_word:
+          type: ik
+          use_smart: false
+      ik_smart:
+          type: ik
+          use_smart: true
+         
+#index.analysis.analyzer.default.type : "ik"
