@@ -26,6 +26,8 @@ copy-security-jar:
     - saltenv: base
     - user: root
     - group: root
+    - require:
+      - archive: unpack-jdk-tarball
 {% endif %}
 
 jdk-config:
