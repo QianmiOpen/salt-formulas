@@ -28,12 +28,17 @@
                       'logstashRedisHost' : '192.168.59.3',
                       'logstashRedisPort' : 6379,
                       'useLogback'      : true,
-                      'gracefulOpen'    : true
+                      'gracefulOpen'    : true,
+                      'forceInstall'    : false
                       }) %}
 
 {% for key, value in tomcat.iteritems() %}
-{% do tomcat.update({key: p.get(key, g.get(key, value))}) %}
+{% do tomcat.update({key: p.get(key, value)}) %}
 {% endfor %}
+
+{% if g.get('version', 'none') != tomcat.version %}
+{% do tomcat.update({'forceInstall': true}) %}
+{% endif%}
 
 {% set package     = p.get('package', tomcatConst.packagePrefix + tomcat.version + tomcatConst.packageSuffix) %}
 {% set versionPath = p.get('versionPath', tomcatConst.packagePrefix + tomcat.version) %}
@@ -48,5 +53,3 @@
                       'tomcatPid'      : tomcatPid,
                       'CATALINA_BASE'  : CATALINA_BASE
                       }) %}
-
-{% do salt['grains.setval']('tomcat', tomcat) %}
