@@ -17,6 +17,9 @@ unpack-jdk-tarball:
     - saltenv: base
     - require:
       - file: {{ java.installPath }}
+{% if java.forceInstall %}
+      - file: delete-jdk-linked-dir
+{% endif %}
 
 {% if  java.version  == 'jdk7' %}
 copy-security-jar:
