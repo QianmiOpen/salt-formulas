@@ -1,5 +1,17 @@
 {% set p = salt['pillar.get']('webapp', {}) %}
 
+{% set webappConst = {} %}
+{%- do webappConst.update({'repoBase'   : 'nexus.dev.ofpay.com/nexus/service/local/artifact/maven/redirect?',
+                           'fileType'   : 'war',
+                           'nfsDir'     : '',
+                           'serverDir'  : '',
+                           'unzip'      : false,
+                           'dubboAdminIp'    : '172.19.65.13',
+                           'dubboAdminPort'  : '8080',
+                           'dubboRootPasswd' : 'master123'
+                           }) %}
+
+
 {% set webapp = {} %}
 {%- do webapp.update({'projectName': 'cardbase',
                       'nfsServer'  : '192.168.111.210',
