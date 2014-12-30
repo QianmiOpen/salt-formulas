@@ -2,5 +2,5 @@
 
 elasticsearch-start:
   cmd.run:
-    - name: {{ elasticsearch.home }}/bin/service/elasticsearch start
+    - name: {{ elasticsearch.base }}/{{ elasticsearch.prefix }}/bin/service/elasticsearch start
     - user: elasticsearch

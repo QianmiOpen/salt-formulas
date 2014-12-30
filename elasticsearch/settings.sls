@@ -3,7 +3,7 @@
 {% set elasticsearch = {} %}
 {%- do elasticsearch.update({'base'               : '/home/elasticsearch',
                              'prefix'             : 'elasticsearch',
-                             'version'            : '1.2.4',
+                             'version'            : '1.4.2',
                              'fileType'           : 'tar.gz',
                              'nodename'           : '192.1168.0.1',
                              'clustername'        : 'elasticsearch',

@@ -17,6 +17,14 @@ unpack-elasticsearch-tarball:
       - pkg: tar
       - file: unpack-elasticsearch-tarball
 
+elasticsearch-logs:
+  file.directory:
+    - name: {{ elasticsearch.home }}/logs
+    - user: elasticsearch
+    - group: elasticsearch
+    - require:
+      - cmd: unpack-elasticsearch-tarball     
+
 elasticsearch_config:
   file.managed:
     - name: {{ elasticsearch.home }}/config/elasticsearch.yml
@@ -67,6 +75,13 @@ elasticsearch_service_config_add_xmod:
     - user: elasticsearch
     - require:
       - file: elasticsearch_service_config_add_xmod
+
+symlink-elasticsearch:
+  file.symlink:
+    - name: {{ elasticsearch.base }}/{{ elasticsearch.prefix }}
+    - target: {{ elasticsearch.home }}
+    - user: elasticsearch
+    - group: elasticsearch      
 
 include:
   - elasticsearch.user

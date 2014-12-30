@@ -2,5 +2,5 @@
 
 elasticsearch_stop:
   cmd.run:
-    - name: {{ elasticsearch.home }}/bin/service/elasticsearch stop
+    - name: {{ elasticsearch.base }}/{{ elasticsearch.prefix }}/bin/service/elasticsearch stop
     - user: elasticsearch
