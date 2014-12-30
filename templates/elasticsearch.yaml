@@ -1,6 +1,14 @@
 name: elasticsearch
 remark: 用于elasticsearch项目的自动部署
-
+dependences:
+  - name: "$logServer"
+    type: nfs
+    description: 日志服务器
+    default: LogServer
+aliass:
+  - aliasName: LogServerVIp
+    aliasValue: "dependence.$logServer.attrs.t_virtualIp"
+    aliasDesc: "获取nfs服务器地址"
 items:
   - itemName: t_clustername
     itemDesc: 集群名称
@@ -26,7 +34,7 @@ actions:
       - name: 安装java
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install"
       - name: 编译安装elasticsearch
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.install pillar='{elasticsearch: {nodename: {{cHost.name}}, clustername: {{attrs.t_clustername}}, number_of_shards: {{attrs.t_numberofshards}}, number_of_replicas: {{attrs.t_numberofreplicas}}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' elasticsearch.install pillar='{elasticsearch: {nodename: {{cHost.name}}, clustername: {{attrs.t_clustername}}, number_of_shards: {{attrs.t_numberofshards}}, number_of_replicas: {{attrs.t_numberofreplicas}}, nfsServer: {{alias.LogServerVIp}}}}'"
 
   - name: 重启elasticsearch
     css: glyphicon glyphicon-repeat
