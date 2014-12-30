@@ -3,6 +3,10 @@
 tar:
   pkg.installed
 
+nfs-utils:
+  pkg:
+    - installed
+
 elasticsearch_bash_profile:
   file.managed:
     - name: {{ elasticsearch.base }}/.bash_profile
