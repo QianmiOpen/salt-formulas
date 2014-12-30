@@ -98,7 +98,7 @@ symlink-elasticsearch:
   file.directory:
     - user: elasticsearch
     - group: elasticsearch      
-    - mode: 755
+    - mode: 777
     - makedirs: True
   mount.mounted:
     - device: {{ elasticsearch.nfsServer }}:/oflogs/ES_backup
