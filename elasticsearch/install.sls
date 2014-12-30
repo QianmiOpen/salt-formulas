@@ -7,6 +7,15 @@ nfs-utils:
   pkg:
     - installed
 
+unmount-nfs-dirs:
+  cmd.run:
+    - name: "mount -t nfs | awk '{print $3}' | xargs umount -l"
+    - user: root
+    - group: root
+    - unless: "test `mount -t nfs | wc -l` -eq 0"
+    - require:
+      - pkg: nfs-utils
+
 elasticsearch_bash_profile:
   file.managed:
     - name: {{ elasticsearch.base }}/.bash_profile
