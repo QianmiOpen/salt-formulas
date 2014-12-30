@@ -3,6 +3,13 @@
 tar:
   pkg.installed
 
+elasticsearch_bash_profile:
+  file.managed:
+    - name: {{ elasticsearch.base }}/.bash_profile
+    - template: jinja
+    - source: salt://elasticsearch/files/bash_profile
+    - user: elasticsearch
+
 unpack-elasticsearch-tarball:
   file.managed:
     - name: {{ elasticsearch.base }}/{{ elasticsearch.package }}
