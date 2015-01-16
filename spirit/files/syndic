@@ -408,8 +408,8 @@ gitfs_provider: gitpython
 # exist in that repo as *local* refs.
 #
 gitfs_remotes:
-  - http://git.dev.qianmi.com/tda/salt-formulas.git
-  - http://git.dev.qianmi.com/tda/salt-pkgs.git
+  - git@git.dev.qianmi.com:tda/salt-formulas.git
+  - git@git.dev.qianmi.com:tda/salt-pkgs.git
   - git@git.dev.qianmi.com:cicode/salt-keys.git
 #  - git+ssh://cicode@git.dev.ofpay.com:29418/cicode/salt-work.git
 #  - git://github.com/saltstack/salt-states.git
