@@ -1,5 +1,3 @@
-{%- from 'tomcat/settings.sls' import tomcat with context -%}
-{%- from 'webapp/settings.sls' import tomcat with context -%}
 <included>
     <property scope="context" name="CHARSET" value="utf-8"/>
     <property scope="context" name="appName" value="{{webapp.projectName}}"/>
