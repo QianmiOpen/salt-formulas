@@ -126,6 +126,12 @@ copy-logback-jars:
     - mode: 644
 {% endif %}
 
+sed-tomcat-logback:
+  cmd.run:
+    - name: sed -i '1d' {{ tomcat.CATALINA_BASE }}/conf/tomcat-logback.xml
+    - user: tomcat
+    - group: tomcat
+
 {% if tomcat.gracefulOpen %}
 copy-lib-jars:
   file.recurse:
