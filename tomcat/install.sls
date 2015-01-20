@@ -1,6 +1,5 @@
 {%- from 'tomcat/settings.sls' import tomcat with context %}
 {%- from 'webapp/settings.sls' import webapp with context %}
-
 include:
   - tomcat.env
   - tomcat.user
