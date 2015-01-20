@@ -117,7 +117,6 @@ copy-logback-jars:
     - user: tomcat
     - group: tomcat
     - mode: 644
-    - template: jinja
 
 {{ tomcat.CATALINA_BASE }}/conf/logback-common.xml:
   file.managed:
@@ -125,7 +124,6 @@ copy-logback-jars:
     - user: tomcat
     - group: tomcat
     - mode: 644
-    - template: jinja
 {% endif %}
 
 {% if tomcat.gracefulOpen %}
