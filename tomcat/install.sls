@@ -1,5 +1,4 @@
 {%- from 'tomcat/settings.sls' import tomcat with context %}
-{%- from 'webapp/settings.sls' import webapp with context %}
 include:
   - tomcat.env
   - tomcat.user
@@ -116,6 +115,9 @@ copy-logback-jars:
     - user: tomcat
     - group: tomcat
     - mode: 644
+    - template: jinja
+    - defaults:
+        tomcat: {{ tomcat|json }}
 
 {{ tomcat.CATALINA_BASE }}/conf/logback-common.xml:
   file.managed:
@@ -123,6 +125,9 @@ copy-logback-jars:
     - user: tomcat
     - group: tomcat
     - mode: 644
+    - template: jinja
+    - defaults:
+        tomcat: {{ tomcat|json }}
 {% endif %}
 
 sed-tomcat-logback:
