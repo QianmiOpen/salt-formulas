@@ -44,12 +44,6 @@ jdk-config:
     - context:
       javaHome: {{ java.home }}
 
-test-cmd-run-dir:
-  cmd.run:
-    - name: cd /home/zabbix
-    - user: root
-    - group: root
-
 symlink-java:
   file.symlink:
     - name: {{ java.home }}
