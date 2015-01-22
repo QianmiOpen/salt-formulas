@@ -1,5 +1,4 @@
 {%- from 'tomcat/settings.sls' import tomcat with context %}
-
 include:
   - tomcat.env
   - tomcat.user
@@ -119,7 +118,18 @@ copy-logback-jars:
     - template: jinja
     - defaults:
         tomcat: {{ tomcat|json }}
+
+{{ tomcat.CATALINA_BASE }}/conf/logback-common.xml:
+  file.managed:
+    - source: salt://tomcat/files/logback-common.xml
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+    - template: jinja
+    - defaults:
+        tomcat: {{ tomcat|json }}
 {% endif %}
+
 
 {% if tomcat.gracefulOpen %}
 copy-lib-jars:

@@ -1,14 +1,11 @@
-{%- from 'tomcat/settings.sls' import tomcat with context -%}
-{%- from 'webapp/settings.sls' import tomcat with context -%}
 <included>
     <property scope="context" name="CHARSET" value="utf-8"/>
-    <property scope="context" name="appName" value="{{webapp.projectName}}"/>
+    <property scope="context" name="appName" value="{{tomcat.projectName}}"/>
     <property scope="context" name="intflogType" value="INTF_LOG"/>
     <property scope="context" name="applogType" value="APP_LOG"/>
     <property scope="context" name="redisHost" value="{{tomcat.logstashRedisHost}}"/>
     <property scope="context" name="redisPort" value="{{tomcat.logstashRedisPort}}"/>
-
-    <property scope="context" name="LOG_HOME" value="{{webapp.logHome}}/{{webapp.projectName}}" />
+    <property scope="context" name="LOG_HOME" value="{{tomcat.logHome}}/{{tomcat.projectName}}" />
     <property scope="context" name="APP_LOG_HOME" value="${LOG_HOME}/app/" />
     <property scope="context" name="INF_LOG_HOME" value="${LOG_HOME}/inf/" />
 

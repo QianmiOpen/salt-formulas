@@ -25,6 +25,8 @@
                       'stopDelaySeconds' : 60,
                       'logstashRedisHost' : '192.168.59.3',
                       'logstashRedisPort' : 6379,
+                      'logHome'         : '/oflogs',
+                      'projectName'     : 'appserver',
                       'useLogback'      : true,
                       'gracefulOpen'    : true
                       }) %}
