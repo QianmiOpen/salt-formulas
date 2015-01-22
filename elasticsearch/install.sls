@@ -22,6 +22,17 @@ elasticsearch_bash_profile:
     - template: jinja
     - source: salt://elasticsearch/files/bash_profile
     - user: elasticsearch
+    - group: elasticsearch
+    - replace: false
+
+elasticsearch_bashrc:
+  file.managed:
+    - name: {{ elasticsearch.base }}/.bashrc
+    - template: jinja
+    - source: salt://elasticsearch/files/bashrc
+    - user: elasticsearch
+    - group: elasticsearch
+    - replace: false
 
 unpack-elasticsearch-tarball:
   file.managed:
