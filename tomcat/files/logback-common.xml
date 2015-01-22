@@ -58,7 +58,7 @@
 
     <!-- 应用日志_fileAppender -->
     <appender name="APP_FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${APP_LOG_HOME}/${HOSTNAME}.inf.ing</file>
+        <file>${APP_LOG_HOME}/${HOSTNAME}.app.ing</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${APP_LOG_HOME}/${HOSTNAME}.%d{yyyy-MM-dd_HH}.json.%i</fileNamePattern>
             <MaxHistory>1440</MaxHistory><!--日志文件保存个数 -->
