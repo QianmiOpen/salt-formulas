@@ -67,7 +67,7 @@ actions:
       - name: 配置文件准备
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{env.id}}/{{id}}/{{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
       # - name: 记录任务结束状态
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       # - name: 启动应用
@@ -101,7 +101,7 @@ actions:
       - name: 配置文件准备
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{env.id}}/{{id}}/{{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
       # - name: 记录任务结束状态
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: after, version: {{version.name}}}}'"
       # - name: 启动应用
@@ -119,7 +119,7 @@ actions:
       - name: 配置文件准备
         sls: "bugatti copyfile"
       - name: 拷贝配置文件
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{env.id}}/{{id}}/{{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
       - name: 启动应用
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
   - name: 启动应用
