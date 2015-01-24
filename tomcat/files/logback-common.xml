@@ -13,7 +13,7 @@
     <appender name="INTF_FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${INF_LOG_HOME}/${HOSTNAME}.inf.ing</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${INF_LOG_HOME}/${HOSTNAME}.%d{yyyy-MM-dd_HH}.json.%i</fileNamePattern>
+            <fileNamePattern>${INF_LOG_HOME}/${appName}_intf_log.${HOSTNAME}.%d{yyyy-MM-dd_HH}.json.%i</fileNamePattern>
             <MaxHistory>1440</MaxHistory><!--日志文件保存个数 -->
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 按时间回滚的同时，按文件大小来回滚 -->
@@ -60,7 +60,7 @@
     <appender name="APP_FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${APP_LOG_HOME}/${HOSTNAME}.app.ing</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${APP_LOG_HOME}/${HOSTNAME}.%d{yyyy-MM-dd_HH}.json.%i</fileNamePattern>
+            <fileNamePattern>${APP_LOG_HOME}/${appName}_app_log.${HOSTNAME}.%d{yyyy-MM-dd_HH}.json.%i</fileNamePattern>
             <MaxHistory>1440</MaxHistory><!--日志文件保存个数 -->
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 按时间回滚的同时，按文件大小来回滚 -->
