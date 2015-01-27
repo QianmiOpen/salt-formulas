@@ -2,7 +2,7 @@
 
 {% set spirit = {} %}
 {%- do spirit.update({'prefix'        : 'spirit_',
-                      'version'       : '2.10-1.4.5',
+                      'version'       : '2.10-1.4.6',
                       'suffix'        : '-one-jar.jar',
                       'home'          : '/opt/spirit'
                       }) %}
