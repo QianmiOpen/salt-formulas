@@ -474,7 +474,7 @@
 # format is: <file|udp|tcp>://<host|socketpath>:<port-if-required>/<log-facility>
 #log_file: /var/log/salt/minion
 #log_file: file:///dev/log
-log_file: udp://salt:2551
+#log_file: udp://salt:2551
 #
 #log_file: /var/log/salt/minion
 #key_logfile: /var/log/salt/key
