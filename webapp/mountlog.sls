@@ -6,7 +6,7 @@ nfs-utils:
 
 unmount-nfs-dirs:
   cmd.run:
-    - name: "mount -t nfs | awk '{print $3}' | xargs umount -l"
+    - name: "mount -t `mount |tail -1 |awk '{print $5}'` | awk '{print $3}' | xargs umount -l"
     - user: root
     - group: root
     - unless: "test `mount -t nfs | wc -l` -eq 0"
