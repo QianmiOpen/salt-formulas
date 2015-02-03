@@ -112,7 +112,30 @@ symlink-elasticsearch:
     - name: {{ elasticsearch.base }}/{{ elasticsearch.prefix }}
     - target: {{ elasticsearch.home }}
     - user: elasticsearch
-    - group: elasticsearch      
+    - group: elasticsearch     
+
+{{ elasticsearch.logHome }}:
+  file.directory:
+    - user: elasticsearch
+    - group: elasticsearch
+    - mode: 755
+    - makedirs: True
+  mount.mounted:
+    - device: {{ elasticsearch.nfsServer }}:{{ elasticsearch.logHome }}
+    - fstype: nfs
+    - opts: nosuid,nodev,rw,bg,soft,nolock
+    - persist: True
+    - require:
+      - pkg: nfs-utils
+
+unmount-oflogs:
+  file.directory:
+    - name: {{ elasticsearch.logHome }}/ES_backup
+    - mode: 777
+    - makedirs: True
+  mount.unmounted:
+    - name: {{ elasticsearch.logHome }}
+    - persist: False 
 
 {{ elasticsearch.base }}/ES_backup:
   file.directory:
@@ -121,7 +144,7 @@ symlink-elasticsearch:
     - mode: 777
     - makedirs: True
   mount.mounted:
-    - device: {{ elasticsearch.nfsServer }}:/oflogs/ES_backup
+    - device: {{ elasticsearch.nfsServer }}:{{ elasticsearch.logHome }}/ES_backup
     - fstype: nfs
     - opts: nosuid,nodev,rw,bg,soft,nolock
     - persist: True
