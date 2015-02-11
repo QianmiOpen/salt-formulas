@@ -30,12 +30,26 @@
                       'useLogback'      : true,
                       'gracefulOpen'    : true,
                       'forceInstall'    : false,
-                      'md5'             : '1234567890'
+                      'md5sum'          : {'install': '1234567890'}
                       }) %}
 
-{% for key, value in tomcat.iteritems() %}
-{% do tomcat.update({key: p.get(key, value)}) %}
+{% set md5sum = {} %}
+
+{% for gkey, gvalue in g.get('md5sum', {}).iteritems() %}
+{% do md5sum.update({gkey:gvalue})%}
 {% endfor %}
+
+{% for key, value in tomcat.iteritems() %}
+{% if key == 'md5sum' %}
+  {% for mkey, mvalue in p.get(key,value).iteritems() %}
+  {% do md5sum.update({mkey: mvalue}) %}
+  {% endfor %}
+{% else %}
+{% do tomcat.update({key: p.get(key, value)}) %}
+{% endif %}
+{% endfor %}
+
+{% do tomcat.update({'md5sum': md5sum})%}
 
 {% if g.get('version', 'none') != tomcat.version %}
 {% do tomcat.update({'forceInstall': true}) %}

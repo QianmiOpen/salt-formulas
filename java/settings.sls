@@ -19,12 +19,26 @@
                     'version'        : 'jdk7',
                     'installPath'    : '/usr/share/java',
                     'forceInstall'   : false,
-                    'md5'            : '1234567890'
+                    'md5sum'         : {'install': '1234567890','clean': '1234567890'}
                     }) %}
 
-{% for key, value in java.iteritems() %}
-{% do java.update({key: p.get(key, value)}) %}
+{% set md5sum = {} %}
+
+{% for gkey, gvalue in g.get('md5sum', {}).iteritems() %}
+{% do md5sum.update({gkey:gvalue})%}
 {% endfor %}
+
+{% for key, value in java.iteritems() %}
+{% if key == 'md5sum' %}
+  {% for mkey, mvalue in p.get(key,value).iteritems() %}
+  {% do md5sum.update({mkey: mvalue}) %}
+  {% endfor %}
+{% else %}
+{% do java.update({key: p.get(key, value)}) %}
+{% endif %}
+{% endfor %}
+
+{% do java.update({'md5sum': md5sum})%}
 
 {% do java.update({'jdkVersion'     : packageConf[java.version].jdkVersion}) %}
 
