@@ -18,7 +18,8 @@
 {%- do java.update({'home'           : '/usr/lib/java',
                     'version'        : 'jdk7',
                     'installPath'    : '/usr/share/java',
-                    'forceInstall'   : false
+                    'forceInstall'   : false,
+                    'md5'            : '1234567890'
                     }) %}
 
 {% for key, value in java.iteritems() %}

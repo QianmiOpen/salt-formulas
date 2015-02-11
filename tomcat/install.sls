@@ -122,4 +122,14 @@ copy-lib-jars:
 {% endif %}
 
 {% do tomcat.update({'forceInstall': false}) %}
-{% do salt['grains.setval']('tomcat', tomcat) %}
+
+tomcat:
+  grainsdict.present:
+    - value: {{ tomcat|json }}
+    - require:
+      - archive: unpack-tomcat-tarball
+      - file: symlink-tomcat
+      - file: delete-tomcat-users.xml
+      - file: {{ tomcat.CATALINA_BASE }}/bin/catalina.sh
+      - file: copy-env.conf
+      - file: /home/tomcat/tomcat/conf/server.xml

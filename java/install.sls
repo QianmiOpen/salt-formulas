@@ -1,5 +1,9 @@
 {%- from 'java/settings.sls' import java with context %}
 
+tar:
+  pkg:
+    - installed
+
 {{ java.installPath }}:
   file.directory:
     - user: root
@@ -17,6 +21,8 @@ unpack-jdk-tarball:
     - saltenv: base
     - require:
       - file: {{ java.installPath }}
+      - pkg: tar
+
 {% if java.forceInstall %}
       - file: delete-jdk-linked-dir
 {% endif %}
@@ -57,4 +63,11 @@ include:
 {% endif %}
 
 {% do java.update({'forceInstall': false}) %}
-{% do salt['grains.setval']('java', java) %}
+
+java:
+  grainsdict.present:
+    - value: {{ java|json }}
+    - require:
+      - archive: unpack-jdk-tarball
+      - file: jdk-config
+      - file: symlink-java

@@ -11,3 +11,10 @@
     - fstype: nfs
     - opts: nosuid,nodev,rw,bg,soft,nolock
     - persist: True
+
+webapp:
+  grainsdict.present:
+    - value: {{ webapp|json }}
+    - require:
+      - file: {{ webapp.serverDir }}
+      - mount: {{ webapp.serverDir }}

@@ -29,7 +29,8 @@
                       'logstashRedisPort' : 6379,
                       'useLogback'      : true,
                       'gracefulOpen'    : true,
-                      'forceInstall'    : false
+                      'forceInstall'    : false,
+                      'md5'             : '1234567890'
                       }) %}
 
 {% for key, value in tomcat.iteritems() %}
