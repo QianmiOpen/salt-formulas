@@ -41,16 +41,13 @@
 {% for key, value in webapp.iteritems() %}
 {% if key == 'md5sum' %}
   {% for mkey, mvalue in p.get(key,value).iteritems() %}
-    {% if mvalue != None %}
-      {% do md5sum.update({mkey: mvalue}) %}
-    {% endif %}
+    {% do md5sum.update({mkey: mvalue}) %}
+    {% do webapp.update({'md5sum': md5sum})%}
   {% endfor %}
 {% else %}
 {% do webapp.update({key: p.get(key, g.get(key, value))}) %}
 {% endif %}
 {% endfor %}
-
-{% do webapp.update({'md5sum': md5sum})%}
 
 
 {% set fileUrl  = p.get('fileUrl', webapp.repoBase + 'r=public&g=' + webapp.groupId + '&a=' + webapp.artifactId + '&v=' + webapp.version + '&e=' + webapp.fileType) %}
