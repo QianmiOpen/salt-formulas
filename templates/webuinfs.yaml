@@ -57,7 +57,7 @@ items:
     itemDesc: 建站目录
     itemType: var
 actions:
-  - name: 升级应用
+  #- name: 升级应用
     #css: glyphicon glyphicon-upload
     #versionMenu: True
     #steps:
