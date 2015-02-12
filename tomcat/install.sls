@@ -2,7 +2,6 @@
 
 include:
   - tomcat.env
-  - tomcat.user
 
 delete-tomcat-linked-dir:
   cmd.run:
@@ -154,4 +153,4 @@ tomcat:
       - file: copy-env.conf
       - file: /home/tomcat/tomcat/conf/server.xml
       - file: {{ tomcat.CATALINA_BASE }}/conf/logback-common.xml
-      
+
