@@ -29,21 +29,19 @@
                       'dubboAdminIp'    : '172.19.65.13',
                       'dubboAdminPort'  : '8080',
                       'dubboRootPasswd' : 'master123',
-                      'md5sum'          : {'mountlog': '1234567890','mountnfs': '1234567890'}
+                      'md5sum'          : {}
                       }) %}
 
-{% set md5sum = {'mountlog': '123456789011','mountnfs': '123456789011'} %}
+{% set md5sum = {} %}
 
 {% for gkey, gvalue in g.get('md5sum', {}).iteritems() %}
   {% do md5sum.update({gkey:gvalue})%}
-  {% do md5sum.update({'mountlog': '123456789022','mountnfs': '123456789022'})%}
 {% endfor %}
 
 {% for key, value in webapp.iteritems() %}
 {% if key == 'md5sum' %}
   {% for mkey, mvalue in p.get(key,value).iteritems() %}
     {% do md5sum.update({mkey: mvalue}) %}
-    {% do md5sum.update({'mountlog': '123456789033','mountnfs': '123456789033'})%}
   {% endfor %}
 {% else %}
 {% do webapp.update({key: p.get(key, g.get(key, value))}) %}
