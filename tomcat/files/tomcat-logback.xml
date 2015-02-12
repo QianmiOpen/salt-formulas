@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="60 seconds">
     <property name="max.retention.days" value="3" />
+    <property name="appName" value="{{tomcat.projectName}}" />
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -12,15 +13,16 @@
         <host>{{tomcat.logstashRedisHost}}</host>
         <port>{{tomcat.logstashRedisPort}}</port>
         <key>LOGSTASH_CATALINA</key>
-        <enableBatch>true</enableBatch>     <!-- true is batch write to redis; default is true -->
         <batchSize>100</batchSize>          <!-- batch size, default 100 -->
         <period>500</period>                <!-- each write period redis, default 500 ms -->
         <daemonThread>true</daemonThread>
         <layout class="net.logstash.logback.layout.LogstashLayout">
+            <fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+            <shortenedLoggerNameLength>36</shortenedLoggerNameLength>
             <includeContext>false</includeContext>
             <includeMdc>false</includeMdc>
             <includeCallerInfo>true</includeCallerInfo>
-            <customFields>{"source_host": "${HOSTNAME}"}</customFields>
+            <customFields>{"host": "${HOSTNAME}", "appName": "${appName}"}</customFields>
         </layout>
     </appender>
 

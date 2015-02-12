@@ -131,12 +131,12 @@ actions:
   #  steps:
   #    - name: 关闭应用
   #      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
-  #    - name: 配置文件准备
   #      sls: "bugatti copyfile"
   #    - name: 拷贝配置文件
   #      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{env.id}}/{{id}}/{{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
   #    - name: 启动应用
   #      sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+
   - name: 启动应用
     css: glyphicon glyphicon-play
     steps:

@@ -3,6 +3,37 @@
 tar:
   pkg.installed
 
+nfs-utils:
+  pkg:
+    - installed
+
+unmount-nfs-dirs:
+  cmd.run:
+    - name: "mount -t nfs | awk '{print $3}' | xargs umount -l"
+    - user: root
+    - group: root
+    - unless: "test `mount -t nfs | wc -l` -eq 0"
+    - require:
+      - pkg: nfs-utils
+
+elasticsearch_bash_profile:
+  file.managed:
+    - name: {{ elasticsearch.base }}/.bash_profile
+    - template: jinja
+    - source: salt://elasticsearch/files/bash_profile
+    - user: elasticsearch
+    - group: elasticsearch
+    - replace: false
+
+elasticsearch_bashrc:
+  file.managed:
+    - name: {{ elasticsearch.base }}/.bashrc
+    - template: jinja
+    - source: salt://elasticsearch/files/bashrc
+    - user: elasticsearch
+    - group: elasticsearch
+    - replace: false
+
 unpack-elasticsearch-tarball:
   file.managed:
     - name: {{ elasticsearch.base }}/{{ elasticsearch.package }}
@@ -17,12 +48,28 @@ unpack-elasticsearch-tarball:
       - pkg: tar
       - file: unpack-elasticsearch-tarball
 
+elasticsearch-logs:
+  file.directory:
+    - name: {{ elasticsearch.home }}/logs
+    - user: elasticsearch
+    - group: elasticsearch
+    - require:
+      - cmd: unpack-elasticsearch-tarball     
+
 elasticsearch_config:
   file.managed:
     - name: {{ elasticsearch.home }}/config/elasticsearch.yml
     - template: jinja
     - source: salt://elasticsearch/files/elasticsearch.yml
     - user: elasticsearch
+
+copy-ik-dir:
+  file.recurse:
+    - name: {{ elasticsearch.home }}/config/ik
+    - source: salt://elasticsearch/files/ik
+    - makedirs: true
+    - user: elasticsearch
+    - group: elasticsearch
 
 elasticsearch_appfile:
   file.managed:
@@ -59,6 +106,50 @@ elasticsearch_service_config_add_xmod:
     - user: elasticsearch
     - require:
       - file: elasticsearch_service_config_add_xmod
+
+symlink-elasticsearch:
+  file.symlink:
+    - name: {{ elasticsearch.base }}/{{ elasticsearch.prefix }}
+    - target: {{ elasticsearch.home }}
+    - user: elasticsearch
+    - group: elasticsearch     
+
+{{ elasticsearch.logHome }}:
+  file.directory:
+    - user: elasticsearch
+    - group: elasticsearch
+    - mode: 755
+    - makedirs: True
+  mount.mounted:
+    - device: {{ elasticsearch.nfsServer }}:{{ elasticsearch.logHome }}
+    - fstype: nfs
+    - opts: nosuid,nodev,rw,bg,soft,nolock
+    - persist: True
+    - require:
+      - pkg: nfs-utils
+
+unmount-oflogs:
+  file.directory:
+    - name: {{ elasticsearch.logHome }}/ES_backup
+    - mode: 777
+    - makedirs: True
+  mount.unmounted:
+    - name: {{ elasticsearch.logHome }}
+    - persist: False 
+
+{{ elasticsearch.base }}/ES_backup:
+  file.directory:
+    - user: elasticsearch
+    - group: elasticsearch      
+    - mode: 777
+    - makedirs: True
+  mount.mounted:
+    - device: {{ elasticsearch.nfsServer }}:{{ elasticsearch.logHome }}/ES_backup
+    - fstype: nfs
+    - opts: nosuid,nodev,rw,bg,soft,nolock
+    - persist: True
+    - require:
+      - pkg: nfs-utils
 
 include:
   - elasticsearch.user

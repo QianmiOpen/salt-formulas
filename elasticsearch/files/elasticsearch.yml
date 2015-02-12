@@ -147,7 +147,7 @@ index.number_of_shards: {{ elasticsearch.number_of_shards }}
 
 # Path to directory where to store index data allocated for this node.
 #
-#path.data: /path/to/data
+path.data: {{ elasticsearch.base }}/data
 #
 # Can optionally include more than one location, causing data to be striped across
 # the locations (a la RAID 0) on a file level, favouring locations with most free
@@ -376,3 +376,26 @@ index.number_of_shards: {{ elasticsearch.number_of_shards }}
 #monitor.jvm.gc.old.warn: 10s
 #monitor.jvm.gc.old.info: 5s
 #monitor.jvm.gc.old.debug: 2s
+
+################################## Security ################################
+
+# Uncomment if you want to enable JSONP as a valid return transport on the
+# http server. With this enabled, it may pose a security risk, so disabling
+# it unless you need it is recommended (it is disabled by default).
+#
+#http.jsonp.enable: true
+
+index:
+  analysis:
+    analyzer:
+      ik:
+          alias: [news_analyzer_ik,ik_analyzer]
+          type: org.elasticsearch.index.analysis.IkAnalyzerProvider
+      ik_max_word:
+          type: ik
+          use_smart: false
+      ik_smart:
+          type: ik
+          use_smart: true
+         
+#index.analysis.analyzer.default.type : "ik"

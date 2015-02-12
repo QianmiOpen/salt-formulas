@@ -1,5 +1,15 @@
 {%- from 'tomcat/settings.sls' import tomcat with context %}
 
+include:
+  - tomcat.env
+  - tomcat.user
+
+delete-tomcat-linked-dir:
+  cmd.run:
+    - name: "rm -rf `readlink {{ tomcat.home }}/{{ tomcat.name }}`"
+    - user: tomcat
+    - onlyif: 'test -e {{ tomcat.home }}/{{ tomcat.name }}'
+
 unpack-tomcat-tarball:
   archive.extracted:
     - name: {{ tomcat.home }}
@@ -106,7 +116,16 @@ copy-env.conf:
     - require:
       - file: symlink-tomcat
 
-# -- end
+{{ tomcat.CATALINA_BASE }}/conf/logback-common.xml:
+  file.managed:
+    - source: salt://tomcat/files/logback-common.xml
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+    - template: jinja
+    - defaults:
+        tomcat: {{ tomcat|json }}
+
 
 {% if tomcat.gracefulOpen %}
 copy-lib-jars:
@@ -127,9 +146,12 @@ tomcat:
   grainsdict.present:
     - value: {{ tomcat|json }}
     - require:
+      - cmd: delete-tomcat-linked-dir
       - archive: unpack-tomcat-tarball
       - file: symlink-tomcat
       - file: delete-tomcat-users.xml
       - file: {{ tomcat.CATALINA_BASE }}/bin/catalina.sh
       - file: copy-env.conf
       - file: /home/tomcat/tomcat/conf/server.xml
+      - file: {{ tomcat.CATALINA_BASE }}/conf/logback-common.xml
+      

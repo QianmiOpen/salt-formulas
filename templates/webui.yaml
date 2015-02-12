@@ -94,7 +94,7 @@ actions:
       # - name: 记录任务开始状态
       #   sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' git.tag pillar='{git: {taskId: {{taskId}}, stage: before, version: {{version.name}}}}'"
       - name: 安装tomcat
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {logstashRedisHost: \"{{dependence.$logredis.attrs.t_virtualIp}}\", logstashRedisPort: {{dependence.$logredis.attrs.t_port}}, md5sum: {install: $$tomcat.md5sum.install$$}}}'"
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {logstashRedisHost: \"{{dependence.$logredis.attrs.t_virtualIp}}\", logstashRedisPort: {{dependence.$logredis.attrs.t_port}}, logHome: {{dependence.$logServer.attrs.t_mountRootDir}},projectName: {{attrs.t_mountDir}}, md5sum: {install: $$tomcat.md5sum.install$$}}}'"
         md5Check: "tomcat.md5sum.install"
         seconds: 6
       - name: mount log目录
