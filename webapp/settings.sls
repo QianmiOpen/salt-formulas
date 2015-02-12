@@ -41,7 +41,9 @@
 {% for key, value in webapp.iteritems() %}
 {% if key == 'md5sum' %}
   {% for mkey, mvalue in p.get(key,value).iteritems() %}
-  {% do md5sum.update({mkey: mvalue}) %}
+    {% if mvalue != None %}
+      {% do md5sum.update({mkey: mvalue}) %}
+    {% endif %}
   {% endfor %}
 {% else %}
 {% do webapp.update({key: p.get(key, g.get(key, value))}) %}
