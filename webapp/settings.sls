@@ -29,7 +29,7 @@
                       'dubboAdminIp'    : '172.19.65.13',
                       'dubboAdminPort'  : '8080',
                       'dubboRootPasswd' : 'master123',
-                      'md5sum'          : {'deploy': '1234567890','mountlog': '1234567890','mountnfs': '1234567890'}
+                      'md5sum'          : {'mountlog': '1234567890','mountnfs': '1234567890'}
                       }) %}
 
 {% set md5sum = {} %}
