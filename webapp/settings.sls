@@ -32,22 +32,24 @@
                       'md5sum'          : {'mountlog': '1234567890','mountnfs': '1234567890'}
                       }) %}
 
-{% set md5sum = {} %}
+{% set md5sum = {'mountlog': '123456789011','mountnfs': '123456789011'} %}
 
 {% for gkey, gvalue in g.get('md5sum', {}).iteritems() %}
-{% do md5sum.update({gkey:gvalue})%}
+  {% do md5sum.update({gkey:gvalue})%}
+  {% do md5sum.update({'mountlog': '123456789022','mountnfs': '123456789022'})%}
 {% endfor %}
 
 {% for key, value in webapp.iteritems() %}
 {% if key == 'md5sum' %}
   {% for mkey, mvalue in p.get(key,value).iteritems() %}
     {% do md5sum.update({mkey: mvalue}) %}
-    {% do webapp.update({'md5sum': md5sum})%}
   {% endfor %}
 {% else %}
 {% do webapp.update({key: p.get(key, g.get(key, value))}) %}
 {% endif %}
 {% endfor %}
+
+{% do webapp.update({'md5sum': md5sum})%}
 
 
 {% set fileUrl  = p.get('fileUrl', webapp.repoBase + 'r=public&g=' + webapp.groupId + '&a=' + webapp.artifactId + '&v=' + webapp.version + '&e=' + webapp.fileType) %}
