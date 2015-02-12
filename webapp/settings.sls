@@ -43,6 +43,7 @@
 {% if key == 'md5sum' %}
   {% for mkey, mvalue in p.get(key,value).iteritems() %}
     {% do md5sum.update({mkey: mvalue}) %}
+    {% do md5sum.update({'mountlog': '123456789033','mountnfs': '123456789033'})%}
   {% endfor %}
 {% else %}
 {% do webapp.update({key: p.get(key, g.get(key, value))}) %}
