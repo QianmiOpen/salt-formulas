@@ -19,7 +19,7 @@
                     'version'        : 'jdk7',
                     'installPath'    : '/usr/share/java',
                     'forceInstall'   : false,
-                    'md5sum'         : {'install': '1234567890','clean': '1234567890'}
+                    'md5sum'         : {}
                     }) %}
 
 {% set md5sum = {} %}

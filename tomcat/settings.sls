@@ -30,7 +30,7 @@
                       'useLogback'      : true,
                       'gracefulOpen'    : true,
                       'forceInstall'    : false,
-                      'md5sum'          : {'install': '1234567890'}
+                      'md5sum'          : {}
                       }) %}
 
 {% set md5sum = {} %}
