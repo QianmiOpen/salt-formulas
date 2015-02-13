@@ -7,12 +7,6 @@ include:
 {% endif %}
   - tomcat.user
 
-delete-tomcat-linked-dir:
-  cmd.run:
-    - name: "rm -rf `readlink {{ tomcat.home }}/{{ tomcat.name }}`"
-    - user: tomcat
-    - onlyif: 'test -e {{ tomcat.home }}/{{ tomcat.name }}'
-
 unpack-tomcat-tarball:
   archive.extracted:
     - name: {{ tomcat.home }}
