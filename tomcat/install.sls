@@ -113,7 +113,7 @@ juli-jar:
     - user: tomcat
     - group: tomcat
     - require:
-      - user: tomcat-user
+      - user: add-tomcat-user
 
 copy-logback-jars:
   file.recurse:
@@ -124,7 +124,7 @@ copy-logback-jars:
     - user: tomcat
     - group: tomcat
     - require:
-      - user: tomcat-user
+      - user: add-tomcat-user
 
 {{ tomcat.CATALINA_BASE }}/conf/catalina.properties:
   file.managed:
