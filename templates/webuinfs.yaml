@@ -104,8 +104,7 @@ actions:
       #- name: unmount建站目录
       #  sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.umountnfs pillar='{webapp: {nfsDir: \"{{attrs.t_nfsDir}}\", serverDir: \"{{attrs.t_serverDir}}\"}}'"
       - name: 安装tomcat
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {md5sum: {install: $$tomcat.md5sum.install$$}}}'"
-        #sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {logstashRedisHost: \"{{dependence.$logredis.attrs.t_virtualIp}}\", logstashRedisPort: {{dependence.$logredis.attrs.t_port}}, logHome: {{dependence.$logServer.attrs.t_mountRootDir}}, projectName: {{attrs.t_mountDir}}, md5sum: {install: $$tomcat.md5sum.install$$}}}'
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {logstashRedisHost: \"{{dependence.$logredis.attrs.t_virtualIp}}\", logstashRedisPort: {{dependence.$logredis.attrs.t_port}}, logHome: {{dependence.$logServer.attrs.t_mountRootDir}},projectName: {{attrs.t_mountDir}}, md5sum: {install: $$tomcat.md5sum.install$$}}}'"
         md5Check: "tomcat.md5sum.install"
         seconds: 6
       - name: mount log目录
