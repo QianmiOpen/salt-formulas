@@ -2,6 +2,13 @@
 
 include:
   - tomcat.env
+{% if tomcat.forceInstall %}
+  - tomcat.clean
+{% endif %}
+  - tomcat.user
+{% if tomcat.useLogback %}
+  - tomcat.uselogback
+{% endif %}
 
 delete-tomcat-linked-dir:
   cmd.run:
@@ -43,15 +50,6 @@ symlink-tomcat:
     - group: tomcat
     - require:
       - file: unpack-tomcat-tarball
-
-include:
-{% if tomcat.forceInstall %}
-  - tomcat.clean
-{% endif %}
-  - tomcat.user
-{% if tomcat.useLogback %}
-  - tomcat.uselogback
-{% endif %}
 
 tomcat-profile-config:
   file.managed:
