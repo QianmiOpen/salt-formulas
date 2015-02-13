@@ -6,9 +6,6 @@ include:
   - tomcat.clean
 {% endif %}
   - tomcat.user
-{% if tomcat.useLogback %}
-  - tomcat.uselogback
-{% endif %}
 
 delete-tomcat-linked-dir:
   cmd.run:
@@ -51,17 +48,6 @@ symlink-tomcat:
     - require:
       - file: unpack-tomcat-tarball
 
-tomcat-profile-config:
-  file.managed:
-    - name: /etc/profile.d/tomcat.sh
-    - source: salt://tomcat/files/tomcat.sh
-    - template: jinja
-    - mode: 644
-    - user: root
-    - group: root
-    - context:
-      tomcatHome: {{ tomcat.home }}/{{ tomcat.name }}
-      tomcatPid: {{ tomcat.tomcatPid }}
 
 # temp 目录不能删除，部分jdk功能中，需要temp目录存放临时文件。--begin
 {% for dir in ['webapps', 'LICENSE', 'NOTICE', 'RELEASE-NOTES', 'RUNNING.txt'] %}
@@ -80,14 +66,6 @@ delete-tomcat-users.xml:
 # -- end
 
 # 增加env.conf -- begin
-{{ tomcat.CATALINA_BASE }}/bin/catalina.sh:
-  file.managed:
-    - source: salt://tomcat/files/catalina.sh
-    - user: tomcat
-    - group: tomcat
-    - require:
-      - file: symlink-tomcat
-
 copy-env.conf:
   file.managed:
     - name: {{ tomcat.home }}/{{ tomcat.name }}/conf/env.conf
@@ -113,6 +91,61 @@ copy-env.conf:
     - require:
       - file: symlink-tomcat
 
+{% if tomcat.useLogback %}
+{{ tomcat.CATALINA_BASE }}/conf/context.xml:
+  file.managed:
+    - source: salt://tomcat/files/context.xml
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+
+{{ tomcat.CATALINA_BASE }}/bin/catalina.sh:
+  file.managed:
+    - source: salt://tomcat/files/catalina.sh
+    - user: tomcat
+    - group: tomcat
+
+juli-jar:
+  file.managed:
+    - name: {{ tomcat.CATALINA_BASE }}/bin/tomcat-juli.jar
+    - source: salt://tomcat/pkgs/{{ tomcat.version }}/tomcat-juli.jar
+    - saltenv: base
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - user: tomcat-user
+
+copy-logback-jars:
+  file.recurse:
+    - name: {{ tomcat.CATALINA_BASE }}/srvlib
+    - source: salt://tomcat/pkgs/logback
+    - saltenv: base
+    - makedirs: true
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - user: tomcat-user
+
+{{ tomcat.CATALINA_BASE }}/conf/catalina.properties:
+  file.managed:
+    - source: salt://tomcat/files/catalina.properties
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+    - template: jinja
+    - defaults:
+        tomcat: {{ tomcat|json }}
+
+{{ tomcat.CATALINA_BASE }}/conf/tomcat-logback.xml:
+  file.managed:
+    - source: salt://tomcat/files/tomcat-logback.xml
+    - user: tomcat
+    - group: tomcat
+    - mode: 644
+    - template: jinja
+    - defaults:
+        tomcat: {{ tomcat|json }}
+
 {{ tomcat.CATALINA_BASE }}/conf/logback-common.xml:
   file.managed:
     - source: salt://tomcat/files/logback-common.xml
@@ -122,6 +155,7 @@ copy-env.conf:
     - template: jinja
     - defaults:
         tomcat: {{ tomcat|json }}
+{% endif %}
 
 
 {% if tomcat.gracefulOpen %}
@@ -137,18 +171,33 @@ copy-lib-jars:
       - file: symlink-tomcat
 {% endif %}
 
+delete-logging.properties:
+  file.absent:
+    - name: {{ tomcat.CATALINA_BASE }}/conf/logging.properties
+
 {% do tomcat.update({'forceInstall': false}) %}
 
 tomcat:
   grainsdict.present:
     - value: {{ tomcat|json }}
     - require:
-      - cmd: delete-tomcat-linked-dir
       - archive: unpack-tomcat-tarball
+      - file: {{ tomcat.home }}/{{ tomcat.versionPath }}
       - file: symlink-tomcat
       - file: delete-tomcat-users.xml
-      - file: {{ tomcat.CATALINA_BASE }}/bin/catalina.sh
-      - file: copy-env.conf
+      - file: {{ tomcat.home }}/{{ tomcat.name }}/conf/env.conf
       - file: /home/tomcat/tomcat/conf/server.xml
+{% if tomcat.useLogback %}
+      - file: {{ tomcat.CATALINA_BASE }}/conf/context.xml
+      - file: {{ tomcat.CATALINA_BASE }}/bin/catalina.sh
+      - file: juli-jar
+      - file: copy-logback-jars
+      - file: {{ tomcat.CATALINA_BASE }}/conf/catalina.properties
+      - file: {{ tomcat.CATALINA_BASE }}/conf/tomcat-logback.xml
       - file: {{ tomcat.CATALINA_BASE }}/conf/logback-common.xml
+{% endif %}
+{% if tomcat.gracefulOpen %}    
+      - file: copy-lib-jars
+{% endif %}
+      - file: delete-logging.properties
 
