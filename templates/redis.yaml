@@ -28,10 +28,10 @@ actions:
   - name: 部署redis
     css: glyphicon glyphicon-import
     steps:
-      - name: 加固os
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
-      - name: 安装ntp服务
-        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
+      #- name: 加固os
+      #  sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' os.security"
+      #- name: 安装ntp服务
+      #  sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' ntp"
       - name: 编译安装keepalived
         sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' keepalived pillar='{keepalived: {isMaster: {{attrs.t_isMaster}}, virtual_router_id: {{attrs.t_virtualRouterId}}, virtual_ipaddress: \"{{attrs.t_virtualIp}}\"}}'"
       - name: 编译安装redis
