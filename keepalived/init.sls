@@ -1,5 +1,8 @@
 {%- from 'keepalived/settings.sls' import keepalived with context %}
 
+tar:
+  pkg.installed
+
 get-keepalived-package:
   file.managed:
     - name: /root/{{ keepalived.keepalivedVersion }}{{ keepalived.zipType }}
