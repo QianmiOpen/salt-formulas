@@ -1,5 +1,8 @@
 {%- from 'memcached/settings.sls' import memcached with context %}
 
+tar:
+  pkg.installed
+
 get-memcached-package:
   file.managed:
     - name: /root/{{ memcached.memcachedVersion }}{{ memcached.zipType }}
