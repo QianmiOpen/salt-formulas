@@ -15,6 +15,9 @@ create-dir-{{ dir }}-tengine:
     - makedirs: true
 {% endfor %}
 
+tar:
+  pkg.installed
+
 {% for package in [tengine.tengine, tengine.ssl, tengine.nginxSticky, tengine.nginxCache] %}
 get-{{ package }}:
   file.managed:
