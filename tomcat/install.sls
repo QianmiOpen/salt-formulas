@@ -15,7 +15,7 @@ get-tomcat-tarball:
     - user: tomcat
     - group: tomcat
     - require:
-      - user: tomcat-user
+      - user: add-tomcat-user
 
 unpack-tomcat-tarball:
   cmd.run:
