@@ -7,7 +7,13 @@ include:
 {% endif %}
   - tomcat.user
 
-unpack-tomcat-tarball:
+delete-tomcat-linked-dir:
+  cmd.run:
+    - name: "rm -rf `readlink {{ tomcat.home }}/{{ tomcat.name }}`"
+    - user: tomcat
+    - onlyif: 'test -e {{ tomcat.home }}/{{ tomcat.name }}'
+
+get-tomcat-tarball:
   file.managed:
     - name: {{ tomcat.home }}/{{ tomcat.package }}
     - source: salt://tomcat/pkgs/{{ tomcat.version }}/{{ tomcat.package }}
@@ -17,12 +23,14 @@ unpack-tomcat-tarball:
     - require:
       - user: tomcat-user
       - cmd: delete-tomcat-linked-dir
+
+unpack-tomcat-tarball:
   cmd.run:
     - name: tar xf {{ tomcat.home }}/{{ tomcat.package }} -C {{ tomcat.home }}
     - user: tomcat
     - group: tomcat
     - require:
-      - file: unpack-tomcat-tarball
+      - file: get-tomcat-tarball
 
 
 {% if tomcat.forceInstall %}
