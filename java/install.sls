@@ -11,17 +11,16 @@ tar:
     - mode: 755
 
 unpack-jdk-tarball:
-  archive.extracted:
-    - name: {{ java.installPath }}
+  file.managed:
+    - name: {{ java.installPath }}/{{ java.package }}
     - source: salt://java/pkgs/{{ java.package }}
-    - archive_format: tar
-    - archive_user: root
-    - tar_options: x
-    - if_missing: {{ java.realHome }}
     - saltenv: base
+  cmd.run:
+    - name: tar xf {{ java.installPath }}/{{ java.package }} -C {{ java.installPath }}
     - require:
-      - file: {{ java.installPath }}
       - pkg: tar
+      - file: {{ java.installPath }}
+      - file: unpack-jdk-tarball
 
 {% if java.forceInstall %}
       - file: delete-jdk-linked-dir
