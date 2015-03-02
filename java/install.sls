@@ -35,7 +35,7 @@ copy-security-jar:
     - user: root
     - group: root
     - require:
-      - archive: unpack-jdk-tarball
+      - cmd: unpack-jdk-tarball
 {% endif %}
 
 jdk-config:
