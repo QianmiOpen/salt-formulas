@@ -67,6 +67,6 @@ java:
   grainsdict.present:
     - value: {{ java|json }}
     - require:
-      - archive: unpack-jdk-tarball
+      - cmd: unpack-jdk-tarball
       - file: jdk-config
       - file: symlink-java
