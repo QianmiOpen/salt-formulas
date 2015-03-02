@@ -11,4 +11,3 @@ tomcat-config:
     - context:
       tomcatHome: {{ tomcat.home }}/{{ tomcat.name }}
       tomcatPid: {{ tomcat.tomcatPid }}
-

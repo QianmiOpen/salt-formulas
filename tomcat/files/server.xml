@@ -115,6 +115,7 @@
       <Host name="{{ tomcat.hostName }}" appBase="{{ tomcat.appBase }}" unpackWARs="{{ tomcat.unpackWARs }}" deployXML="{{ tomcat.deployXML }}" autoDeploy="{{ tomcat.autoDeploy }}" deployOnStartup="{{ tomcat.deployOnStartup }}">
         <Context path="{{ tomcat.path }}" docBase="{{ tomcat.appName }}.war" privileged="{{ tomcat.privileged }}" reloadable="{{ tomcat.reloadable }}">
           <!-- <Resources className="org.apache.naming.resources.VirtualDirContext" extraResourcePaths="/dir=/hostdir" /> -->
+          <!-- <Loader className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="/classpath"/> -->
         </Context>
         <Alias>{{ tomcat.appName }}</Alias>
       </Host>

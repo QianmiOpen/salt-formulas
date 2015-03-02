@@ -15,6 +15,13 @@ salt-install:
     - group: root
     - mode: 640
 
+/usr/lib/python2.6/site-packages/salt/states/grainsdict.py:
+  file.managed:
+    - source: salt://saltconf/files/grainsdict.py
+    - user: root
+    - group: root
+    - mode: 644  
+
 restart-minion:
   service.running:
     - name: salt-minion

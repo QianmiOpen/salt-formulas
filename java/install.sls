@@ -1,48 +1,73 @@
 {%- from 'java/settings.sls' import java with context %}
 
+tar:
+  pkg:
+    - installed
+
 {{ java.installPath }}:
   file.directory:
     - user: root
     - group: root
     - mode: 755
 
-tar:
-  pkg.installed
-
 unpack-jdk-tarball:
-  file.managed:
-    - name: {{ java.installPath }}/{{ java.package }}
+  archive.extracted:
+    - name: {{ java.installPath }}
     - source: salt://java/pkgs/{{ java.package }}
+    - archive_format: tar
+    - archive_user: root
+    - tar_options: x
+    - if_missing: {{ java.realHome }}
     - saltenv: base
-  cmd.run:
-    - name: tar xf {{ java.installPath }}/{{ java.package }} -C {{ java.installPath }}
     - require:
-      - pkg: tar
       - file: {{ java.installPath }}
-      - file: unpack-jdk-tarball
+      - pkg: tar
+
+{% if java.forceInstall %}
+      - file: delete-jdk-linked-dir
+{% endif %}
 
 {% if  java.version  == 'jdk7' %}
-{% for jar in ['local_policy.jar', 'US_export_policy.jar'] %}
-copy-{{ jar }}:
-  file.managed:
-    - name: {{ java.realHome }}/jre/lib/security/{{ jar }}
-    - source: salt://java/pkgs/jdk7_lib/{{ jar }}
+copy-security-jar:
+  file.recurse:
+    - name: {{ java.realHome }}/jre/lib/security
+    - source: salt://java/pkgs/jdk7_lib
     - saltenv: base
     - user: root
     - group: root
-{% endfor %}
+    - require:
+      - archive: unpack-jdk-tarball
 {% endif %}
+
+jdk-config:
+  file.managed:
+    - name: /etc/profile.d/java.sh
+    - source: salt://java/files/java.sh
+    - template: jinja
+    - mode: 644
+    - user: root
+    - group: root
+    - context:
+      javaHome: {{ java.home }}
 
 symlink-java:
   file.symlink:
-    - name: /usr/lib/java
+    - name: {{ java.home }}
     - target: {{ java.realHome }}
     - user: root
     - group: root
 
-java_version:
-  grains.present:
-    - value: {{ java.version }}
-
+{% if java.forceInstall %}
 include:
-  - java.env
+  - java.clean
+{% endif %}
+
+{% do java.update({'forceInstall': false}) %}
+
+java:
+  grainsdict.present:
+    - value: {{ java|json }}
+    - require:
+      - archive: unpack-jdk-tarball
+      - file: jdk-config
+      - file: symlink-java

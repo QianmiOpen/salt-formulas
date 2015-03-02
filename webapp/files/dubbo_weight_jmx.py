@@ -32,9 +32,8 @@ class cmd(object):
                 print("wait %d times, is started: %r" % (execute_time, started))
 
             return False
-        elif ret == cmd.JMX_ERROR:
-            time.sleep(timeout)
-            return True
+        else:
+            return False
 
     def check_dubbo_stop(self, max_invoke, interval, timeout):
         jmx_name = "com.qianmi:name=DubboProviderMBean"
@@ -58,6 +57,10 @@ class cmd(object):
         elif ret == cmd.JMX_ERROR:
             time.sleep(timeout)
             return True
+        elif ret == cmd.JMX_CONNECT_REFUSED:
+            print "%s, please use 9000 for jmx port. " % cmd.CONNECT_REFUSED
+            time.sleep(timeout)
+            return True
 
     def get_jmx(self, name, attr, retTrans, default = "0"):
         try:
@@ -77,7 +80,7 @@ class cmd(object):
                     print "except error: DubboInvokeMBean is not a registered bean"
                     return (cmd.JMX_ERROR, default)
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected error 1:", sys.exc_info()[0]
             return (cmd.JMX_ERROR, default)
 
 class dubbo(object):
@@ -105,7 +108,7 @@ class dubbo(object):
                 print dubbo.SUCCESS.encode('utf-8')
                 return dubbo.RET_OK
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected error 2:", sys.exc_info()[0]
             raise
 
 if __name__ == "__main__":
@@ -123,10 +126,12 @@ if __name__ == "__main__":
         try:
             if (operate.lower() == "up"):
                 cmd_ret = cmd().check_app_start(3, 180)
-                if cmd_ret == cmd.JMX_ERROR:
+                if not cmd_ret:
                     raise Exception("cmd execute exception")
-                elif cmd_ret == cmd.JMX_OK:
-                    if not dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight):
+                else:
+                    dubbo_ret = dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight)
+                    if dubbo_ret != dubbo.RET_OK:
+                        print "err:", dubbo_ret
                         raise Exception("stop dubbo exception")
             else:
                 dubbo_ret = dubbo().set_dubbo_weight(dubbo_admin, admin_user, admin_password, my_addr, weight)
@@ -136,5 +141,5 @@ if __name__ == "__main__":
                     if not cmd().check_dubbo_stop(1, 3, 30):
                         raise Exception("cmd execute exception")
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected error 3:", sys.exc_info()[0]
             raise

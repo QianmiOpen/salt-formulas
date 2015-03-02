@@ -1,6 +1,6 @@
 {%- from 'tomcat/settings.sls' import tomcat with context %}
 
-tomcat-user:
+add-tomcat-user:
   user.present:
     - name: tomcat
     - uid: 6666

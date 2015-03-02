@@ -85,3 +85,15 @@ unmount-oflogs:
     - opts: nosuid,nodev,rw,bg,soft,nolock
     - persist: True
 {% endif %}
+
+webapp:
+  grainsdict.present:
+    - value: {{ webapp|json }}
+    - require:
+      - cmd: unmount-nfs-dirs
+      - file: {{ webapp.logHome }}
+      - mount: {{ webapp.logHome }}
+      - file: unmount-oflogs
+      - mount: unmount-oflogs
+      - file: {{ webapp.logHome }}/{{ webapp.projectName }}
+      - mount: {{ webapp.logHome }}/{{ webapp.projectName }}

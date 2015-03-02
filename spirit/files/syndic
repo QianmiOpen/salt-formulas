@@ -47,7 +47,7 @@
 # The number of worker threads to start, these threads are used to manage
 # return calls made from minions to the master, if the master seems to be
 # running slowly, increase the number of threads
-#worker_threads: 5
+worker_threads: 30
 
 # The port used by the communication interface. The ret (return) port is the
 # interface used for the file server, authentication, job returnes, etc.
@@ -395,7 +395,7 @@ fileserver_backend:
 #
 # Gitfs can be provided by one of two python modules: GitPython or pygit2. If
 # using pygit2, both libgit2 and git must also be installed.
-#gitfs_provider: gitpython
+gitfs_provider: gitpython
 #
 # When using the git fileserver backend at least one git remote needs to be
 # defined. The user running the salt master will need read access to the repo.
@@ -408,8 +408,9 @@ fileserver_backend:
 # exist in that repo as *local* refs.
 #
 gitfs_remotes:
-  - http://git.dev.ofpay.com/git/TDA/salt-formulas.git
-  - http://git.dev.ofpay.com/git/TDA/salt-pkgs.git
+  - git@git.dev.qianmi.com:tda/salt-formulas.git
+  - git@git.dev.qianmi.com:tda/salt-pkgs.git
+  - git@git.dev.qianmi.com:cicode/salt-keys.git
 #  - git+ssh://cicode@git.dev.ofpay.com:29418/cicode/salt-work.git
 #  - git://github.com/saltstack/salt-states.git
 #  - file:///var/git/saltmaster
