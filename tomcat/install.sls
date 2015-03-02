@@ -8,16 +8,23 @@ include:
   - tomcat.user
 
 unpack-tomcat-tarball:
-  archive.extracted:
-    - name: {{ tomcat.home }}
+  file.managed:
+    - name: {{ tomcat.home }}/{{ tomcat.package }}
     - source: salt://tomcat/pkgs/{{ tomcat.version }}/{{ tomcat.package }}
-    - archive_format: tar
-    - archive_user: tomcat
-    - tar_options: x
-    - if_missing: {{ tomcat.home }}/{{ tomcat.versionPath }}
     - saltenv: base
+    - user: tomcat
+    - group: tomcat
     - require:
-      - user: add-tomcat-user
+      - user: tomcat-user
+      - cmd: delete-tomcat-linked-dir
+  cmd.run:
+    - name: tar xf {{ tomcat.home }}/{{ tomcat.package }} -C {{ tomcat.home }}
+    - user: tomcat
+    - group: tomcat
+    - require:
+      - file: unpack-tomcat-tarball
+
+
 {% if tomcat.forceInstall %}
       - file: delete-tomcat-linked-dir
 {% endif %}
@@ -31,7 +38,7 @@ unpack-tomcat-tarball:
     - makedirs: False
     - clean: False
     - require:
-      - archive: unpack-tomcat-tarball
+      - cmd: unpack-tomcat-tarball
 
 symlink-tomcat:
   file.symlink:
@@ -175,7 +182,7 @@ tomcat:
   grainsdict.present:
     - value: {{ tomcat|json }}
     - require:
-      - archive: unpack-tomcat-tarball
+      - cmd: unpack-tomcat-tarball
       - file: {{ tomcat.home }}/{{ tomcat.versionPath }}
       - file: symlink-tomcat
       - file: delete-tomcat-users.xml
