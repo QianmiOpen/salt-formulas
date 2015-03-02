@@ -7,12 +7,6 @@ include:
 {% endif %}
   - tomcat.user
 
-delete-tomcat-linked-dir:
-  cmd.run:
-    - name: "rm -rf `readlink {{ tomcat.home }}/{{ tomcat.name }}`"
-    - user: tomcat
-    - onlyif: 'test -e {{ tomcat.home }}/{{ tomcat.name }}'
-
 get-tomcat-tarball:
   file.managed:
     - name: {{ tomcat.home }}/{{ tomcat.package }}
@@ -22,7 +16,6 @@ get-tomcat-tarball:
     - group: tomcat
     - require:
       - user: tomcat-user
-      - cmd: delete-tomcat-linked-dir
 
 unpack-tomcat-tarball:
   cmd.run:
@@ -32,10 +25,6 @@ unpack-tomcat-tarball:
     - require:
       - file: get-tomcat-tarball
 
-
-{% if tomcat.forceInstall %}
-      - file: delete-tomcat-linked-dir
-{% endif %}
   file.directory:
     - name: {{ tomcat.home }}/{{ tomcat.versionPath }}
     - user: tomcat
