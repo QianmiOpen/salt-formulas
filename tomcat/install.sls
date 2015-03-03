@@ -2,10 +2,11 @@
 
 include:
   - tomcat.env
+  - tomcat.user
 {% if tomcat.forceInstall %}
   - tomcat.clean
 {% endif %}
-  - tomcat.user
+
 
 get-tomcat-tarball:
   file.managed:

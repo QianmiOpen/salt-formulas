@@ -4,7 +4,7 @@ delete-tomcat-linked-dir:
   cmd.run:
     - name: "rm -rf `readlink {{ tomcat.home }}/{{ tomcat.name }}`"
     - user: tomcat
-    - onlyif: 'test -e {{ tomcat.home }}/{{ tomcat.name }}'
+    - onlyif: 'test -L {{ tomcat.home }}/{{ tomcat.name }}'
   file.absent:
     - name: {{ tomcat.home }}/{{ tomcat.name }}
     - require:
