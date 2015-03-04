@@ -18,5 +18,6 @@ set-dubbo-weight-0:
     - name: salt://webapp/files/dubbo_weight_jmx.py
     - args: "down {{webapp.dubboAdminIp}}:{{webapp.dubboAdminPort}} root {{webapp.dubboRootPasswd}} 0"
     - user: tomcat
+    - onlyif: 'test -e {{ tomcat.tomcatPid }}'
     - require:
       - file: copy-jmx-jar
