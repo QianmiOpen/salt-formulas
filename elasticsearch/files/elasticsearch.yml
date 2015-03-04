@@ -397,5 +397,9 @@ index:
       ik_smart:
           type: ik
           use_smart: true
+      index_ansj:
+          type: ansj_index
+      query_ansj:
+          type: ansj_query
          
 #index.analysis.analyzer.default.type : "ik"
