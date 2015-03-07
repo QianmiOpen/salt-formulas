@@ -35,6 +35,35 @@ class cmd(object):
         else:
             return False
 
+    def check_http_stop(self, max_invoke, interval, timeout):
+        jmx_name = "com.ofpay.health:name=HealthStatus"
+        jxm_attr = "Count"
+        max_execute_times = (timeout + interval - 1) / interval
+        (ret, invoke_num) = self.get_jmx(jmx_name, jxm_attr, int, 0)
+        print("execute result %r, %r. max execute %d." % (ret, invoke_num, max_execute_times))
+        if ret == cmd.JMX_OK:
+            execute_time = 0
+            while (execute_time < max_execute_times):
+                if (invoke_num < max_invoke):
+                    return True
+                time.sleep(interval)
+                (ret, invoke_num) = self.get_jmx(jmx_name, jxm_attr, int, 0)
+                if (ret != cmd.JMX_OK):
+                    return False
+                execute_time += 1
+                print("wait %d times, invoke num is: %r" % (execute_time, started))
+
+            return False
+        elif ret == cmd.JMX_ERROR:
+            time.sleep(timeout)
+            return True
+        elif ret == cmd.JMX_CONNECT_REFUSED:
+            print "%s, please use 9000 for jmx port. " % cmd.CONNECT_REFUSED
+            time.sleep(timeout)
+            return True
+        else:
+            return False
+
     def check_dubbo_stop(self, max_invoke, interval, timeout):
         jmx_name = "com.qianmi:name=DubboProviderMBean"
         jxm_attr = "AliveEvents"
