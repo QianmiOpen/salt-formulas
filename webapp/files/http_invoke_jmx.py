@@ -57,7 +57,7 @@ class cmd(object):
                     event_result = event_result[event_result.rfind(':') + 1:]
                     return (cmd.JMX_OK, retTrans(event_result))
                 except:
-                    print "except error: DubboInvokeMBean is not a registered bean"
+                    print "except error: httpInvokeMBean is not a registered bean"
                     return (cmd.JMX_ERROR, default)
         except:
             print "Unexpected error 1:", sys.exc_info()[0]
