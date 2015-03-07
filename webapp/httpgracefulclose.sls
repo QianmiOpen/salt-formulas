@@ -15,7 +15,7 @@ copy-jmx-jar:
 
 set-http-closing-true:
   cmd.script:
-    - name: salt://webapp/files/dubbo_weight_jmx.py
+    - name: salt://webapp/files/http_invoke_jmx.py
     - args: "stop"
     - user: tomcat
     - onlyif: 'test -e {{ tomcat.tomcatPid }}'
