@@ -1,5 +1,6 @@
 {% from 'webapp/settings.sls' import webapp with context %}
 
+{% if salt['grains.get']('virtual')  == 'VMware' %}
 nfs-utils:
   pkg:
     - installed
@@ -12,7 +13,6 @@ unmount-nfs-dirs:
     - unless: "test `mount |tail -1 |grep logs |grep nfs |awk '{print $5}'| wc -l` -eq 0"
     - require:
       - pkg: nfs-utils
-
 
 {% if  webapp.logHome  == '/oflogs' %}
 {{ webapp.logHome }}:
@@ -97,3 +97,18 @@ webapp:
       - mount: unmount-oflogs
       - file: {{ webapp.logHome }}/{{ webapp.projectName }}
       - mount: {{ webapp.logHome }}/{{ webapp.projectName }}
+
+{% elif salt['grains.get']('virtual')  == 'physical' %}
+{{ webapp.logHome }}/{{ webapp.projectName }}:
+  file.directory:
+    - user: tomcat
+    - group: tomcat
+    - mode: 777
+    - makedirs: True
+
+webapp:
+  grainsdict.present:
+    - value: {{ webapp|json }}
+    - require:
+      - file: {{ webapp.logHome }}/{{ webapp.projectName }}
+{% endif %}    
