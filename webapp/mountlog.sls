@@ -105,10 +105,16 @@ webapp:
     - group: tomcat
     - mode: 777
     - makedirs: True
+{{ webapp.nfsServer }}:
+  cmd.run:
+    - name: 'echo hello > /tmp/{{ webapp.nfsServer }}.txt'
+    - user: root
+    - group: root
 
 webapp:
   grainsdict.present:
     - value: {{ webapp|json }}
     - require:
       - file: {{ webapp.logHome }}/{{ webapp.projectName }}
+      - cmd: {{ webapp.nfsServer }}
 {% endif %}    
