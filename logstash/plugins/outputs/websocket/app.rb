@@ -23,7 +23,7 @@ class LogStash::Outputs::WebSocket::App < Sinatra::Base
     stream(:keep_open) do |out|
       puts "out is #{out}"
       @pubsub.subscribe(taskId, type) do |event|
-        puts "event is #{event}"
+        event.force_encoding 'ASCII-8BIT'
         ws.publish(event)
       end # pubsub
     end # stream
