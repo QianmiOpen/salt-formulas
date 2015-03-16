@@ -40,23 +40,6 @@ class LogStash::Outputs::WebSocket::Pubsub
         @logger.warn("event parse to json get a error", :exception => e)
         break
       end
-#=========================================
-      # break if @subscribers.size == 0
-
-      # failed = []
-      # @subscribers.each do |subscriber|
-        # begin
-          # @logger.info("object is ", :object => object, :subscriber => subscriber)
-          # subscriber.call(object) #object is message
-        # rescue => e
-          # @logger.error("Failed to publish to subscriber", :subscriber => subscriber, :exception => e)
-          # failed << subscriber
-        # end
-      # end
-
-      # failed.each do |subscriber|
-        # @subscribers.delete(subscriber)
-      # end
     end # @subscribers_lock.synchronize
   end # def Pubsub
 
@@ -70,17 +53,6 @@ class LogStash::Outputs::WebSocket::Pubsub
         queue << event
       end
       @logger.info(@hashsubs)
-      ##===================
-      # @subscribers << proc do |event|
-        # jsonEvent = JSON.parse(event)
-        # sourceHost = jsonEvent.fetch("host")
-        # logType = jsonEvent.fetch("type")
-        # puts "sourceHost is #{sourceHost}"
-        # if(sourceHost == taskId.to_s && type == logType)
-          # queue << event
-        # end
-      # end
-      # @logger.info(@subscribers)
     end
 
     while true
