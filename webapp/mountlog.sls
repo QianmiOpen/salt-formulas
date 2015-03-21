@@ -36,7 +36,7 @@ unmount-oflogs:
     - makedirs: True
   mount.unmounted:
     - name: {{ webapp.logHome }}
-    - persist: False
+    - persist: True
 
 {{ webapp.logHome }}/{{ webapp.projectName }}:
   file.directory:
@@ -71,7 +71,7 @@ unmount-oflogs:
     - makedirs: True
   mount.unmounted:
     - name: {{ webapp.logHome }}
-    - persist: False
+    - persist: True
 
 {{ webapp.logHome }}/{{ webapp.projectName }}:
   file.directory:
