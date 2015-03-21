@@ -15,6 +15,8 @@ class LogStash::Outputs::WebSocket::Pubsub
   def publish(object)
     @subscribers_lock.synchronize do
       begin 
+        break if @hashsubs.size == 0
+
         jsonEvent = JSON.parse(object)
         sourceHost = jsonEvent.fetch("host")
         logType = jsonEvent.fetch("type")
@@ -35,6 +37,10 @@ class LogStash::Outputs::WebSocket::Pubsub
 
         failed.each do |subscriber|
           @hashsubs["#{sourceHost}:#{logType}"].delete(subscriber)
+        end
+
+        if @hashsubs["#{sourceHost}:#{logType}"].size == 0
+          @hashsubs.delete("#{sourceHost}:#{logType}")
         end
       rescue Exception => e
         @logger.warn("event parse to json get a error", :exception => e)
