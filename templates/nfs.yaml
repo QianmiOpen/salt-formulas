@@ -1,9 +1,0 @@
-name: nfs
-remark: 用于nfs项目的自动部署
-items:
-  - itemName: t_virtualIp
-    itemDesc: nfs的虚ip
-    itemType: var
-  - itemName: t_mountRootDir
-    itemDesc: 日志绑定根目录
-    default: '/oflogs'

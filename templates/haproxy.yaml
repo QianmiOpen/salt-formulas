@@ -1,6 +1,0 @@
-name: haproxy
-remark: 用于haproxy项目的自动部署
-items:
-  - itemName: t_virtualIp
-    itemDesc: haproxy的虚ip
-    itemType: var

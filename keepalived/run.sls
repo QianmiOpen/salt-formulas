@@ -1,3 +1,0 @@
-keepalived:
-  service:
-    - running

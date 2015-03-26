@@ -1,7 +1,0 @@
-{%- from 'tengine/settings.sls' import tengine with context %}
-    {% if tengine.isIPhash %} 
-    ip_hash;
-    {% else %}
-    #ip_hash;
-    {% endif %}
-    

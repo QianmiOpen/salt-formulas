@@ -22,22 +22,6 @@ unpack-jdk-tarball:
       - file: {{ java.installPath }}
       - file: unpack-jdk-tarball
 
-{% if java.forceInstall %}
-      - file: delete-jdk-linked-dir
-{% endif %}
-
-{% if  java.version  == 'jdk7' %}
-copy-security-jar:
-  file.recurse:
-    - name: {{ java.realHome }}/jre/lib/security
-    - source: salt://java/pkgs/jdk7_lib
-    - saltenv: base
-    - user: root
-    - group: root
-    - require:
-      - cmd: unpack-jdk-tarball
-{% endif %}
-
 jdk-config:
   file.managed:
     - name: /etc/profile.d/java.sh
@@ -55,13 +39,6 @@ symlink-java:
     - target: {{ java.realHome }}
     - user: root
     - group: root
-
-{% if java.forceInstall %}
-include:
-  - java.clean
-{% endif %}
-
-{% do java.update({'forceInstall': false}) %}
 
 java:
   grainsdict.present:

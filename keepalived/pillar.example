@@ -1,5 +1,0 @@
-keepalived:
-  isMaster: True
-
-
-salt lin-22-35.localdomain state.sls keepalived pillar='{keepalived: {isMaster: True}}'
