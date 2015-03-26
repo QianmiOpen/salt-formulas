@@ -1,0 +1,50 @@
+name: webapi
+remark: 用于dubbo项目的自动部署，即api类项目
+items:
+  - itemName: t_groupId
+    itemDesc: groupId
+  - itemName: t_artifactId
+    itemDesc: artifactId
+  - itemName: t_jdkversion
+    itemDesc: jdk版本
+    default: 'jdk7'
+  - itemName: t_unpacked
+    itemDesc: 自动解压
+    default: 'False'
+actions:
+  - name: 安装应用
+    css: glyphicon glyphicon-upload
+    versionMenu: True
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+      - name: 安装java
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' java.install pillar='{java: {version: {{attrs.t_jdkversion}}, md5sum: {install: $$java.md5sum.install$$}}}'"
+        md5Check: "java.md5sum.install"
+        seconds: 10
+      - name: 安装tomcat
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.install pillar='{tomcat: {md5sum: {install: $$tomcat.md5sum.install$$}}}'"
+        md5Check: "tomcat.md5sum.install"
+        seconds: 6
+      - name: 部署war包
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.deploy pillar='{webapp: {groupId: {{attrs.t_groupId}}, artifactId: {{attrs.t_artifactId}}, version: {{version.name}}, unzip: {{attrs.t_unpacked}}}}'"        
+      - name: 配置文件准备
+        sls: "bugatti copyfile"
+      - name: 拷贝配置文件
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' job.copyfile pillar='{job: {confFileName: {{confFileName}}, id: {{env.id}}/{{id}}/{{taskId}}, baseUrl: \"{{system.baseUrl}}\"}}'"
+  - name: 启动应用
+    css: glyphicon glyphicon-play
+    steps:
+      - name: 启动应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.startup"
+    css: glyphicon glyphicon-stop
+    steps:
+      - name: 关闭应用
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' tomcat.shutdown"
+  - name: jstack
+    css: glyphicon glyphicon-camera
+    actionType: host
+    steps:
+      - name: jstack
+        sls: "salt {{cHost.name}} state.sls saltenv='{{env.scriptVersion}}' webapp.jstack"
+

@@ -1,0 +1,13 @@
+webapp:
+  projectName: cardbase
+  nfsServer: 172.19.3.111
+  groupId: com.ofpay
+  artifactId: cardserverimpl
+  version: 1.6.2-RELEASE
+  repoBase: nexus.dev.ofpay.com/nexus/service/local/artifact/maven/redirect?
+  repository: releases
+  fileType: war
+
+salt \t-dminion state.sls webapp.deploy pillar='{webapp: {groupId: com.qianmi, artifactId: admin-web, version: 1.9.1-beta-1}, tomcat: {appName: admin-web}}'
+salt \t-dminion state.sls webapp.deploy pillar='{webapp: {groupId: com.qianmi, artifactId: admin-web, version: 1.9.1-beta-1, repository: releases}}'
+salt \t-dminion state.sls webapp.deploy pillar='{webapp: {groupId: com.qianmi, artifactId: usercenter-web, version: 1.9.0-SNAPSHOT, repository: snapshots}}'

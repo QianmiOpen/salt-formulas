@@ -1,0 +1,106 @@
+<included>
+    <property scope="context" name="CHARSET" value="utf-8"/>
+    <property scope="context" name="appName" value="{{tomcat.projectName}}"/>
+    <property scope="context" name="intflogType" value="INTF_LOG"/>
+    <property scope="context" name="applogType" value="APP_LOG"/>
+    <property scope="context" name="redisHost" value="{{tomcat.logstashRedisHost}}"/>
+    <property scope="context" name="redisPort" value="{{tomcat.logstashRedisPort}}"/>
+    <property scope="context" name="LOG_HOME" value="{{tomcat.logHome}}/{{tomcat.projectName}}" />
+    <property scope="context" name="APP_LOG_HOME" value="${LOG_HOME}/app/" />
+    <property scope="context" name="INF_LOG_HOME" value="${LOG_HOME}/inf/" />
+
+    <!-- 接口日志_fileAppender -->
+    <appender name="INTF_FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${INF_LOG_HOME}/${HOSTNAME}.inf.ing</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${INF_LOG_HOME}/${appName}_intf_log.${HOSTNAME}.%d{yyyy-MM-dd_HH}.json.%i</fileNamePattern>
+            <MaxHistory>1440</MaxHistory><!--日志文件保存个数 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 按时间回滚的同时，按文件大小来回滚 -->
+                <maxFileSize>30MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+            <shortenedLoggerNameLength>36</shortenedLoggerNameLength>
+            <includeContext>false</includeContext>
+            <includeMdc>false</includeMdc>
+            <includeCallerInfo>false</includeCallerInfo>
+            <customFields>{"host": "${HOSTNAME}", "appName": "${appName}"}</customFields>
+        </encoder>
+    </appender>
+    <!-- 接口日志_redisAppender -->
+    <appender name="intfLogAppender" class="net.logstash.logback.appender.LogstashRedisAppender">
+        <queueSize>1024</queueSize>                      <!-- default buffer size, default is 1024 -->
+        <discardingThreshold>204</discardingThreshold>   <!-- if queue remaining capacity less then this value, debug and info will be discard. default is queueSize/5 -->
+        <host>${redisHost}</host>
+        <port>${redisPort}</port>
+        <database>0</database>                           <!-- redis database, default is 0 -->
+        <maxIdle>1</maxIdle>                             <!-- redis connect for maxIdle, default is 1 -->
+        <maxTotal>1</maxTotal>                           <!-- redis connect for maxTotal, default is 1 -->
+        <maxWaitMills>1000</maxWaitMills>                <!-- max wait(Mills) for get redis connection, default 1000 -->
+        <key>LOGSTASH_${intflogType}</key>
+        <batchSize>1000</batchSize>         <!-- batch size, default 100 -->
+        <period>500</period>                <!-- each write period redis, default 500 ms -->
+        <daemonThread>true</daemonThread>
+        <maximumFrequency>10000</maximumFrequency>       <!-- maximum count of events per second, default is 10000 -->
+        <ignoreOverload>false</ignoreOverload>           <!-- if true ignore overload and continue write to redis; default is false-->
+        <layout class="net.logstash.logback.layout.LogstashLayout">
+            <fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+            <shortenedLoggerNameLength>36</shortenedLoggerNameLength>
+            <includeContext>false</includeContext>
+            <includeMdc>false</includeMdc>
+            <includeCallerInfo>false</includeCallerInfo>
+            <customFields>{"host": "${HOSTNAME}", "appName": "${appName}"}</customFields>
+        </layout>
+        <appender-ref ref="INTF_FileAppender" />       <!-- output to this appender when output to redis failed; if you are not configured, then ignore this log, optional; -->
+    </appender>
+
+    <!-- 应用日志_fileAppender -->
+    <appender name="APP_FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${APP_LOG_HOME}/${HOSTNAME}.app.ing</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${APP_LOG_HOME}/${appName}_app_log.${HOSTNAME}.%d{yyyy-MM-dd_HH}.json.%i</fileNamePattern>
+            <MaxHistory>1440</MaxHistory><!--日志文件保存个数 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 按时间回滚的同时，按文件大小来回滚 -->
+                <maxFileSize>30MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+            <shortenedLoggerNameLength>36</shortenedLoggerNameLength>
+            <includeContext>false</includeContext>
+            <includeMdc>true</includeMdc>
+            <includeCallerInfo>true</includeCallerInfo>
+            <customFields>{"host": "${HOSTNAME}", "appName": "${appName}"}</customFields>
+        </encoder>
+    </appender>
+    <!-- 应用日志_redisAppender -->
+    <appender name="appLogAppender" class="net.logstash.logback.appender.LogstashRedisAppender">
+        <queueSize>1024</queueSize>                      <!-- default buffer size, default is 1024 -->
+        <discardingThreshold>204</discardingThreshold>   <!-- if queue remaining capacity less then this value, debug and info will be discard. default is queueSize/5 -->
+        <host>${redisHost}</host>
+        <port>${redisPort}</port>
+        <database>0</database>                           <!-- redis database, default is 0 -->
+        <maxIdle>1</maxIdle>                             <!-- redis connect for maxIdle, default is 1 -->
+        <maxTotal>1</maxTotal>                           <!-- redis connect for maxTotal, default is 1 -->
+        <maxWaitMills>1000</maxWaitMills>                <!-- max wait(Mills) for get redis connection, default 1000 -->
+        <key>LOGSTASH_${applogType}</key>
+        <batchSize>1000</batchSize>         <!-- batch size, default 100 -->
+        <period>500</period>                <!-- each write period redis, default 500 ms -->
+        <daemonThread>true</daemonThread>
+        <maximumFrequency>10000</maximumFrequency>       <!-- maximum count of events per second, default is 10000 -->
+        <ignoreOverload>false</ignoreOverload>           <!-- if true ignore overload and continue write to redis; default is false-->
+        <layout class="net.logstash.logback.layout.LogstashLayout">
+            <fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+            <shortenedLoggerNameLength>36</shortenedLoggerNameLength>
+            <includeContext>false</includeContext>
+            <includeMdc>true</includeMdc>
+            <includeCallerInfo>true</includeCallerInfo>
+            <customFields>{"host": "${HOSTNAME}", "appName": "${appName}"}</customFields>
+        </layout>
+        <appender-ref ref="APP_FileAppender" />       <!-- output to this appender when output to redis failed; if you are not configured, then ignore this log, optional; -->
+    </appender>
+
+</included>
